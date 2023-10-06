@@ -23,3 +23,4 @@ Real-time chat functionality through SignalR, allows users to communicate with e
 EntityDiagram:
 
 
+![EntityDiagram](https://github.com/artur10563/1-Price/assets/105347152/ea4b0c83-71d4-4a79-bde4-594b24ede642)
