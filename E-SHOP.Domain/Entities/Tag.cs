@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace E_SHOP.Domain.Entities
 {
-	public class Tag : BaseDomainEntity
+	public class Tag : BaseEntity
 	{
-		[Required(ErrorMessage ="Enter tag name")]
-		[StringLength(50, MinimumLength = 3)]
+		//[Required(ErrorMessage ="Enter tag name")]
+		//[StringLength(50, MinimumLength = 3)]
 		public string Name { get; set; }
 
-		List<Post> Posts { get; set; }
+		public List<Post> Posts { get; set; }
 	}
 }

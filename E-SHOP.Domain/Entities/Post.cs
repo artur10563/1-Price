@@ -1,22 +1,22 @@
 ﻿using E_SHOP.Domain.Common;
 using E_SHOP.Domain.Enums;
-using System.ComponentModel.DataAnnotations;
+
 
 namespace E_SHOP.Domain.Entities
 {
-	public class Post : BaseDomainEntity
+	public class Post : BaseEntity
 	{
-		[Required(ErrorMessage = "Enter title")]
-		[StringLength(50, MinimumLength = 3)]
+		//[Required(ErrorMessage = "Enter title")]
+		//[StringLength(50, MinimumLength = 3)]
 		public string Title { get; set; }
 
-		[Required(ErrorMessage = "Enter description")]
-		[StringLength(255, MinimumLength = 50)]
+		//[Required(ErrorMessage = "Enter description")]
+		//[StringLength(255, MinimumLength = 50)]
 		public string Description { get; set; }
 
-		[Required(ErrorMessage = "Enter price")]
-		[Range(0, double.MaxValue,
-			ErrorMessage = "Price must be a non-negative value")]
+		//[Required(ErrorMessage = "Enter price")]
+		//[Range(0, double.MaxValue,
+		//	ErrorMessage = "Price must be a non-negative value")]
 		public decimal Price { get; set; }
 
 		public Currency Currency { get; set; }

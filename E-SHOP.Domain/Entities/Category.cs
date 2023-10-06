@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace E_SHOP.Domain.Entities
 {
-	public class Category : BaseDomainEntity
+	public class Category : BaseEntity
 	{
 
-		[Required(ErrorMessage ="Enter category name")]
-		[StringLength(50, MinimumLength = 3)]
+		//[Required(ErrorMessage ="Enter category name")]
+		//[StringLength(50, MinimumLength = 3)]
 		public string Name { get; set; }
 
 		public string? ImgPath { get; set; }

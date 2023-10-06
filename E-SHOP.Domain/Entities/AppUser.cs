@@ -7,7 +7,16 @@ using System.Threading.Tasks;
 
 //namespace E_SHOP.Domain.Entities
 //{
-//	internal class AppUser : BaseDomainEntity, IdentityUser
+//	internal class AppUser : BaseEntity, IdentityUser
 //	{
 //	}
 //}
+//АБО
+//
+//class Account : BaseEntity
+//{
+//	prop 1
+//	prop 2 
+//  IdentityUser User{get;set} //navigation property
+//}
+//
