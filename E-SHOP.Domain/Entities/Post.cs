@@ -6,17 +6,10 @@ namespace E_SHOP.Domain.Entities
 {
 	public class Post : BaseEntity
 	{
-		//[Required(ErrorMessage = "Enter title")]
-		//[StringLength(50, MinimumLength = 3)]
 		public string Title { get; set; }
 
-		//[Required(ErrorMessage = "Enter description")]
-		//[StringLength(255, MinimumLength = 50)]
 		public string Description { get; set; }
 
-		//[Required(ErrorMessage = "Enter price")]
-		//[Range(0, double.MaxValue,
-		//	ErrorMessage = "Price must be a non-negative value")]
 		public decimal Price { get; set; }
 
 		public Currency Currency { get; set; }
@@ -26,9 +19,12 @@ namespace E_SHOP.Domain.Entities
 		public string? ImgPath { get; set; }
 
 		public int IdCategory { get; set; }
+		public virtual Category Category { get; set; }
 
+		//GUID бо IdentityUser по дефолту має Id як GUID
 		public Guid IdCreator { get; set; }
+		//public User {get;set;}
 
-		public List<Tag> Tags { get; set; }
+		public virtual ICollection<PostTag> Tags { get; set; }
 	}
 }
