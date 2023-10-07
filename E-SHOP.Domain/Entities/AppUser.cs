@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 //{
 //	prop 1
 //	prop 2 
+//  int IdentityId{get;set;}
 //  IdentityUser User{get;set} //navigation property
 //}
 //

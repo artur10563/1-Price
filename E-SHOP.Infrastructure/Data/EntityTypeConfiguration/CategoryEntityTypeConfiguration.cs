@@ -5,19 +5,30 @@ using System.ComponentModel.DataAnnotations;
 
 namespace E_SHOP.Infrastructure.Data.EntityTypeConfiguration
 {
-    internal class CategoryEntityTypeConfiguration : IEntityTypeConfiguration<Category>
-    {
-        public void Configure(EntityTypeBuilder<Category> builder)
-        {
-            builder.Property(x => x.Name)
-                .HasMaxLength(50)
-                .HasAnnotation("MinLength", new MinLengthAttribute(3))
-                .IsRequired();
+	internal class CategoryEntityTypeConfiguration : IEntityTypeConfiguration<Category>
+	{
+		public void Configure(EntityTypeBuilder<Category> builder)
+		{
+			builder.HasKey(x => x.Id);
+
+			builder.Property(x => x.CreatedAt)
+				.HasDefaultValue(DateTime.UtcNow)
+				.ValueGeneratedOnAdd();
+
+			builder.Property(x => x.LastModifiedAt)
+				.HasDefaultValue(DateTime.UtcNow)
+				.ValueGeneratedOnUpdate()
+				.IsRequired(false);
+
+			builder.Property(x => x.Name)
+				.HasMaxLength(50)
+				//.HasAnnotation("MinLength", new MinLengthAttribute(3))
+				.IsRequired();
 
 
-            builder.Property(c => c.ImgPath)
-                   .IsRequired(false);
+			builder.Property(c => c.ImgPath)
+				   .IsRequired(false);
 
-        }
-    }
+		}
+	}
 }

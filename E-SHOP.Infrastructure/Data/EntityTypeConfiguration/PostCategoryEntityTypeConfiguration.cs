@@ -13,7 +13,7 @@ namespace E_SHOP.Infrastructure.Data.EntityTypeConfiguration
 
 			builder.HasOne(x => x.Category)
 				.WithMany(x => x.Posts)
-				.HasForeignKey(x => x.IdCategory)
+				.HasForeignKey(x => x.CategoryId)
 				.OnDelete(DeleteBehavior.NoAction);
 
 			//Помилка
