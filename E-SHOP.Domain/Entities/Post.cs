@@ -18,8 +18,8 @@ namespace E_SHOP.Domain.Entities
 
 		public string? ImgPath { get; set; }
 
-		public int CategoryId { get; set; }
-		public virtual Category Category { get; set; }
+		public int? CategoryId { get; set; }
+		public virtual Category? Category { get; set; }
 
 		//GUID бо IdentityUser по дефолту має Id як GUID
 		//public Guid CreatorId { get; set; }

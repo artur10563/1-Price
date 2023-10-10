@@ -19,8 +19,8 @@ namespace E_SHOP.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ImgPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 10, 10, 12, 11, 33, 910, DateTimeKind.Utc).AddTicks(6048)),
+                    LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValue: new DateTime(2023, 10, 10, 12, 11, 33, 910, DateTimeKind.Utc).AddTicks(6398))
                 },
                 constraints: table =>
                 {
@@ -34,8 +34,8 @@ namespace E_SHOP.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 10, 10, 10, 43, 30, 523, DateTimeKind.Utc).AddTicks(414)),
-                    LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValue: new DateTime(2023, 10, 10, 10, 43, 30, 523, DateTimeKind.Utc).AddTicks(755))
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 10, 10, 12, 11, 33, 911, DateTimeKind.Utc).AddTicks(5764)),
+                    LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValue: new DateTime(2023, 10, 10, 12, 11, 33, 911, DateTimeKind.Utc).AddTicks(6131))
                 },
                 constraints: table =>
                 {
@@ -54,9 +54,9 @@ namespace E_SHOP.Infrastructure.Migrations
                     Currency = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: true, defaultValue: true),
                     ImgPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 10, 10, 10, 43, 30, 522, DateTimeKind.Utc).AddTicks(3251)),
-                    LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValue: new DateTime(2023, 10, 10, 10, 43, 30, 522, DateTimeKind.Utc).AddTicks(3708))
+                    CategoryId = table.Column<int>(type: "int", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 10, 10, 12, 11, 33, 910, DateTimeKind.Utc).AddTicks(9191)),
+                    LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValue: new DateTime(2023, 10, 10, 12, 11, 33, 910, DateTimeKind.Utc).AddTicks(9597))
                 },
                 constraints: table =>
                 {
@@ -86,13 +86,13 @@ namespace E_SHOP.Infrastructure.Migrations
                         column: x => x.PostId,
                         principalTable: "Posts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PostTag_Tags_TagId",
                         column: x => x.TagId,
                         principalTable: "Tags",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

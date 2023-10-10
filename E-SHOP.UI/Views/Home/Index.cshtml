@@ -1,8 +1,39 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using E_SHOP.UI.Models.Home;
+@model HomeViewModel
+@{
+	ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center mb-3 mt-3" , style="background:white">
+	<h2>Categories</h2>
+	<div class="container-category container">
+		@foreach (CategoryViewModel c in Model.Categories)
+		{
+			<div class="cat-wrap">
+				<img class="object-fit-cover cat-img rounded-circle" src=@c.ImgPath>
+				<h5>@c.Name</h5>
+			</div>
+		}
+	</div>
 </div>
+
+@*Random 9 posts*@
+@if (Model.Posts.Count > -1)
+{
+	<div class="text-center">
+		<h2 class="align-self-center">You might be interested</h2>
+	</div>
+	@foreach (PostViewModel p in Model.Posts)
+	{
+		<div class="col-md-4 mb-4">
+			<div class="card">
+				<img src=@p.ImgPath class="card-img-top" alt="...">
+				<div class="card-body">
+					<h4 class="card-title">@p.Title</h4>
+					<h5 class="card-text">@p.Price @p.Currency</h5>
+					<p class="card-text">@p.Description</p>
+				</div>
+			</div>
+		</div>
+	}
+}

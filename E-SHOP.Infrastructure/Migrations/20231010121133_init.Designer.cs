@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_SHOP.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231010104330_init")]
+    [Migration("20231010121133_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -34,13 +34,17 @@ namespace E_SHOP.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2023, 10, 10, 12, 11, 33, 910, DateTimeKind.Utc).AddTicks(6048));
 
                     b.Property<string>("ImgPath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2023, 10, 10, 12, 11, 33, 910, DateTimeKind.Utc).AddTicks(6398));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -60,13 +64,13 @@ namespace E_SHOP.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 10, 10, 43, 30, 522, DateTimeKind.Utc).AddTicks(3251));
+                        .HasDefaultValue(new DateTime(2023, 10, 10, 12, 11, 33, 910, DateTimeKind.Utc).AddTicks(9191));
 
                     b.Property<int>("Currency")
                         .HasColumnType("int");
@@ -87,7 +91,7 @@ namespace E_SHOP.Infrastructure.Migrations
                     b.Property<DateTime?>("LastModifiedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 10, 10, 43, 30, 522, DateTimeKind.Utc).AddTicks(3708));
+                        .HasDefaultValue(new DateTime(2023, 10, 10, 12, 11, 33, 910, DateTimeKind.Utc).AddTicks(9597));
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18, 2)");
@@ -138,12 +142,12 @@ namespace E_SHOP.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 10, 10, 43, 30, 523, DateTimeKind.Utc).AddTicks(414));
+                        .HasDefaultValue(new DateTime(2023, 10, 10, 12, 11, 33, 911, DateTimeKind.Utc).AddTicks(5764));
 
                     b.Property<DateTime?>("LastModifiedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 10, 10, 43, 30, 523, DateTimeKind.Utc).AddTicks(755));
+                        .HasDefaultValue(new DateTime(2023, 10, 10, 12, 11, 33, 911, DateTimeKind.Utc).AddTicks(6131));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -160,8 +164,7 @@ namespace E_SHOP.Infrastructure.Migrations
                     b.HasOne("E_SHOP.Domain.Entities.Category", "Category")
                         .WithMany("Posts")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Category");
                 });
@@ -171,13 +174,13 @@ namespace E_SHOP.Infrastructure.Migrations
                     b.HasOne("E_SHOP.Domain.Entities.Post", "Post")
                         .WithMany("Tags")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("E_SHOP.Domain.Entities.Tag", "Tag")
                         .WithMany("Posts")
                         .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Post");
