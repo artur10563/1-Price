@@ -13,12 +13,12 @@ namespace E_SHOP.Infrastructure.Data.EntityTypeConfiguration
 			builder.HasOne(x => x.Tag)
 				.WithMany(x => x.Posts)
 				.HasForeignKey(x => x.TagId)
-				.OnDelete(DeleteBehavior.NoAction);
+				.OnDelete(DeleteBehavior.SetNull);
 
 			builder.HasOne(x => x.Post)
 				.WithMany(x => x.Tags)
 				.HasForeignKey(x => x.PostId)
-				.OnDelete(DeleteBehavior.NoAction);
+				.OnDelete(DeleteBehavior.SetNull);
 		}
 	}
 }

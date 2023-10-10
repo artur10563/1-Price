@@ -31,17 +31,13 @@ namespace E_SHOP.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 7, 17, 58, 36, 705, DateTimeKind.Utc).AddTicks(6386));
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ImgPath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("LastModifiedAt")
-                        .ValueGeneratedOnUpdate()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 7, 17, 58, 36, 705, DateTimeKind.Utc).AddTicks(6804));
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -67,7 +63,7 @@ namespace E_SHOP.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 7, 17, 58, 36, 706, DateTimeKind.Utc).AddTicks(1292));
+                        .HasDefaultValue(new DateTime(2023, 10, 10, 10, 43, 30, 522, DateTimeKind.Utc).AddTicks(3251));
 
                     b.Property<int>("Currency")
                         .HasColumnType("int");
@@ -88,7 +84,7 @@ namespace E_SHOP.Infrastructure.Migrations
                     b.Property<DateTime?>("LastModifiedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 7, 17, 58, 36, 706, DateTimeKind.Utc).AddTicks(1723));
+                        .HasDefaultValue(new DateTime(2023, 10, 10, 10, 43, 30, 522, DateTimeKind.Utc).AddTicks(3708));
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18, 2)");
@@ -103,29 +99,6 @@ namespace E_SHOP.Infrastructure.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Posts");
-                });
-
-            modelBuilder.Entity("E_SHOP.Domain.Entities.PostCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("PostCategory");
                 });
 
             modelBuilder.Entity("E_SHOP.Domain.Entities.PostTag", b =>
@@ -162,12 +135,12 @@ namespace E_SHOP.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 7, 17, 58, 36, 706, DateTimeKind.Utc).AddTicks(7648));
+                        .HasDefaultValue(new DateTime(2023, 10, 10, 10, 43, 30, 523, DateTimeKind.Utc).AddTicks(414));
 
                     b.Property<DateTime?>("LastModifiedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 7, 17, 58, 36, 706, DateTimeKind.Utc).AddTicks(8030));
+                        .HasDefaultValue(new DateTime(2023, 10, 10, 10, 43, 30, 523, DateTimeKind.Utc).AddTicks(755));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -182,31 +155,12 @@ namespace E_SHOP.Infrastructure.Migrations
             modelBuilder.Entity("E_SHOP.Domain.Entities.Post", b =>
                 {
                     b.HasOne("E_SHOP.Domain.Entities.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("E_SHOP.Domain.Entities.PostCategory", b =>
-                {
-                    b.HasOne("E_SHOP.Domain.Entities.Category", "Category")
                         .WithMany("Posts")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("E_SHOP.Domain.Entities.Post", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
                     b.Navigation("Category");
-
-                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("E_SHOP.Domain.Entities.PostTag", b =>
@@ -214,13 +168,13 @@ namespace E_SHOP.Infrastructure.Migrations
                     b.HasOne("E_SHOP.Domain.Entities.Post", "Post")
                         .WithMany("Tags")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
                     b.HasOne("E_SHOP.Domain.Entities.Tag", "Tag")
                         .WithMany("Posts")
                         .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
                     b.Navigation("Post");

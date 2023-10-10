@@ -19,8 +19,8 @@ namespace E_SHOP.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ImgPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 10, 7, 17, 58, 36, 705, DateTimeKind.Utc).AddTicks(6386)),
-                    LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValue: new DateTime(2023, 10, 7, 17, 58, 36, 705, DateTimeKind.Utc).AddTicks(6804))
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -34,8 +34,8 @@ namespace E_SHOP.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 10, 7, 17, 58, 36, 706, DateTimeKind.Utc).AddTicks(7648)),
-                    LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValue: new DateTime(2023, 10, 7, 17, 58, 36, 706, DateTimeKind.Utc).AddTicks(8030))
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 10, 10, 10, 43, 30, 523, DateTimeKind.Utc).AddTicks(414)),
+                    LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValue: new DateTime(2023, 10, 10, 10, 43, 30, 523, DateTimeKind.Utc).AddTicks(755))
                 },
                 constraints: table =>
                 {
@@ -55,8 +55,8 @@ namespace E_SHOP.Infrastructure.Migrations
                     IsActive = table.Column<bool>(type: "bit", nullable: true, defaultValue: true),
                     ImgPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 10, 7, 17, 58, 36, 706, DateTimeKind.Utc).AddTicks(1292)),
-                    LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValue: new DateTime(2023, 10, 7, 17, 58, 36, 706, DateTimeKind.Utc).AddTicks(1723))
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 10, 10, 10, 43, 30, 522, DateTimeKind.Utc).AddTicks(3251)),
+                    LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValue: new DateTime(2023, 10, 10, 10, 43, 30, 522, DateTimeKind.Utc).AddTicks(3708))
                 },
                 constraints: table =>
                 {
@@ -66,32 +66,7 @@ namespace E_SHOP.Infrastructure.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PostCategory",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
-                    PostId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PostCategory", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PostCategory_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_PostCategory_Posts_PostId",
-                        column: x => x.PostId,
-                        principalTable: "Posts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -110,23 +85,15 @@ namespace E_SHOP.Infrastructure.Migrations
                         name: "FK_PostTag_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_PostTag_Tags_TagId",
                         column: x => x.TagId,
                         principalTable: "Tags",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PostCategory_CategoryId",
-                table: "PostCategory",
-                column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PostCategory_PostId",
-                table: "PostCategory",
-                column: "PostId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_CategoryId",
@@ -147,9 +114,6 @@ namespace E_SHOP.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "PostCategory");
-
             migrationBuilder.DropTable(
                 name: "PostTag");
 

@@ -32,8 +32,8 @@ namespace E_SHOP.Infrastructure.Data.EntityTypeConfiguration
 				.IsRequired();
 
 			builder.Property(p => p.Price)
-				 //.HasAnnotation("Range", new RangeAttribute(0, double.MaxValue)
-				 //{ ErrorMessage = "Price must be a non-negative value" })
+				//.HasAnnotation("Range", new RangeAttribute(0, double.MaxValue)
+				//{ ErrorMessage = "Price must be a non-negative value" })
 				.HasColumnType("decimal(18, 2)")
 				.IsRequired();
 
@@ -49,6 +49,11 @@ namespace E_SHOP.Infrastructure.Data.EntityTypeConfiguration
 			builder.Property(p => p.ImgPath)
 				.IsRequired(false);
 
+
+			builder.HasOne(p => p.Category)
+				.WithMany(c => c.Posts)
+				.HasForeignKey(p => p.CategoryId)
+				.OnDelete(DeleteBehavior.SetNull);
 
 			/*
 			 * builder.HasOne(p=>p.User)

@@ -11,14 +11,7 @@ namespace E_SHOP.Infrastructure.Data.EntityTypeConfiguration
 		{
 			builder.HasKey(x => x.Id);
 
-			builder.Property(x => x.CreatedAt)
-				.HasDefaultValue(DateTime.UtcNow)
-				.ValueGeneratedOnAdd();
-
-			builder.Property(x => x.LastModifiedAt)
-				.HasDefaultValue(DateTime.UtcNow)
-				.ValueGeneratedOnUpdate()
-				.IsRequired(false);
+			
 
 			builder.Property(x => x.Name)
 				.HasMaxLength(50)
@@ -28,6 +21,10 @@ namespace E_SHOP.Infrastructure.Data.EntityTypeConfiguration
 
 			builder.Property(c => c.ImgPath)
 				   .IsRequired(false);
+
+			builder.HasMany(c => c.Posts)
+				.WithOne(c => c.Category)
+				.OnDelete(DeleteBehavior.SetNull); 
 
 		}
 	}

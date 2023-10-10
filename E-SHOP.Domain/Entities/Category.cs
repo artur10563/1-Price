@@ -10,6 +10,6 @@ namespace E_SHOP.Domain.Entities
 
 		public string? ImgPath { get; set; }
 
-		public virtual ICollection<PostCategory> Posts { get; set; }
+		public virtual ICollection<Post> Posts { get; set; }
 	}
 }
