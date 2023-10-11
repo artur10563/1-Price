@@ -1,0 +1,25 @@
+﻿@using E_SHOP.UI.Models.Post;
+@model IEnumerable<PostDTO>
+@{
+	ViewData["Title"] = "Posts";
+}
+
+
+@foreach (PostDTO p in Model)
+{
+	<div>
+		<p>
+			@p.Title
+		</p>
+		<p>
+			@p.Description
+		</p>
+		<p>
+			@p.Price @p.Currency
+		</p>
+		<p>
+			@p.ImgPath
+		</p>
+
+	</div>
+}

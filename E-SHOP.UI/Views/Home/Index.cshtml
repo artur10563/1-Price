@@ -4,26 +4,27 @@
 	ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center mb-3 mt-3" , style="background:white">
+<div class="text-center mb-3 mt-3">
 	<h2>Categories</h2>
 	<div class="container-category container">
-		@foreach (CategoryViewModel c in Model.Categories)
+		@foreach (HomeCategoryDTO c in Model.Categories)
 		{
-			<div class="cat-wrap">
+
+			<a asp-controller="Post" asp-action="Get" asp-route-category=@c.Name class="cat-wrap">
 				<img class="object-fit-cover cat-img rounded-circle" src=@c.ImgPath>
 				<h5>@c.Name</h5>
-			</div>
+			</a>
 		}
 	</div>
 </div>
 
 @*Random 9 posts*@
-@if (Model.Posts.Count > -1)
+@if (Model.Posts.Count > 0)
 {
 	<div class="text-center">
-		<h2 class="align-self-center">You might be interested</h2>
+		<h2 class="align-self-center mt-5">You might be interested</h2>
 	</div>
-	@foreach (PostViewModel p in Model.Posts)
+	@foreach (HomePostDTO p in Model.Posts)
 	{
 		<div class="col-md-4 mb-4">
 			<div class="card">

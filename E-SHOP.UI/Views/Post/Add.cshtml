@@ -1,0 +1,140 @@
+﻿@using E_SHOP.Domain.Enums;
+@using E_SHOP.UI.Models.Post;
+@model PostAddViewModel
+@{
+	ViewData["Title"] = "New post";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+@if (ViewData["AddStatus"] != null)
+{
+	<div id="popup" class="alert alert-success alert-dismissible fade show" role="alert">
+		@ViewData["AddStatus"]
+	</div>
+}
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+@*<form asp-controller="Post" asp-action="Add" method="post" enctype="multipart/form-data" class="form">
+	<div class="row">
+		<div class="form-group col-md-3">
+			<label asp-for="Title"></label>
+			<input asp-for="Title" class="form-control" />
+			<span asp-validation-for="Title" class="text-danger"></span>
+		</div>
+
+		<div class="form-group col-md-3">
+			<label asp-for="Description"></label>
+			<input asp-for="Description" class="form-control" />
+			<span asp-validation-for="Description" class="text-danger"></span>
+		</div>
+
+		<div class="form-group col-md-3">
+			<label asp-for="Price"></label>
+			<input asp-for="Price" class="form-control" />
+			<span asp-validation-for="Price" class="text-danger"></span>
+		</div>
+
+		<div class="form-group col-md-3">
+			<label asp-for="Currency"></label>
+			<select asp-for="Currency" asp-items="Html.GetEnumSelectList<Currency>()" class="form-control">
+				<option value="">Select Currency</option>
+			</select>
+			<span asp-validation-for="Currency" class="text-danger"></span>
+		</div>
+
+		<div class="form-group col-md-3">
+			<label for="image">Image:</label>
+			<input type="file" name="image" class="form-control" accept=".jpg, .jpeg, .png" max="15728640" />
+			<span asp-validation-for="ImgPath" class="text-danger"></span>
+		</div>
+	</div>
+
+	<button type="submit" class="btn btn-primary">Save Changes</button>
+	<a asp-controller="Admin" asp-action="Categories" class="btn btn-secondary">Back</a>
+</form>*@
+
+<form asp-controller="Post" asp-action="Add" method="post" enctype="multipart/form-data" class="form">
+	<div class="container-lg mt-5">
+		<div class="row">
+			<!-- Left box for file input and image preview -->
+
+			<div class="col-lg-6">
+				<div class="form-group img-container">
+					<input type="file" id="fileInput" accept="image/*">
+					<div class="prompt-text">Click to choose an image (max 5MB)</div>
+					<img id="uploadedImage" src="" class="uploadedImg">
+					<span asp-validation-for="Post.ImgPath" class="text-danger"></span>
+				</div>
+			</div>
+
+			<!-- Right box for title, description, category, and tags -->
+			<div class="col-lg-3">
+
+
+				<div class="form-group">
+					<label asp-for="Post.Title"></label>
+					<input asp-for="Post.Title" class="form-control" id="titleInput" />
+					<span asp-validation-for="Post.Title" class="text-danger"></span>
+				</div>
+
+				<div class="form-group">
+					<label asp-for="Post.Description"></label>
+					<textarea asp-for="Post.Description" class="form-control" id="descriptionInput"></textarea>
+					<span asp-validation-for="Post.Description" class="text-danger"></span>
+				</div>
+
+				<div class="form-group">
+					<label asp-for="Post.Price"></label>
+					<input asp-for="Post.Price" class="form-control" id="priceInput" />
+					<span asp-validation-for="Post.Price" class="text-danger"></span>
+				</div>
+
+				<div class="form-group">
+					<label asp-for="Post.Currency"></label>
+					<select asp-for="Post.Currency" asp-items="Html.GetEnumSelectList<Currency>()" class="form-control" id="currencyInput">
+						<option value="">Select Currency</option>
+					</select>
+					<span asp-validation-for="Post.Currency" class="text-danger"></span>
+				</div>
+
+
+
+
+
+
+
+				@*error here*@
+				<div class="form-group">
+					<label for="categorySelect">Category</label>
+					<select class="form-control" asp-for="Post.CategoryId"
+							asp-items="new SelectList(Model.AvailableCategories, nameof(CategoryDTO.Id),nameof(CategoryDTO.Name))">
+					</select>
+				</div>
+
+
+
+				<div class="form-group">
+					<label>Tags</label><br>
+					<div class="form-check form-check-inline">
+						@foreach (TagDTO t in Model.AvailableTags)
+						{
+							var checkboxId = "TagCheckbox" + t.Id;
+							<input class="form-check-input" type="checkbox" id=@checkboxId name="Tags" value="@t.Id">
+							<label class="form-check-label" for=@checkboxId>@t.Name</label>
+						}
+					</div>
+				</div>
+
+
+
+
+
+				<button type="submit" class="btn btn-primary">Save Changes</button>
+				<a asp-controller="Admin" asp-action="Categories" class="btn btn-secondary">Back</a>
+			</div>
+		</div>
+	</div>
+</form>

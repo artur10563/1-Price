@@ -28,7 +28,7 @@ namespace E_SHOP.UI.Controllers
 				.OrderBy(p => random.Next())
 				.Take(9);
 
-			var postsModel = randomPosts.Select(p => new PostViewModel()
+			var postsModel = randomPosts.Select(p => new HomePostDTO()
 			{
 				Title = p.Title,
 				Description = p.Description,
@@ -37,7 +37,7 @@ namespace E_SHOP.UI.Controllers
 				Price = p.Price
 			}).ToList();
 
-			var categoryModel = _context.Categories.Select(c => new CategoryViewModel()
+			var categoryModel = _context.Categories.Select(c => new HomeCategoryDTO()
 			{
 				Name = c.Name,
 				ImgPath = c.ImgPath

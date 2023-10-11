@@ -2,7 +2,7 @@
 
 namespace E_SHOP.UI.Models.Home
 {
-	public class CategoryViewModel
+	public class HomeCategoryDTO
 	{
 		[Required(ErrorMessage = "Name required")]
 		[StringLength(50, MinimumLength = 3)]

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace E_SHOP.UI.Models.Home
 {
-	public class PostViewModel
+	public class HomePostDTO
 	{
 		[Required(ErrorMessage = "Title required")]
 		[StringLength(50, MinimumLength = 3)]
