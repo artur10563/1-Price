@@ -2,6 +2,7 @@
 
 namespace E_SHOP.UI.Models.Post
 {
+
 	public class CategoryDTO
 	{
 		[Key]

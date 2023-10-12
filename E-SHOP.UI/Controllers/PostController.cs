@@ -2,6 +2,7 @@
 using E_SHOP.Infrastructure.Data;
 using E_SHOP.UI.Models.Post;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
@@ -16,29 +17,45 @@ namespace E_SHOP.UI.Controllers
 		}
 
 		[HttpGet]
-		public IActionResult Add()
+		public async Task<IActionResult> Add()
 		{
 			PostAddViewModel model = new PostAddViewModel();
 
-			model.AvailableTags = _context.Tags
+			model.AvailableTags = await _context.Tags
 				.Select(tag => new TagDTO() { Id = tag.Id, Name = tag.Name })
-				.ToList();
+				.ToListAsync();
 
 
-			model.AvailableCategories = _context.Categories
+			model.AvailableCategories = await _context.Categories
 				.Select(category => new CategoryDTO() { Id = category.Id, Name = category.Name })
-				.ToList();
+				.ToListAsync();
 
+
+			if (TempData.ContainsKey("AddStatus"))
+			{
+				ViewData["AddStatus"] = TempData["AddStatus"];
+			}
 			return View(model);
 		}
 
 		[HttpPost]
-		public IActionResult Add(PostAddViewModel postViewModel, IFormFile? image)
+		public async Task<IActionResult> Add(PostAddViewModel postViewModel, IFormFile? image)
 		{
+
 			if (!ModelState.IsValid)
 			{
-				return View();
+				postViewModel.AvailableTags = await _context.Tags
+					.Select(tag => new TagDTO() { Id = tag.Id, Name = tag.Name })
+					.ToListAsync();
+
+				postViewModel.AvailableCategories = await _context.Categories
+					.Select(category => new CategoryDTO() { Id = category.Id, Name = category.Name })
+					.ToListAsync();
+
+				return View(postViewModel);
 			}
+
+			
 			PostDTO post = postViewModel.Post;
 
 			Post newPost = new Post()
@@ -52,26 +69,28 @@ namespace E_SHOP.UI.Controllers
 					.FirstOrDefault(c => c.Id == post.CategoryId)
 			};
 
-			//_context.Posts.Add(newPost);
-			//_context.SaveChanges();
 
-			var selectedTagIds = post.Tags.Select(tagDto => tagDto.Id).ToList();
+
 			var selectedTags = _context.Tags
-				.Where(tag => selectedTagIds.Contains(tag.Id))
+				.Where(tag => post.TagsId.Contains(tag.Id))
 				.ToList();
 
-			foreach (var tag in selectedTags)
+
+			var newPostTag = new List<PostTag>();
+
+			foreach (Tag tag in selectedTags)
 			{
-				newPost.Tags.Add(new PostTag { Post = newPost, Tag = tag });
+				newPostTag.Add(new PostTag { Post = newPost, Tag = tag });
 			}
+			newPost.Tags = newPostTag;
+
+			//add normal img path with ImgHelper
 
 			_context.Posts.Add(newPost);
+			_context.SaveChanges();
 
-
-			return Ok(newPost);
-			_context.Posts.Add(newPost);
-			ViewData["AddStatus"] = "Post added successfully";
-			return View();
+			TempData["AddStatus"] = "Post added successfully";
+			return RedirectToAction("Add");
 		}
 
 		public IActionResult Get(string category)

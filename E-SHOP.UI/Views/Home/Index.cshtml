@@ -21,20 +21,26 @@
 @*Random 9 posts*@
 @if (Model.Posts.Count > 0)
 {
-	<div class="text-center">
-		<h2 class="align-self-center mt-5">You might be interested</h2>
-	</div>
-	@foreach (HomePostDTO p in Model.Posts)
-	{
-		<div class="col-md-4 mb-4">
-			<div class="card">
-				<img src=@p.ImgPath class="card-img-top" alt="...">
-				<div class="card-body">
-					<h4 class="card-title">@p.Title</h4>
-					<h5 class="card-text">@p.Price @p.Currency</h5>
-					<p class="card-text">@p.Description</p>
-				</div>
-			</div>
-		</div>
-	}
+    <div class="text-center mb-3 mt-3">
+        <div class="text-center">
+            <h2 class="align-self-center mt-5">You might be interested</h2>
+        </div>
+
+        <div class="row">
+            @foreach (HomePostDTO p in Model.Posts)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src=@p.ImgPath class="card-img-top img-fluid" alt="..." style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h4 class="card-title">@p.Title</h4>
+                            <h5 class="card-text" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@p.Price @p.Currency</h5>
+                            <p class="card-text" style="max-height: 100px; overflow: hidden;">@p.Description</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
 }

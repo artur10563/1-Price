@@ -3,8 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace E_SHOP.UI.Models.Post
 {
+
     public class PostDTO
-    {
+	{
         [Required(ErrorMessage = "Title required")]
         [StringLength(50, MinimumLength = 3)]
         public string Title { get; set; }
@@ -23,8 +24,7 @@ namespace E_SHOP.UI.Models.Post
         public string? ImgPath { get; set; }
 
         public int CategoryId { get; set; }
-        public virtual CategoryDTO Category { get; set; }
-        public virtual ICollection<TagDTO> Tags { get; set; }
+        public virtual ICollection<int> TagsId { get; set; }
 
 
     }
