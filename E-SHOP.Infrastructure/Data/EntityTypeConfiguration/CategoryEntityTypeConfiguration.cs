@@ -29,10 +29,6 @@ namespace E_SHOP.Infrastructure.Data.EntityTypeConfiguration
 			builder.Property(c => c.ImgPath)
 				   .IsRequired(false);
 
-			builder.HasMany(c => c.Posts)
-				.WithOne(c => c.Category)
-				.OnDelete(DeleteBehavior.SetNull); 
-
 		}
 	}
 }

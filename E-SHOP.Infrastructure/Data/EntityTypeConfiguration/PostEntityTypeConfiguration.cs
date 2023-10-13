@@ -41,7 +41,6 @@ namespace E_SHOP.Infrastructure.Data.EntityTypeConfiguration
 				.IsRequired();
 
 
-
 			builder.Property(p => p.IsActive)
 				.HasDefaultValue(true)
 				.ValueGeneratedOnAdd();
@@ -53,13 +52,13 @@ namespace E_SHOP.Infrastructure.Data.EntityTypeConfiguration
 			builder.HasOne(p => p.Category)
 				.WithMany(c => c.Posts)
 				.HasForeignKey(p => p.CategoryId)
-				.OnDelete(DeleteBehavior.SetNull);
+				.OnDelete(DeleteBehavior.NoAction);
 
-			/*
+            /*
 			 * builder.HasOne(p=>p.User)
 			 *	.WithMany(u=>u.Posts)
 			 *	.HasForeignKey(p=>p.IdCreator);
 			 */
-		}
+        }
 	}
 }
