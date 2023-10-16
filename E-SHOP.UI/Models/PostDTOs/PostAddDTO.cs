@@ -1,10 +1,10 @@
 ﻿using E_SHOP.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace E_SHOP.UI.Models.Post
+namespace E_SHOP.UI.Models.PostDTOs
 {
 
-    public class PostDTO
+    public class PostAddDTO
 	{
         [Required(ErrorMessage = "Title required")]
         [StringLength(50, MinimumLength = 3)]

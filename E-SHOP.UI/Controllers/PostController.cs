@@ -1,6 +1,9 @@
-﻿using E_SHOP.Domain.Entities;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using E_SHOP.Application.Repository;
+using E_SHOP.Domain.Entities;
 using E_SHOP.Infrastructure.Data;
-using E_SHOP.UI.Models.Post;
+using E_SHOP.UI.Models.PostDTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
@@ -10,9 +13,14 @@ namespace E_SHOP.UI.Controllers
 {
 	public class PostController : Controller
 	{
+
+		private readonly IUnitOfWork _uow;
+		private readonly IMapper _mapper;
 		private readonly AppDbContext _context;
-		public PostController(AppDbContext context)
+		public PostController(IUnitOfWork uow, IMapper mapper, AppDbContext context)
 		{
+			_uow = uow;
+			_mapper = mapper;
 			_context = context;
 		}
 
@@ -22,12 +30,12 @@ namespace E_SHOP.UI.Controllers
 			PostAddViewModel model = new PostAddViewModel();
 
 			model.AvailableTags = await _context.Tags
-				.Select(tag => new TagDTO() { Id = tag.Id, Name = tag.Name })
+				.ProjectTo<TagDTO>(_mapper.ConfigurationProvider)
 				.ToListAsync();
 
 
 			model.AvailableCategories = await _context.Categories
-				.Select(category => new CategoryDTO() { Id = category.Id, Name = category.Name })
+				.ProjectTo<CategoryDTO>(_mapper.ConfigurationProvider)
 				.ToListAsync();
 
 
@@ -46,18 +54,19 @@ namespace E_SHOP.UI.Controllers
 			if (!ModelState.IsValid)
 			{
 				postViewModel.AvailableTags = await _context.Tags
-					.Select(tag => new TagDTO() { Id = tag.Id, Name = tag.Name })
+					.ProjectTo<TagDTO>(_mapper.ConfigurationProvider)
 					.ToListAsync();
 
+
 				postViewModel.AvailableCategories = await _context.Categories
-					.Select(category => new CategoryDTO() { Id = category.Id, Name = category.Name })
+					.ProjectTo<CategoryDTO>(_mapper.ConfigurationProvider)
 					.ToListAsync();
 
 				return View(postViewModel);
 			}
 
-			
-			PostDTO post = postViewModel.Post;
+
+			PostAddDTO post = postViewModel.Post;
 
 			Post newPost = new Post()
 			{
@@ -66,16 +75,13 @@ namespace E_SHOP.UI.Controllers
 				Price = post.Price,
 				Currency = post.Currency,
 				ImgPath = post.ImgPath,
-				Category = _context.Categories
+				Category = _uow.Categories
 					.FirstOrDefault(c => c.Id == post.CategoryId)
 			};
-
-
 
 			var selectedTags = _context.Tags
 				.Where(tag => post.TagsId.Contains(tag.Id))
 				.ToList();
-
 
 			var newPostTag = new List<PostTag>();
 
@@ -87,35 +93,29 @@ namespace E_SHOP.UI.Controllers
 
 			//add normal img path with ImgHelper
 
-			_context.Posts.Add(newPost);
-			_context.SaveChanges();
+			await _uow.Posts.AddAsync(newPost);
+			await _uow.SaveChangesAsync();
 
 			TempData["AddStatus"] = "Post added successfully";
 			return RedirectToAction("Add");
 		}
 
-		public IActionResult Get(string category)
+		public async Task<IActionResult> Get(string category)
 		{
 			if (string.IsNullOrWhiteSpace(category)) return BadRequest();
-			if (_context.Categories.Any(c => c.Name.CompareTo(category) == 0)) return BadRequest();
 
-			List<PostDTO> posts =
-				_context.Posts
+
+			List<PostDisplayDTO> posts =
+				await _context.Posts
 				.Where(p => p.IsActive == true)
-				.Include(p => p.Category)
 				.Where(p => p.Category.Name.CompareTo(category) == 0)
-				.Select(p => new PostDTO
-				{
-					Title = p.Title,
-					Description = p.Description,
-					Price = p.Price,
-					Currency = p.Currency,
-					ImgPath = p.ImgPath,
-				}).ToList();
+				.ProjectTo<PostDisplayDTO>(_mapper.ConfigurationProvider)
+				.ToListAsync();
 
+			return Ok(posts);
 			//change to paginatedList later
 
-			if (posts.Count < 0) return BadRequest();
+			if (posts.Count == 0) return BadRequest();
 			return View(posts);
 		}
 

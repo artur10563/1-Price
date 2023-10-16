@@ -40,5 +40,9 @@ namespace E_SHOP.Infrastructure.Repository
 		{
 			return _context.SaveChanges();
 		}
+		public Task<int> SaveChangesAsync()
+		{
+			return _context.SaveChangesAsync();
+		}
 	}
 }

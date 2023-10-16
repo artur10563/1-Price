@@ -13,5 +13,6 @@ namespace E_SHOP.Application.Repository
 		IPostRepository Posts { get; }
 
 		int SaveChanges();
+		Task<int> SaveChangesAsync();
 	}
 }

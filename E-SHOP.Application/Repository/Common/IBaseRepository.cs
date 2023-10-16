@@ -18,6 +18,6 @@ namespace E_SHOP.Application.Repository.Common
 		void RemoveRange(IEnumerable<T> entities);
 
 		void Update(T entity);
-
+		T? FirstOrDefault(Func<T, bool> predicate);
 	}
 }

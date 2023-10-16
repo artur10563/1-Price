@@ -1,9 +1,9 @@
-﻿namespace E_SHOP.UI.Models.Post
+﻿namespace E_SHOP.UI.Models.PostDTOs
 {
 
 	public class PostAddViewModel
 	{
-		public PostDTO Post { get; set; }
+		public PostAddDTO Post { get; set; }
 		public ICollection<TagDTO>? AvailableTags { get; set; }
 		public ICollection<CategoryDTO>? AvailableCategories { get; set; }
 	}

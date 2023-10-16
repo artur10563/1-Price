@@ -1,11 +1,11 @@
-﻿@using E_SHOP.UI.Models.Post;
-@model IEnumerable<PostDTO>
+﻿@using E_SHOP.UI.Models.PostDTOs;
+@model IEnumerable<PostAddDTO>
 @{
 	ViewData["Title"] = "Posts";
 }
 
 
-@foreach (PostDTO p in Model)
+@foreach (PostAddDTO p in Model)
 {
 	<div>
 		<p>

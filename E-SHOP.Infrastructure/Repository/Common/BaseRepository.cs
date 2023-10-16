@@ -56,6 +56,12 @@ namespace E_SHOP.Infrastructure.Repository.Common
 			return await _context.Set<T>()
 				.FirstOrDefaultAsync(e => e.Id == id);
 		}
+		public T? FirstOrDefault(Func<T, bool> predicate)
+		{
+			return _context.Set<T>()
+				.Where(predicate)
+				.FirstOrDefault();
+		}
 
 		public void Update(T entity)
 		{
