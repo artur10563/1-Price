@@ -12,11 +12,11 @@ namespace E_SHOP.Infrastructure.Data.EntityTypeConfiguration
 			builder.HasKey(x => x.Id);
 
 			builder.Property(x => x.CreatedAt)
-				.HasDefaultValue(DateTime.UtcNow)
+				.HasDefaultValueSql("GETUTCDATE()")
 				.ValueGeneratedOnAdd();
 
 			builder.Property(x => x.LastModifiedAt)
-				.HasDefaultValue(DateTime.UtcNow)
+				.HasDefaultValueSql("GETUTCDATE()")
 				.ValueGeneratedOnUpdate()
 				.IsRequired(false);
 

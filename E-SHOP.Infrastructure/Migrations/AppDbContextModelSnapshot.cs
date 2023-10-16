@@ -33,7 +33,7 @@ namespace E_SHOP.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 10, 12, 11, 33, 910, DateTimeKind.Utc).AddTicks(6048));
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("ImgPath")
                         .HasColumnType("nvarchar(max)");
@@ -41,7 +41,7 @@ namespace E_SHOP.Infrastructure.Migrations
                     b.Property<DateTime?>("LastModifiedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 10, 12, 11, 33, 910, DateTimeKind.Utc).AddTicks(6398));
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -61,13 +61,13 @@ namespace E_SHOP.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 10, 12, 11, 33, 910, DateTimeKind.Utc).AddTicks(9191));
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<int>("Currency")
                         .HasColumnType("int");
@@ -88,7 +88,7 @@ namespace E_SHOP.Infrastructure.Migrations
                     b.Property<DateTime?>("LastModifiedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 10, 12, 11, 33, 910, DateTimeKind.Utc).AddTicks(9597));
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18, 2)");
@@ -139,12 +139,12 @@ namespace E_SHOP.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 10, 12, 11, 33, 911, DateTimeKind.Utc).AddTicks(5764));
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<DateTime?>("LastModifiedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 10, 12, 11, 33, 911, DateTimeKind.Utc).AddTicks(6131));
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -161,7 +161,8 @@ namespace E_SHOP.Infrastructure.Migrations
                     b.HasOne("E_SHOP.Domain.Entities.Category", "Category")
                         .WithMany("Posts")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Category");
                 });
