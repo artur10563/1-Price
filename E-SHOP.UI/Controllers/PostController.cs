@@ -35,6 +35,7 @@ namespace E_SHOP.UI.Controllers
 			{
 				ViewData["AddStatus"] = TempData["AddStatus"];
 			}
+
 			return View(model);
 		}
 
