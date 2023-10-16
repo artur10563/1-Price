@@ -1,4 +1,5 @@
 ﻿
+using E_SHOP.Application.Repository;
 using E_SHOP.Infrastructure.Data;
 using E_SHOP.UI.Models;
 using E_SHOP.UI.Models.Home;
@@ -12,15 +13,19 @@ namespace E_SHOP.UI.Controllers
 	{
 		private readonly ILogger<HomeController> _logger;
 		private readonly AppDbContext _context;
-		public HomeController(ILogger<HomeController> logger, AppDbContext context)
+		private readonly IUnitOfWork _uow;
+		public HomeController(ILogger<HomeController> logger, AppDbContext context, IUnitOfWork uow)
 		{
 			_logger = logger;
 			_context = context;
+			_uow = uow;
 		}
 
 		public IActionResult Index()
 		{
 			Random random = new Random();
+
+			
 
 			var randomPosts = _context.Posts
 				.ToList()
