@@ -21,6 +21,7 @@ builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
 
 builder.Services.AddAutoMapper(typeof(TagProfile));
 builder.Services.AddAutoMapper(typeof(PostProfile));
+builder.Services.AddAutoMapper(typeof(CategoryProfile));
 
 var app = builder.Build();
 

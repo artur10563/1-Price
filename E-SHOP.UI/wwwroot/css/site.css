@@ -118,4 +118,18 @@ body {
 }
 
 
+.img200 {
+    max-width: 220px;
+    max-height: 220px;
+    min-width: 100px;
+    min-height: 100px;
+    object-fit: contain;
+    overflow: hidden;
+}
+
+.title-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
 

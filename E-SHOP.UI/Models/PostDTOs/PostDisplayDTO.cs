@@ -21,6 +21,8 @@ namespace E_SHOP.UI.Models.PostDTOs
 
 		public string? ImgPath { get; set; }
 
-		public DateTime CreatedAt { get; set; }
+		public int Year { get; set; }
+		public string Month { get; set; }
+		public int Day { get; set; }
 	}
 }

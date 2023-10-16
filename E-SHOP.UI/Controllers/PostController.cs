@@ -112,12 +112,12 @@ namespace E_SHOP.UI.Controllers
 				.ProjectTo<PostDisplayDTO>(_mapper.ConfigurationProvider)
 				.ToListAsync();
 
-			return Ok(posts);
 			//change to paginatedList later
 
 			if (posts.Count == 0) return BadRequest();
 			return View(posts);
 		}
+
 
 	}
 }
