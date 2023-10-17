@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
 using E_SHOP.Domain.Entities;
-using E_SHOP.UI.Models.PostDTOs;
+using E_SHOP.UI.Models.CommonIdDTOs;
 
 namespace E_SHOP.UI.Models.Mapping
 {
-	public class CategoryProfile : Profile
+    public class CategoryProfile : Profile
 	{
 		public CategoryProfile()
 		{
-			CreateMap<Category, CategoryDTO>();
-			CreateProjection<Category, CategoryDTO>();
+			CreateMap<Category, CommonIdCategoryDTO>();
+			CreateProjection<Category, CommonIdCategoryDTO>();
 		}
 	}
 }

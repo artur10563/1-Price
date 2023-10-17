@@ -3,6 +3,8 @@ using AutoMapper.QueryableExtensions;
 using E_SHOP.Application.Repository;
 using E_SHOP.Domain.Entities;
 using E_SHOP.Infrastructure.Data;
+using E_SHOP.Infrastructure.Repository;
+using E_SHOP.UI.Models.CommonIdDTOs;
 using E_SHOP.UI.Models.PostDTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -24,18 +26,19 @@ namespace E_SHOP.UI.Controllers
 			_context = context;
 		}
 
+
 		[HttpGet]
 		public async Task<IActionResult> Add()
 		{
 			PostAddViewModel model = new PostAddViewModel();
 
 			model.AvailableTags = await _context.Tags
-				.ProjectTo<TagDTO>(_mapper.ConfigurationProvider)
+				.ProjectTo<CommonIdTagDTO>(_mapper.ConfigurationProvider)
 				.ToListAsync();
 
 
 			model.AvailableCategories = await _context.Categories
-				.ProjectTo<CategoryDTO>(_mapper.ConfigurationProvider)
+				.ProjectTo<CommonIdCategoryDTO>(_mapper.ConfigurationProvider)
 				.ToListAsync();
 
 
@@ -54,12 +57,12 @@ namespace E_SHOP.UI.Controllers
 			if (!ModelState.IsValid)
 			{
 				postViewModel.AvailableTags = await _context.Tags
-					.ProjectTo<TagDTO>(_mapper.ConfigurationProvider)
+					.ProjectTo<CommonIdTagDTO>(_mapper.ConfigurationProvider)
 					.ToListAsync();
 
 
 				postViewModel.AvailableCategories = await _context.Categories
-					.ProjectTo<CategoryDTO>(_mapper.ConfigurationProvider)
+					.ProjectTo<CommonIdCategoryDTO>(_mapper.ConfigurationProvider)
 					.ToListAsync();
 
 				return View(postViewModel);
@@ -83,12 +86,8 @@ namespace E_SHOP.UI.Controllers
 				.Where(tag => post.TagsId.Contains(tag.Id))
 				.ToList();
 
-			var newPostTag = new List<PostTag>();
+			var newPostTag = selectedTags.Select(t => new PostTag { Post = newPost, Tag = t }).ToList();
 
-			foreach (Tag tag in selectedTags)
-			{
-				newPostTag.Add(new PostTag { Post = newPost, Tag = tag });
-			}
 			newPost.Tags = newPostTag;
 
 			//add normal img path with ImgHelper
@@ -96,10 +95,12 @@ namespace E_SHOP.UI.Controllers
 			await _uow.Posts.AddAsync(newPost);
 			await _uow.SaveChangesAsync();
 
+
 			TempData["AddStatus"] = "Post added successfully";
 			return RedirectToAction("Add");
 		}
 
+		[HttpGet]
 		public async Task<IActionResult> Get(string category)
 		{
 			if (string.IsNullOrWhiteSpace(category)) return BadRequest();
@@ -119,5 +120,81 @@ namespace E_SHOP.UI.Controllers
 		}
 
 
+		[HttpGet]
+		public async Task<IActionResult> Edit(int id)
+		{
+			//PostTag
+			Post post = await _uow.Posts.GetByIdWithTagsAsync(id);
+			if (post == null) return NotFound();
+
+
+			PostEditViewModel model = new PostEditViewModel();
+
+			model.AvailableTags = await _context.Tags
+				.ProjectTo<CommonIdTagDTO>(_mapper.ConfigurationProvider)
+				.ToListAsync();
+
+
+			model.AvailableCategories = await _context.Categories
+				.ProjectTo<CommonIdCategoryDTO>(_mapper.ConfigurationProvider)
+				.ToListAsync();
+
+			//PostAddDTO
+			model.Post = _mapper.Map<PostEditDTO>(post);
+
+			if (TempData.ContainsKey("EditStatus"))
+			{
+				ViewData["EditStatus"] = TempData["EditStatus"];
+			}
+			return View(model);
+		}
+
+
+
+		[HttpPost]
+		public async Task<IActionResult> Edit(PostEditViewModel postViewModel, IFormFile? image)
+		{
+			if (!ModelState.IsValid)
+			{
+				postViewModel.AvailableTags = await _context.Tags
+				.ProjectTo<CommonIdTagDTO>(_mapper.ConfigurationProvider)
+				.ToListAsync();
+
+
+				postViewModel.AvailableCategories = await _context.Categories
+					.ProjectTo<CommonIdCategoryDTO>(_mapper.ConfigurationProvider)
+					.ToListAsync();
+
+				return View(postViewModel);
+			}
+
+			var editedPost = postViewModel.Post;
+			var toEdit = await _uow.Posts.GetByIdAsync(editedPost.Id);
+
+			if (toEdit == null) { return NotFound(); }
+
+
+
+			toEdit.Title = editedPost.Title;
+			toEdit.Description = editedPost.Description;
+			toEdit.Price = editedPost.Price;
+			toEdit.Currency = editedPost.Currency;
+			toEdit.IsActive = editedPost.IsActive;
+			toEdit.CategoryId = editedPost.CategoryId;
+
+			_context.PostTags.RemoveRange(
+				_context.PostTags
+				.Where(pt => pt.PostId == toEdit.Id)
+				.ToList());
+			toEdit.Tags = editedPost.TagsId.Select(tagId => new PostTag { PostId = toEdit.Id, TagId = tagId }).ToList();
+
+
+			_uow.Posts.Update(toEdit);
+			await _uow.SaveChangesAsync();
+
+			TempData["EditStatus"] = "Post edited successfully";
+
+			return RedirectToAction("Edit", toEdit.Id);
+		}
 	}
 }

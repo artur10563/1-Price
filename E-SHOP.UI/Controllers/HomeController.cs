@@ -2,6 +2,7 @@
 using E_SHOP.Application.Repository;
 using E_SHOP.Infrastructure.Data;
 using E_SHOP.UI.Models;
+using E_SHOP.UI.Models.CommonDTOs;
 using E_SHOP.UI.Models.Home;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -42,7 +43,7 @@ namespace E_SHOP.UI.Controllers
 				Price = p.Price
 			}).ToList();
 
-			var categoryModel = _context.Categories.Select(c => new HomeCategoryDTO()
+			var categoryModel = _context.Categories.Select(c => new CommonCategoryDTO()
 			{
 				Name = c.Name,
 				ImgPath = c.ImgPath

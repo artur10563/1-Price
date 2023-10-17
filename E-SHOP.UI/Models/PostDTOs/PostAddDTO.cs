@@ -24,6 +24,7 @@ namespace E_SHOP.UI.Models.PostDTOs
         public string? ImgPath { get; set; }
 
         public int CategoryId { get; set; }
+        [Required(ErrorMessage ="Select atleast one tag")]
         public virtual ICollection<int> TagsId { get; set; }
 
 

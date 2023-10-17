@@ -5,6 +5,7 @@ using E_SHOP.Application.Helpers;
 
 namespace E_SHOP.UI.Models.Mapping
 {
+
 	public class PostProfile : Profile
 	{
 		public PostProfile()
@@ -20,8 +21,20 @@ namespace E_SHOP.UI.Models.Mapping
 		   .ForMember(dest => dest.Month, opt => opt.MapFrom(src => MonthConverter.Convert(src.CreatedAt.Month)))
 		   .ForMember(dest => dest.Day, opt => opt.MapFrom(src => src.CreatedAt.Day));
 
-			CreateMap<Post, PostAddDTO>();
-			CreateProjection<Post, PostAddDTO>();
+			CreateMap<Post, PostAddDTO>()
+			.ForMember(dest => dest.TagsId, opt => opt.MapFrom(src => src.Tags.Select(pt => pt.TagId)
+			.ToList()));
+
+			CreateMap<Post, PostEditDTO>()
+			.ForMember(dest => dest.TagsId, opt => opt.MapFrom(src => src.Tags.Select(pt => pt.TagId)
+			.ToList()));
+
+
+
+
+
+
+
 		}
 	}
 }

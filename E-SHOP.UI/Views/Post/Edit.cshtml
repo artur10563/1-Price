@@ -1,25 +1,23 @@
 ﻿@using E_SHOP.Domain.Enums;
-@using E_SHOP.UI.Models.CommonIdDTOs;
 @using E_SHOP.UI.Models.PostDTOs;
-
-@model PostAddViewModel
+@using E_SHOP.UI.Models.CommonIdDTOs;
+@model PostEditViewModel
 @{
-	ViewData["Title"] = "New post";
+	ViewData["Title"] = "Edit post";
 }
 
 <h1>@ViewData["Title"]</h1>
 <hr />
 
-@if (ViewData["AddStatus"] != null)
+@if (ViewData["EditStatus"] != null)
 {
 	<div id="popup" class="alert alert-success alert-dismissible fade show" role="alert">
-		@ViewData["AddStatus"]
+		@ViewData["EditStatus"]
 	</div>
 }
-
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<form asp-controller="Post" asp-action="Add" method="post" enctype="multipart/form-data" class="form">
+<form asp-controller="Post" asp-action="Edit" method="post" enctype="multipart/form-data" class="form">
 	<div class="container-lg mt-5">
 		<div class="row">
 			<!-- Left box for file input and image preview -->
@@ -28,13 +26,19 @@
 				<div class="form-group img-container">
 					<input type="file" id="fileInput" accept="image/*">
 					<div class="prompt-text">Click to choose an image (max 5MB)</div>
-					<img id="uploadedImage" src="" class="uploadedImg">
+					<img id="uploadedImage" src=@Model.Post?.ImgPath class="uploadedImg">
 					<span asp-validation-for="Post.ImgPath" class="text-danger"></span>
 				</div>
 			</div>
 
 			<!-- Right box for title, description, category, and tags -->
 			<div class="col-lg-3">
+
+
+				<div class="form-check form-switch">
+					<input class="form-check-input" type="checkbox" id="isActiveSwitch" asp-for="Post.IsActive">
+					<label class="form-check-label" for="isActiveSwitch">Toggle me</label>
+				</div>
 
 
 				<div class="form-group">
@@ -66,8 +70,9 @@
 				<div class="form-group">
 					<label for="categorySelect">Category</label>
 					<select class="form-control" asp-for="Post.CategoryId"
-							asp-items="new SelectList(Model.AvailableCategories, nameof(CommonIdTagDTO.Id),nameof(CommonIdCategoryDTO.Name))">
+							asp-items="new SelectList(Model.AvailableCategories, nameof(CommonIdCategoryDTO.Id),nameof(CommonIdCategoryDTO.Name))">
 					</select>
+					<span asp-validation-for="Post.CategoryId" class="text-danger"></span>
 				</div>
 
 
@@ -80,13 +85,19 @@
 						@foreach (CommonIdTagDTO tag in Model.AvailableTags)
 						{
 							<div>
-								<input id="@tag.Id" class="form-check-input" type="checkbox" name="Post.TagsId" value="@tag.Id" />
-								<label class="form-check-label" for=@tag.Id> @tag.Name</label>
+								@{
+									bool isChecked = Model.Post.TagsId != null
+									&& Model.Post.TagsId.Contains(tag.Id);
+								}
+								<input id="@tag.Id" class="form-check-input" type="checkbox" name="Post.TagsId" value="@tag.Id" checked="@isChecked" />
+								<label class="form-check-label" for="@tag.Id">@tag.Name</label>
 							</div>
 						}
-
+						<span asp-validation-for="Post.TagsId" class="text-danger"></span>
 					</div>
 				</div>
+
+				@Html.HiddenFor(model => model.Post.Id)
 
 
 				<button type="submit" class="btn btn-primary">Save Changes</button>
@@ -100,6 +111,4 @@
 @section Scripts{
 	<script src="~/js/imagePreview.js"></script>
 }
-
-
 

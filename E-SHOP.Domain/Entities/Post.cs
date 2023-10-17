@@ -14,7 +14,7 @@ namespace E_SHOP.Domain.Entities
 
 		public Currency Currency { get; set; }
 
-		public bool? IsActive { get; set; }
+		public bool IsActive { get; set; }
 
 		public string? ImgPath { get; set; }
 
