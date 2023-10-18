@@ -12,7 +12,7 @@
 		{
 
 			<a asp-controller="Post" asp-action="Get" asp-route-category=@c.Name class="cat-wrap">
-				<img class="object-fit-cover cat-img rounded-circle" src=@c.ImgPath>
+				<img class="cat-img rounded-circle" src=@c.ImgPath>
 				<h5>@c.Name</h5>
 			</a>
 		}
@@ -24,7 +24,7 @@
 {
     <div class="text-center mb-3 mt-3">
         <div class="text-center">
-            <h2 class="align-self-center mt-5">You might be interested</h2>
+            <h2 class="mt-5">You might be interested</h2>
         </div>
 
         <div class="row">
@@ -32,7 +32,8 @@
             {
                 <div class="col-md-4 mb-4">
                     <div class="card">
-                        <img src=@p.ImgPath class="card-img-top img-fluid" style="height: 200px; object-fit: cover;">
+                        <img src=@p.ImgPath class="card-img-top img-fluid img-contain" style="height: 200px;">
+
                         <div class="card-body">
                             <h4 class="card-title">@p.Title</h4>
                             <h5 class="card-text" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@p.Price @p.Currency</h5>

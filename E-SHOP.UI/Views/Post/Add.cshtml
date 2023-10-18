@@ -26,12 +26,14 @@
 
 			<div class="col-lg-6">
 				<div class="form-group img-container">
-					<input type="file" id="fileInput" accept="image/*">
-					<div class="prompt-text">Click to choose an image (max 5MB)</div>
-					<img id="uploadedImage" src="" class="uploadedImg">
+					<input type="file" id="fileInput" name="image" accept="image/*" max="10*1024*1024">
+					<div class="prompt-text">Click to choose an image (max 10MB)</div>
+					<img id="uploadedImage" src="" class="uploadedImg" >
 					<span asp-validation-for="Post.ImgPath" class="text-danger"></span>
 				</div>
 			</div>
+
+
 
 			<!-- Right box for title, description, category, and tags -->
 			<div class="col-lg-3">

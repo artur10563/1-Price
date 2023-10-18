@@ -11,8 +11,5 @@ document.getElementById('fileInput').addEventListener('change', function () {
             promptText.style.display = 'none';
         }
         reader.readAsDataURL(file);
-    } else {
-        alert('Please choose a valid image file (less than 5MB).');
     }
 });
-
