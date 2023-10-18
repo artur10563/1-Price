@@ -1,4 +1,6 @@
 ﻿
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using E_SHOP.Application.Repository;
 using E_SHOP.Infrastructure.Data;
 using E_SHOP.UI.Models;
@@ -15,14 +17,20 @@ namespace E_SHOP.UI.Controllers
 		private readonly ILogger<HomeController> _logger;
 		private readonly AppDbContext _context;
 		private readonly IUnitOfWork _uow;
-		public HomeController(ILogger<HomeController> logger, AppDbContext context, IUnitOfWork uow)
+        private readonly IMapper _mapper;
+
+        public HomeController(ILogger<HomeController> logger,
+			AppDbContext context,
+			IUnitOfWork uow,
+			IMapper mapper)
 		{
 			_logger = logger;
 			_context = context;
 			_uow = uow;
+			_mapper = mapper;
 		}
 
-		public IActionResult Index()
+		public async Task<IActionResult> Index()
 		{
 			Random random = new Random();
 
@@ -31,25 +39,24 @@ namespace E_SHOP.UI.Controllers
 			var randomPosts = _context.Posts
 				.ToList()
 				.AsQueryable()
+				.Where(p=>p.IsActive)
 				.OrderBy(p => random.Next())
 				.Take(9);
 
-			var postsModel = randomPosts.Select(p => new HomePostDTO()
-			{
-				Title = p.Title,
-				Description = p.Description,
-				ImgPath = p.ImgPath,
-				Currency = p.Currency,
-				Price = p.Price
-			}).ToList();
+			var posts = await _context.Posts
+				.Where(p=>p.IsActive)
+				.ProjectTo<HomePostDTO>(_mapper.ConfigurationProvider)
+				.ToListAsync();
 
-			var categoryModel = _context.Categories.Select(c => new CommonCategoryDTO()
-			{
-				Name = c.Name,
-				ImgPath = c.ImgPath
-			}).ToList();
 
-			HomeViewModel homeViewModel = new() { Categories = categoryModel, Posts = postsModel };
+
+			var categories = await _context.Categories
+				.ProjectTo<CommonCategoryDTO>(_mapper.ConfigurationProvider)
+				.ToListAsync();
+
+
+
+			HomeViewModel homeViewModel = new() { Categories = categories, Posts = posts };
 
 			return View(homeViewModel);
 		}

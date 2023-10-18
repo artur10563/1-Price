@@ -2,6 +2,7 @@
 using E_SHOP.UI.Models.PostDTOs;
 using E_SHOP.Domain.Entities;
 using E_SHOP.Application.Helpers;
+using E_SHOP.UI.Models.Home;
 
 namespace E_SHOP.UI.Models.Mapping
 {
@@ -28,6 +29,8 @@ namespace E_SHOP.UI.Models.Mapping
 			CreateMap<Post, PostEditDTO>()
 			.ForMember(dest => dest.TagsId, opt => opt.MapFrom(src => src.Tags.Select(pt => pt.TagId)
 			.ToList()));
+
+			CreateProjection<Post, HomePostDTO>();
 
 
 
