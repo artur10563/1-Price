@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+#images from web-ui
+E-SHOP.UI/wwwroot/img/category/*.jpg
+
 # User-specific files
 *.rsuser
 *.suo

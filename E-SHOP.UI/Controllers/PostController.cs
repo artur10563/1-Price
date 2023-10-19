@@ -1,19 +1,15 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using E_SHOP.Application.Helpers;
 using E_SHOP.Application.Repository;
 using E_SHOP.Domain.Entities;
 using E_SHOP.Domain.Enums;
 using E_SHOP.Infrastructure.Data;
-using E_SHOP.Infrastructure.Repository;
 using E_SHOP.UI.HelpersExtensions;
 using E_SHOP.UI.Models.CommonIdDTOs;
 using E_SHOP.UI.Models.PostDTOs;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using static System.Formats.Asn1.AsnWriter;
+using X.PagedList;
 
 namespace E_SHOP.UI.Controllers
 {
@@ -143,22 +139,26 @@ namespace E_SHOP.UI.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Get(string category)
+		public async Task<IActionResult> Get(string category, int page = 1, int pageSize = 5)
 		{
 			if (string.IsNullOrWhiteSpace(category)) return BadRequest();
 
 
-			List<PostDisplayDTO> posts =
-				await _context.Posts
+			var posts =
+				 _context.Posts
 				.Where(p => p.IsActive == true)
 				.Where(p => p.Category.Name.CompareTo(category) == 0)
-				.ProjectTo<PostDisplayDTO>(_mapper.ConfigurationProvider)
-				.ToListAsync();
+				.ProjectTo<PostDisplayDTO>(_mapper.ConfigurationProvider);
 
-			//change to paginatedList later
+			if (posts.Count() == 0) return NotFound();
 
-			if (posts.Count == 0) return BadRequest();
-			return View(posts);
+
+			if (page < 1) page = 1;
+			if (pageSize < 5) pageSize = 5;
+			if (pageSize > 50) pageSize = 50;
+
+			ViewBag.Category = category;
+			return View(await posts.ToPagedListAsync(page, pageSize));
 		}
 
 
@@ -255,9 +255,9 @@ namespace E_SHOP.UI.Controllers
 					case ImageStatus.Success:
 						{
 							string relativePath = "img/category";
-                            string savePath = Path.Combine(_hostingEnvironment.WebRootPath, relativePath);
+							string savePath = Path.Combine(_hostingEnvironment.WebRootPath, relativePath);
 							string name = "";
-                            if (!string.IsNullOrEmpty(toEdit.ImgPath))
+							if (!string.IsNullOrEmpty(toEdit.ImgPath))
 							{
 								name = Path.GetFileNameWithoutExtension(toEdit.ImgPath.Replace("/" + relativePath, ""));
 							}
@@ -268,7 +268,7 @@ namespace E_SHOP.UI.Controllers
 
 							//need to change to  E-SHOP_\\E-SHOP.Infrastructure\\img/category
 							//E-SHOP_\\E-SHOP.UI\\wwwroot + img/category
-							
+
 							string fileName = await IFormFileHelper.SaveAsync(image, name, savePath);
 							toEdit.ImgPath = "/" + relativePath + "/" + fileName;
 							break;

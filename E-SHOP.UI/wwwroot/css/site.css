@@ -57,7 +57,6 @@ body {
     text-align: center;
     width: 30%;
     margin: 10px;
-
     text-decoration: none;
     color: inherit;
     cursor: pointer;
@@ -112,18 +111,16 @@ body {
 }
 
 .img-container img {
-
-    width:inherit;
-    height:inherit;
+    width: inherit;
+    height: inherit;
     object-fit: fill;
 }
 
 
 .img200 {
-    max-width: 220px;
-    max-height: 220px;
-    min-width: 100px;
-    min-height: 100px;
+
+    height:250px;
+    width:250px;
     object-fit: contain;
     overflow: hidden;
 }
@@ -133,6 +130,6 @@ body {
     justify-content: space-between;
 }
 
-.img-contain{
-    object-fit:contain;
+.img-contain {
+    object-fit: contain;
 }

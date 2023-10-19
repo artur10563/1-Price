@@ -1,0 +1,24 @@
+﻿/* Apply custom styles to pagination links */
+.pagination-container li a {
+    text-decoration: none;
+    padding: 5px 5px;
+    margin: 0 10px;
+    display: inline-block;
+    line-height: 1.5rem;
+}
+
+.pagination .active {
+    border: 5px solid #ccc;
+    border-radius: 50%;
+    background-color: #ccc;
+    font-weight: bold;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+}
+
+/* Apply custom styles to the previous and next buttons */
+.pagination-container .PagedList-skipToPrevious,
+.pagination-container .PagedList-skipToNext {
+    font-weight: bold;
+}
