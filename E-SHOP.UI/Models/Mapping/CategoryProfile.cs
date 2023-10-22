@@ -12,7 +12,8 @@ namespace E_SHOP.UI.Models.Mapping
 			CreateMap<Category, CommonIdCategoryDTO>();
 			CreateProjection<Category, CommonIdCategoryDTO>();
 		
-			CreateProjection<Category, CommonCategoryDTO>();
+			CreateMap<Category, CommonCategoryDTO>();
+
 		
 		}
 	}

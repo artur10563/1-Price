@@ -139,7 +139,7 @@ namespace E_SHOP.UI.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Get(string category, int page = 1, int pageSize = 5)
+		public async Task<IActionResult> Posts(string category, int page = 1, int pageSize = 5)
 		{
 			if (string.IsNullOrWhiteSpace(category)) return BadRequest();
 
@@ -159,6 +159,17 @@ namespace E_SHOP.UI.Controllers
 
 			ViewBag.Category = category;
 			return View(await posts.ToPagedListAsync(page, pageSize));
+		}
+
+
+		[HttpGet]
+		public async Task<IActionResult> Post(int id)
+		{
+			FullPostDTO post = _mapper.Map<Post, FullPostDTO>(await _uow.Posts.GetByIdFullAsync(id));
+			if (post == null) return NotFound();
+			// post.IsActive || ( User.InRole("admin") || owner of post) ? return View() : else return NotFound(); 
+			return View(post);
+
 		}
 
 

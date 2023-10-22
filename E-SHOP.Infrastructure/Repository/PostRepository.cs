@@ -15,6 +15,17 @@ namespace E_SHOP.Infrastructure.Repository
 	{
 		public PostRepository(AppDbContext context) : base(context) { }
 
+		public async Task<Post?> GetByIdFullAsync(int id)
+		{
+			return await _context.Posts
+				.Include(post => post.Tags)
+					.ThenInclude(post => post.Tag)
+				.Include(post=>post.Category)
+				//.Include(post=>post.Comments)
+				//.Include(post=>post.User)
+				.FirstOrDefaultAsync(p => p.Id == id);
+		}
+
 		public async Task<Post?> GetByIdWithTagsAsync(int id)
 		{
 			return await _context.Posts

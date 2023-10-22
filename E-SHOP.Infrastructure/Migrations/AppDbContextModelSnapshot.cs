@@ -50,7 +50,7 @@ namespace E_SHOP.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("E_SHOP.Domain.Entities.Post", b =>
@@ -102,7 +102,7 @@ namespace E_SHOP.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("E_SHOP.Domain.Entities.PostTag", b =>
@@ -125,7 +125,7 @@ namespace E_SHOP.Infrastructure.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("PostTags");
+                    b.ToTable("PostTags", (string)null);
                 });
 
             modelBuilder.Entity("E_SHOP.Domain.Entities.Tag", b =>
@@ -153,7 +153,7 @@ namespace E_SHOP.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tags");
+                    b.ToTable("Tags", (string)null);
                 });
 
             modelBuilder.Entity("E_SHOP.Domain.Entities.Post", b =>

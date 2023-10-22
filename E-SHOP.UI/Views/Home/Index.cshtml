@@ -11,7 +11,7 @@
         @foreach (CommonCategoryDTO c in Model.Categories)
 		{
 
-			<a asp-controller="Post" asp-action="Get" asp-route-category=@c.Name class="cat-wrap">
+			<a asp-controller="Post" asp-action="Posts" asp-route-category=@c.Name class="cat-wrap">
 				<img class="cat-img rounded-circle" src=@c.ImgPath>
 				<h5>@c.Name</h5>
 			</a>

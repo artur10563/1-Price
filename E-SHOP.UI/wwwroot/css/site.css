@@ -118,9 +118,8 @@ body {
 
 
 .img200 {
-
-    height:250px;
-    width:250px;
+    height: 250px;
+    width: 250px;
     object-fit: contain;
     overflow: hidden;
 }
@@ -132,4 +131,36 @@ body {
 
 .img-contain {
     object-fit: contain;
+}
+
+/*Comments, user pfp*/
+
+.bg-off-white {
+    background-color: rgb(250, 247, 247);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-profile-picture {
+    width: 64px;
+    height: 64px;
+    overflow: hidden;
+    border-radius: 50%;
+    margin-right: 10px; /* Adjust as needed for spacing */
+}
+
+    .user-profile-picture img {
+        width: 64px;
+        height: 64px;
+        object-fit: cover;
+        object-position: center center;
+    }
+
+.comment-input {
+    width: 97%;
+    resize: none;
+    overflow: hidden;
 }
