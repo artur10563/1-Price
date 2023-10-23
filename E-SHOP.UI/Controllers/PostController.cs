@@ -299,7 +299,7 @@ namespace E_SHOP.UI.Controllers
 		}
 
 
-		[HttpPost]
+		//[HttpPost]
 		public async Task<IActionResult> Delete(int id)
 		{
 			var toDelete = await _uow.Posts

@@ -5,6 +5,7 @@ namespace E_SHOP.UI.Models.Home
 {
 	public class HomePostDTO
 	{
+		public int Id { get; set; }
 		[Required(ErrorMessage = "Title required")]
 		[StringLength(50, MinimumLength = 3)]
 		public string Title { get; set; }

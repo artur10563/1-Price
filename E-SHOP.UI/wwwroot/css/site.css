@@ -133,6 +133,16 @@ body {
     object-fit: contain;
 }
 
+.card-clickable {
+    transition: transform 0.2s;
+    text-decoration: none; /* Remove underline */
+    color: inherit; /* Use the default text color */
+}
+
+    .card-clickable:hover {
+        transform: scale(1.05);
+        cursor: pointer;
+    }
 /*Comments, user pfp*/
 
 .bg-off-white {

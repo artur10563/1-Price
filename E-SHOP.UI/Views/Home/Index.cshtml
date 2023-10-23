@@ -8,11 +8,11 @@
 <div class="text-center mb-3 mt-3">
 	<h2>Categories</h2>
 	<div class="container-category container">
-        @foreach (CommonCategoryDTO c in Model.Categories)
+		@foreach (CommonCategoryDTO c in Model.Categories)
 		{
 
 			<a asp-controller="Post" asp-action="Posts" asp-route-category=@c.Name class="cat-wrap">
-				<img class="cat-img rounded-circle" src=@c.ImgPath>
+				<img class="cat-img rounded-circle card-clickable" src=@c.ImgPath>
 				<h5>@c.Name</h5>
 			</a>
 		}
@@ -22,27 +22,27 @@
 @*Random 9 posts*@
 @if (Model.Posts.Count > 0)
 {
-    <div class="text-center mb-3 mt-3">
-        <div class="text-center">
-            <h2 class="mt-5">You might be interested</h2>
-        </div>
+	<div class="text-center mb-3 mt-3">
+		<div class="text-center">
+			<h2 class="mt-5">You might be interested</h2>
+		</div>
 
-        <div class="row">
-            @foreach (HomePostDTO p in Model.Posts)
-            {
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src=@p.ImgPath class="card-img-top img-fluid img-contain" style="height: 200px;">
+		<div class="row">
+			@foreach (HomePostDTO p in Model.Posts)
+			{
+				<div class="col-md-4 mb-4">
+					<a asp-action="Post" asp-controller="Post" asp-route-id ="@p.Id" class="card card-clickable">
+						<img src="@p.ImgPath" class="card-img-top img-fluid img-contain" style="height: 200px;">
 
-                        <div class="card-body">
-                            <h4 class="card-title">@p.Title</h4>
-                            <h5 class="card-text" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@p.Price @p.Currency</h5>
-                            <p class="card-text" style="max-height: 100px; overflow: hidden;">@p.Description</p>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
+						<div class="card-body">
+							<h4 class="card-title">@p.Title</h4>
+							<h5 class="card-text" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@p.Price @p.Currency</h5>
+							<p class="card-text" style="max-height: 100px; overflow: hidden;">@p.Description</p>
+						</div>
+					</a>
+				</div>
+			}
+		</div>
+	</div>
 
 }
