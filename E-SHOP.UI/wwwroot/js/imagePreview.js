@@ -11,5 +11,7 @@ document.getElementById('fileInput').addEventListener('change', function () {
             promptText.style.display = 'none';
         }
         reader.readAsDataURL(file);
+    } else {
+        alert("Image size must be 5mb or less!");
     }
 });

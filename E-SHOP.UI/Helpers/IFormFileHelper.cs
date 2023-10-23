@@ -6,7 +6,7 @@ namespace E_SHOP.UI.HelpersExtensions
 	public static class IFormFileHelper
 	{
 		private static readonly string[] allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
-		private static readonly int maxSize = 15 * 1024 * 1024; //15 megabytes
+		private static readonly int maxSize = 5 * 1024 * 1024; //5 mb
 
 		public static ImageStatus ValidateImage(IFormFile image)
 		{

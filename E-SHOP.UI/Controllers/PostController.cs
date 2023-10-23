@@ -43,8 +43,12 @@ namespace E_SHOP.UI.Controllers
 				.ProjectTo<CommonIdCategoryDTO>(_mapper.ConfigurationProvider)
 				.ToListAsync();
 
-
-			if (TempData.ContainsKey("AddStatus"))
+            var errorMessage = TempData["ErrorMessage"] as string;
+            if (!string.IsNullOrEmpty(errorMessage))
+            {
+                ModelState.AddModelError("", errorMessage);
+            }
+            if (TempData.ContainsKey("AddStatus"))
 			{
 				ViewData["AddStatus"] = TempData["AddStatus"];
 			}
@@ -80,8 +84,8 @@ namespace E_SHOP.UI.Controllers
 				Price = post.Price,
 				Currency = post.Currency,
 				ImgPath = post.ImgPath,
-				Category = _uow.Categories
-					.FirstOrDefault(c => c.Id == post.CategoryId)
+				Category = await _uow.Categories
+				.GetByIdAsync(post.CategoryId)
 			};
 
 			var selectedTags = _context.Tags
@@ -102,20 +106,20 @@ namespace E_SHOP.UI.Controllers
 				{
 					case ImageStatus.SizeError:
 						{
-							ModelState.AddModelError("ImgPath", "Image size must be 15 megabytes or less");
-							break;
+                            TempData["ErrorMessage"]=("Image size must be 5 megabytes or less");
+							return RedirectToAction("Add");
 						}
 					case ImageStatus.ExtensionError:
 						{
-							ModelState.AddModelError("ImgPath", "Only JPG or PNG files are allowed");
-							break;
-						}
+                            TempData["ErrorMessage"]=("Only JPG or PNG files are allowed");
+                            return RedirectToAction("Add");
+                        }
 					case ImageStatus.OtherError:
 					default:
 						{
-							ModelState.AddModelError("", "An unexpected error occurred. Please try again later");
-							break;
-						}
+                            TempData["ErrorMessage"]=("An unexpected error occurred. Please try again later");
+                            return RedirectToAction("Add");
+                        }
 					case ImageStatus.Success:
 						{
 							string relativePath = "img/category";
