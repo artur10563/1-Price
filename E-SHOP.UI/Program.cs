@@ -25,6 +25,7 @@ builder.Services.AddAutoMapper(typeof(PostProfile));
 
 var app = builder.Build();
 
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -47,7 +48,6 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-//app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
 app.MapControllerRoute(
 	name: "default",
