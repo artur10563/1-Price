@@ -1,0 +1,13 @@
+﻿@*string is search term, used to store it between pages*@
+@model string
+
+@{
+	string searchValue = !string.IsNullOrEmpty(Model) ? Model : "";
+}
+
+<form method="get" asp-controller="Post" asp-action="Posts">
+	<input name="search"
+		   value="@searchValue"
+		   placeholder="@(!string.IsNullOrEmpty(Model) ? "" : "Find posts by name or Id")">
+	<button type="submit">Search</button>
+</form>

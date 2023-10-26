@@ -43,12 +43,12 @@ namespace E_SHOP.UI.Controllers
 				.ProjectTo<CommonIdCategoryDTO>(_mapper.ConfigurationProvider)
 				.ToListAsync();
 
-            var errorMessage = TempData["ErrorMessage"] as string;
-            if (!string.IsNullOrEmpty(errorMessage))
-            {
-                ModelState.AddModelError("", errorMessage);
-            }
-            if (TempData.ContainsKey("AddStatus"))
+			var errorMessage = TempData["ErrorMessage"] as string;
+			if (!string.IsNullOrEmpty(errorMessage))
+			{
+				ModelState.AddModelError("", errorMessage);
+			}
+			if (TempData.ContainsKey("AddStatus"))
 			{
 				ViewData["AddStatus"] = TempData["AddStatus"];
 			}
@@ -96,7 +96,7 @@ namespace E_SHOP.UI.Controllers
 
 			newPost.Tags = newPostTag;
 
-			//add normal img path with ImgHelper
+
 
 			if (image != null)
 			{
@@ -106,20 +106,20 @@ namespace E_SHOP.UI.Controllers
 				{
 					case ImageStatus.SizeError:
 						{
-                            TempData["ErrorMessage"]=("Image size must be 5 megabytes or less");
+							TempData["ErrorMessage"] = ("Image size must be 5 megabytes or less");
 							return RedirectToAction("Add");
 						}
 					case ImageStatus.ExtensionError:
 						{
-                            TempData["ErrorMessage"]=("Only JPG or PNG files are allowed");
-                            return RedirectToAction("Add");
-                        }
+							TempData["ErrorMessage"] = ("Only JPG or PNG files are allowed");
+							return RedirectToAction("Add");
+						}
 					case ImageStatus.OtherError:
 					default:
 						{
-                            TempData["ErrorMessage"]=("An unexpected error occurred. Please try again later");
-                            return RedirectToAction("Add");
-                        }
+							TempData["ErrorMessage"] = ("An unexpected error occurred. Please try again later");
+							return RedirectToAction("Add");
+						}
 					case ImageStatus.Success:
 						{
 							string relativePath = "img/category";
@@ -143,25 +143,33 @@ namespace E_SHOP.UI.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Posts(string category, int page = 1, int pageSize = 5)
+		public async Task<IActionResult> Posts(
+			string? category,
+			string? search,
+			int page = 1,
+			int pageSize = 5)
 		{
-			if (string.IsNullOrWhiteSpace(category)) return BadRequest();
-
 
 			var posts =
 				 _context.Posts
 				.Where(p => p.IsActive == true)
-				.Where(p => p.Category.Name.CompareTo(category) == 0)
+				.Where(p => p.Category.Name.CompareTo(category) == 0 || String.IsNullOrWhiteSpace(category))
+				.Where(p =>
+						String.IsNullOrWhiteSpace(search) || (
+						p.Title.ToLower().Contains(search.ToLower())) ||
+						p.Description.ToLower().Contains(search.ToLower()) ||
+						p.Id.ToString() == search
+						)
 				.ProjectTo<PostDisplayDTO>(_mapper.ConfigurationProvider);
 
-			if (posts.Count() == 0) return NotFound();
 
 
 			if (page < 1) page = 1;
 			if (pageSize < 5) pageSize = 5;
 			if (pageSize > 50) pageSize = 50;
 
-			ViewBag.Category = category;
+			ViewData["Category"] = category;
+			ViewData["Search"] = search;
 			return View(await posts.ToPagedListAsync(page, pageSize));
 		}
 

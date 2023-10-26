@@ -5,6 +5,12 @@
 	ViewData["Title"] = "Home Page";
 }
 
+@*<partial name="_SearchPartial" />*@
+@{
+	await Html.RenderPartialAsync("_SearchPartial", "");
+}
+
+
 <div class="text-center mb-3 mt-3">
 	<h2>Categories</h2>
 	<div class="container-category container">
