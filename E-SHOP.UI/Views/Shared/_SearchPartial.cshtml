@@ -6,23 +6,15 @@
 }
 
 <form method="get" asp-controller="Post" asp-action="Posts">
-	<div class="input-group"> 
+	<div class="input-group">
 		<input class="form-control" type="search" name="search"
 			   value="@searchValue"
-			   placeholder="@(!string.IsNullOrEmpty(Model) ? "" : "Find posts by name or Id")">
+			   placeholder="@(!string.IsNullOrEmpty(Model) ? "" : "Find posts by name or Id")"/>
+
 		<button type="submit" class="btn btn-outline-secondary">
 			<i class="fas fa-search"></i>
 		</button>
-		
+
 	</div>
 </form>
 
-
-@*<div class="input-group">
-	<input type="text" class="form-control" id="searchInput" placeholder="Search...">
-	<div class="input-group-append">
-		<button onclick="" type="button" id="searchButton" class="btn btn-outline-secondary">
-			<i class="fas fa-search"></i>
-		</button>
-	</div>
-</div>*@
