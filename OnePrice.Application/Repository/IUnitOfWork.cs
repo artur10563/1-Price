@@ -12,6 +12,7 @@ namespace OnePrice.Application.Repository
 		ICategoryRepository Categories { get; }
 		IPostRepository Posts { get; }
 
+
 		int SaveChanges();
 		Task<int> SaveChangesAsync();
 	}

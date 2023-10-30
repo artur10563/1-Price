@@ -34,12 +34,16 @@ namespace OnePrice.UI.Controllers
 		{
 			PostAddViewModel model = new PostAddViewModel();
 
-			model.AvailableTags = await _context.Tags
+			model.AvailableTags = await
+				_uow.Tags.GetAll()
+				.AsQueryable()
 				.ProjectTo<CommonIdTagDTO>(_mapper.ConfigurationProvider)
 				.ToListAsync();
 
 
-			model.AvailableCategories = await _context.Categories
+			model.AvailableCategories = await
+				_uow.Categories.GetAll()
+				.AsQueryable()
 				.ProjectTo<CommonIdCategoryDTO>(_mapper.ConfigurationProvider)
 				.ToListAsync();
 
@@ -62,12 +66,16 @@ namespace OnePrice.UI.Controllers
 
 			if (!ModelState.IsValid)
 			{
-				postViewModel.AvailableTags = await _context.Tags
+				postViewModel.AvailableTags = await
+					_uow.Tags.GetAll()
+					.AsQueryable()
 					.ProjectTo<CommonIdTagDTO>(_mapper.ConfigurationProvider)
 					.ToListAsync();
 
 
-				postViewModel.AvailableCategories = await _context.Categories
+				postViewModel.AvailableCategories = await
+					_uow.Categories.GetAll()
+					.AsQueryable()
 					.ProjectTo<CommonIdCategoryDTO>(_mapper.ConfigurationProvider)
 					.ToListAsync();
 
@@ -88,14 +96,13 @@ namespace OnePrice.UI.Controllers
 				.GetByIdAsync(post.CategoryId)
 			};
 
-			var selectedTags = _context.Tags
+
+			newPost.Tags = await
+				_uow.Tags.GetAll()
+				.AsQueryable()
 				.Where(tag => post.TagsId.Contains(tag.Id))
-				.ToList();
-
-			var newPostTag = selectedTags.Select(t => new PostTag { Post = newPost, Tag = t }).ToList();
-
-			newPost.Tags = newPostTag;
-
+				.Select(t => new PostTag { Post = newPost, Tag = t })
+				.ToListAsync();
 
 
 			if (image != null)
@@ -195,12 +202,16 @@ namespace OnePrice.UI.Controllers
 
 			PostEditViewModel model = new PostEditViewModel();
 
-			model.AvailableTags = await _context.Tags
+			model.AvailableTags = await
+				_uow.Tags.GetAll()
+				.AsQueryable()
 				.ProjectTo<CommonIdTagDTO>(_mapper.ConfigurationProvider)
 				.ToListAsync();
 
 
-			model.AvailableCategories = await _context.Categories
+			model.AvailableCategories = await
+				_uow.Categories.GetAll()
+				.AsQueryable()
 				.ProjectTo<CommonIdCategoryDTO>(_mapper.ConfigurationProvider)
 				.ToListAsync();
 
@@ -219,12 +230,16 @@ namespace OnePrice.UI.Controllers
 		{
 			if (!ModelState.IsValid)
 			{
-				postViewModel.AvailableTags = await _context.Tags
-				.ProjectTo<CommonIdTagDTO>(_mapper.ConfigurationProvider)
-				.ToListAsync();
+				postViewModel.AvailableTags = await
+					_uow.Tags.GetAll()
+					.AsQueryable()
+					.ProjectTo<CommonIdTagDTO>(_mapper.ConfigurationProvider)
+					.ToListAsync();
 
 
-				postViewModel.AvailableCategories = await _context.Categories
+				postViewModel.AvailableCategories = await
+					_uow.Categories.GetAll()
+					.AsQueryable()
 					.ProjectTo<CommonIdCategoryDTO>(_mapper.ConfigurationProvider)
 					.ToListAsync();
 
@@ -245,11 +260,17 @@ namespace OnePrice.UI.Controllers
 			toEdit.IsActive = editedPost.IsActive;
 			toEdit.CategoryId = editedPost.CategoryId;
 
+			//need to replace with uow
 			_context.PostTags.RemoveRange(
 				_context.PostTags
 				.Where(pt => pt.PostId == toEdit.Id)
 				.ToList());
-			toEdit.Tags = editedPost.TagsId.Select(tagId => new PostTag { PostId = toEdit.Id, TagId = tagId }).ToList();
+
+			toEdit.Tags = await 
+				editedPost.TagsId
+				.AsQueryable()
+				.Select(tagId => new PostTag { PostId = toEdit.Id, TagId = tagId })
+				.ToListAsync();
 
 
 

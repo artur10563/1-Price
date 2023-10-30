@@ -38,17 +38,16 @@ namespace OnePrice.Infrastructure.Repository.Common
 			_context.Set<T>().RemoveRange(entities);
 		}
 
-		public async Task<IEnumerable<T>?> GetAllAsync()
+		public IEnumerable<T>? GetAll()
 		{
-			return await _context.Set<T>().ToListAsync();
+			return _context.Set<T>();
 		}
 
-		public async Task<IEnumerable<T>?> GetAllAsync(Func<T, bool> predicate)
+		public IEnumerable<T>? GetAll(Func<T, bool> predicate)
 		{
-			return await _context.Set<T>()
+			return _context.Set<T>()
 								   .Where(predicate)
-								   .AsQueryable()
-								   .ToListAsync();
+								   .AsQueryable();
 		}
 
 		public async Task<T?> GetByIdAsync(int id)

@@ -5,8 +5,8 @@ namespace OnePrice.Application.Repository.Common
 	public interface IBaseRepository<T> where T : BaseEntity
 	{
 
-		Task<IEnumerable<T>?> GetAllAsync();
-		Task<IEnumerable<T>?> GetAllAsync(Func<T, bool> predicate);
+		IEnumerable<T>? GetAll();
+		IEnumerable<T>? GetAll(Func<T, bool> predicate);
 
 		Task<T?> GetByIdAsync(int id);
 
