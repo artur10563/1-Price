@@ -21,10 +21,11 @@ namespace OnePrice.Domain.Entities
 		public int CategoryId { get; set; }
 		public virtual Category Category { get; set; }
 
-		//GUID бо IdentityUser по дефолту має Id як GUID
-		//public Guid CreatorId { get; set; }
-		//public User {get;set;}
+		public int AuthorId { get; set; }
+		public AppUser Author { get; set; }
 
+
+		public virtual ICollection<Comment> Comments { get; set; }
 		public virtual ICollection<PostTag> Tags { get; set; }
 	}
 }

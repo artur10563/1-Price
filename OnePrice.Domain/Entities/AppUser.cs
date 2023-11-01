@@ -1,23 +1,24 @@
-﻿using OnePrice.Domain.Common;
+﻿using Microsoft.AspNetCore.Identity;
+using OnePrice.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-//namespace E_SHOP.Domain.Entities
-//{
-//	internal class AppUser : BaseEntity, IdentityUser
-//	{
-//	}
-//}
-//АБО
-//
-//class Account : BaseEntity
-//{
-//	prop 1
-//	prop 2 
-//  int IdentityId{get;set;}
-//  IdentityUser User{get;set} //navigation property
-//}
-//
+namespace OnePrice.Domain.Entities
+{
+	public class AppUser : IdentityUser<int>
+	{
+		public DateTime CreatedAt { get; set; }
+		public DateTime? LastModifiedAt { get; set; }
+
+		public string Nickname { get; set; }
+		public string? ImgPath { get; set; }
+
+		public ICollection<Post>? Posts { get; set; }
+		public ICollection<Comment>? Comments { get; set; }
+
+	}
+}
+

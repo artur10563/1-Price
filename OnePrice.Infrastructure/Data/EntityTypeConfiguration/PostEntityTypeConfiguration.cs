@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection.Emit;
 
 
 namespace OnePrice.Infrastructure.Data.EntityTypeConfiguration
@@ -23,17 +24,13 @@ namespace OnePrice.Infrastructure.Data.EntityTypeConfiguration
 
 			builder.Property(p => p.Title)
 				.HasMaxLength(50)
-				//.HasAnnotation("MinLength", new MinLengthAttribute(3))
 				.IsRequired();
 
 			builder.Property(p => p.Description)
 				.HasMaxLength(250)
-				//.HasAnnotation("MinLength", new MinLengthAttribute(50))
 				.IsRequired();
 
 			builder.Property(p => p.Price)
-				//.HasAnnotation("Range", new RangeAttribute(0, double.MaxValue)
-				//{ ErrorMessage = "Price must be a non-negative value" })
 				.HasColumnType("decimal(18, 2)")
 				.IsRequired();
 
@@ -54,11 +51,14 @@ namespace OnePrice.Infrastructure.Data.EntityTypeConfiguration
 				.HasForeignKey(p => p.CategoryId)
 				.OnDelete(DeleteBehavior.NoAction);
 
-            /*
-			 * builder.HasOne(p=>p.User)
-			 *	.WithMany(u=>u.Posts)
-			 *	.HasForeignKey(p=>p.IdCreator);
-			 */
-        }
+
+			builder.HasOne(p => p.Author)
+			.WithMany(u => u.Posts)
+			.HasForeignKey(p => p.AuthorId)
+			.OnDelete(DeleteBehavior.NoAction);
+
+
+
+		}
 	}
 }
