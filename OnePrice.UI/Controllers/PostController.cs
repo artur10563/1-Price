@@ -10,6 +10,7 @@ using OnePrice.UI.Models.PostDTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using X.PagedList;
+using Microsoft.AspNetCore.Authorization;
 
 namespace OnePrice.UI.Controllers
 {
@@ -149,6 +150,7 @@ namespace OnePrice.UI.Controllers
 			return RedirectToAction("Add");
 		}
 
+		[Authorize]
 		[HttpGet]
 		public async Task<IActionResult> Posts(
 			string? category,
