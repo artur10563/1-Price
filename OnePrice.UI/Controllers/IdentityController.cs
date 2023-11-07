@@ -22,6 +22,10 @@ namespace OnePrice.UI.Controllers
 		//Not implemented yet
 		public IActionResult Register()
 		{
+			return Challenge(new AuthenticationProperties
+			{
+				RedirectUri = "https://google.com"
+			}) ;
 			return Redirect("https://localhost:5001/account/register");
 		}
 	}

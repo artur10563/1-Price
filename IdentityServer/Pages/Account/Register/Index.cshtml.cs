@@ -100,7 +100,7 @@ namespace IdentityServer.Areas.Identity.Pages.Account
 					else
 					{
 						await _signInManager.SignInAsync(user, isPersistent: false);
-						return LocalRedirect(returnUrl);
+						return Redirect(returnUrl);
 					}
 				}
 				foreach (var error in result.Errors)
