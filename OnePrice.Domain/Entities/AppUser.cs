@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 
 namespace OnePrice.Domain.Entities
 {
-	public class AppUser : IdentityUser<int>
+	public class AppUser : BaseEntity
 	{
-		public DateTime CreatedAt { get; set; }
-		public DateTime? LastModifiedAt { get; set; }
-
 		public string Nickname { get; set; }
+		public string Email { get; set; }
+		public string PhoneNumber { get; set; }
 		public string? ImgPath { get; set; }
 
 		public ICollection<Post>? Posts { get; set; }

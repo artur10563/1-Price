@@ -12,7 +12,15 @@
 	await Html.RenderPartialAsync("_SearchPartial", "");
 }
 
-
+<p>
+	@User.Identity.Name
+</p>
+@foreach (var claim in User.Claims)
+{
+	<p>
+		@claim
+	</p>
+}
 <div class="text-center mb-3 mt-3">
 	<h2>@Localizer["Categories"]</h2>
 	<div class="container-category container">

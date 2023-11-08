@@ -32,21 +32,16 @@ namespace OnePrice.Infrastructure.Data.EntityTypeConfiguration
 				.HasMaxLength(15)
 				.IsRequired(true);
 
-			builder.Property(x => x.UserName)
-				.HasMaxLength(50)
-				.IsRequired(true);
-
-			builder.Property(x => x.NormalizedUserName)
-				.HasMaxLength(50);
-
 			builder.Property(x => x.Nickname)
 				.HasMaxLength(50)
 				.IsRequired(true);
 
+			builder.HasIndex(x => x.Email)
+				.IsUnique();
 
-
-			//TODO: add better configuration for phone and email
-
+			builder.Property(x => x.Email)
+				.HasMaxLength(50)
+				.IsRequired(true);
 
 			builder.Property(c => c.ImgPath)
 				   .IsRequired(false);
