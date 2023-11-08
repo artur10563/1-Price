@@ -1,7 +1,7 @@
 ﻿using OnePrice.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.ComponentModel.DataAnnotations;
+
 
 namespace OnePrice.Infrastructure.Data.EntityTypeConfiguration
 {
@@ -22,7 +22,6 @@ namespace OnePrice.Infrastructure.Data.EntityTypeConfiguration
 
 			builder.Property(x => x.Name)
 				.HasMaxLength(50)
-				//.HasAnnotation("MinLength", new MinLengthAttribute(3))
 				.IsRequired();
 
 

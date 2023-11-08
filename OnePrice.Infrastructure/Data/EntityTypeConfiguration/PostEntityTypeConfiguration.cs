@@ -1,8 +1,8 @@
 ﻿using OnePrice.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection.Emit;
+
+
 
 
 namespace OnePrice.Infrastructure.Data.EntityTypeConfiguration
