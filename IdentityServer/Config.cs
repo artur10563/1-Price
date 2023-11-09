@@ -2,6 +2,7 @@
 using Duende.IdentityServer;
 using static System.Formats.Asn1.AsnWriter;
 using System.Security.Claims;
+using IdentityModel;
 
 public static class Config
 {
@@ -10,7 +11,16 @@ public static class Config
         {
             new IdentityResources.OpenId(),
             new IdentityResources.Profile(),
-        };
+			new IdentityResource()
+			{
+				Name = "verification",
+				UserClaims = new List<string>
+				{
+					JwtClaimTypes.Email,
+					JwtClaimTypes.EmailVerified
+				}
+			}
+		};
 
 
     public static IEnumerable<ApiScope> ApiScopes =>
@@ -43,6 +53,7 @@ public static class Config
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
+                    "verification"
                 }
             }
 

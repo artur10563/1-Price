@@ -38,6 +38,7 @@ namespace OnePrice.UI.Extensions
 					options.Scope.Add(OpenIdConnectScope.OpenId);
 					options.Scope.Add(OpenIdConnectScope.OfflineAccess);
 					options.Scope.Add("profile");
+					options.Scope.Add("verification");
 					options.GetClaimsFromUserInfoEndpoint = true;
 
 				});
