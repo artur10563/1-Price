@@ -6,11 +6,11 @@ using IdentityModel;
 
 public static class Config
 {
-    public static IEnumerable<IdentityResource> IdentityResources =>
-        new List<IdentityResource>
-        {
-            new IdentityResources.OpenId(),
-            new IdentityResources.Profile(),
+	public static IEnumerable<IdentityResource> IdentityResources =>
+		new List<IdentityResource>
+		{
+			new IdentityResources.OpenId(),
+			new IdentityResources.Profile(),
 			new IdentityResource()
 			{
 				Name = "verification",
@@ -19,43 +19,47 @@ public static class Config
 					JwtClaimTypes.Email,
 					JwtClaimTypes.EmailVerified
 				}
+			},
+
+			new IdentityResource()
+			{
+				Name = "roles",
+				UserClaims= new List<string>{"role"}
 			}
 		};
 
 
-    public static IEnumerable<ApiScope> ApiScopes =>
-        new List<ApiScope>
-        {
-            new ApiScope("api1", "My API")
-        };
+	public static IEnumerable<ApiScope> ApiScopes =>
+		new List<ApiScope>
+		{
+			new ApiScope("api1", "My API")
+		};
 
-    public static IEnumerable<Client> Clients =>
-        new List<Client>
-        {
+	public static IEnumerable<Client> Clients =>
+		new List<Client>
+		{
 
-            new Client
-            {
-                ClientId = "web",
-                ClientSecrets = { new Secret("secret".Sha256()) },
+			new Client
+			{
+				ClientId = "web",
+				ClientSecrets = { new Secret("secret".Sha256()) },
 
-                AllowedGrantTypes = GrantTypes.Code,
-                    
-                // where to redirect to after login
-                RedirectUris = { "https://localhost:5002/signin-oidc" },
+				AllowedGrantTypes = GrantTypes.Code,
 
-                // where to redirect to after logout
-                PostLogoutRedirectUris = { "https://localhost:5002/signout-callback-oidc" },
+				RedirectUris = { "https://localhost:5002/signin-oidc" },
+				PostLogoutRedirectUris = { "https://localhost:5002/signout-callback-oidc" },
 
-                AllowOfflineAccess = true,
-                RequirePkce = true,
+				AllowOfflineAccess = true,
+				RequirePkce = true,
 
-                AllowedScopes = new List<string>
-                {
-                    IdentityServerConstants.StandardScopes.OpenId,
-                    IdentityServerConstants.StandardScopes.Profile,
-                    "verification"
-                }
-            }
+				AllowedScopes = new List<string>
+				{
+					IdentityServerConstants.StandardScopes.OpenId,
+					IdentityServerConstants.StandardScopes.Profile,
+					"verification",
+					"roles"
+				}
+			}
 
-        };
+		};
 }

@@ -150,7 +150,7 @@ namespace OnePrice.UI.Controllers
 			return RedirectToAction("Add");
 		}
 
-		[Authorize]
+		[Authorize(Policy ="Admin")]
 		[HttpGet]
 		public async Task<IActionResult> Posts(
 			string? category,

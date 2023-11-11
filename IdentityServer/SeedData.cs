@@ -34,7 +34,7 @@ public class SeedData
                 }
 
                 result = userMgr.AddClaimsAsync(artur10563, new Claim[]{
-                            new Claim("Role", "admin")
+                            new Claim("role", "admin")
                         }).Result;
                 if (!result.Succeeded)
                 {

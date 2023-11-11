@@ -39,9 +39,19 @@ namespace OnePrice.UI.Extensions
 					options.Scope.Add(OpenIdConnectScope.OfflineAccess);
 					options.Scope.Add("profile");
 					options.Scope.Add("verification");
+					options.Scope.Add("roles");
 					options.GetClaimsFromUserInfoEndpoint = true;
+					options.ClaimActions.MapUniqueJsonKey("role", "role");
 
 				});
+
+			serviceCollection.AddAuthorization(options =>
+			{
+				options.AddPolicy("Admin", policy =>
+				{
+					policy.RequireClaim("role", "admin");
+				});
+			});
 
 
 			return serviceCollection;
