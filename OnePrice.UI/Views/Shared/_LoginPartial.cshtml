@@ -1,18 +1,22 @@
 ﻿
 <ul class="navbar-nav">
 
+	@{
+		if (User.Identity.IsAuthenticated)
+		{
+			<li class="nav-item">
+				<a class="nav-link text-dark" asp-controller="Identity" asp-action="Logout">Logout</a>
+			</li>
+		}
+		else
+		{
+			<li class="nav-item">
+				<a class="nav-link text-dark" asp-controller="Identity" asp-action="Login">Login</a>
+			</li>
 
-	<li class="nav-item">
-		<a class="nav-link text-dark" asp-controller="Identity" asp-action="Logout">Logout</a>
-	</li>
-
-
-	<li class="nav-item">
-		<a class="nav-link text-dark" asp-controller="Identity" asp-action="Login">Login</a>
-	</li>
-	@*Registration is not implemented yet*@
-	<li class="nav-item">
-		<a class="nav-link text-dark" asp-controller="Identity" asp-action="Register">Register</a>
-	</li>
-
+			<li class="nav-item">
+				<a class="nav-link text-dark" asp-controller="Identity" asp-action="Register">Register</a>
+			</li>
+		}
+	}
 </ul>
