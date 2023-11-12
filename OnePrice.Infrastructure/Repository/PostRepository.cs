@@ -22,7 +22,7 @@ namespace OnePrice.Infrastructure.Repository
 					.ThenInclude(post => post.Tag)
 				.Include(post=>post.Category)
 				//.Include(post=>post.Comments)
-				//.Include(post=>post.User)
+				.Include(post=>post.Author)
 				.FirstOrDefaultAsync(p => p.Id == id);
 		}
 

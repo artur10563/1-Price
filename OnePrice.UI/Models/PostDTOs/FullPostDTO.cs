@@ -30,6 +30,6 @@ namespace OnePrice.UI.Models.PostDTOs
 
         //public List<CommentsDTO> Comments { get; set; }
 
-        //public User Owner {get;set;}
+        public CommonAppUserDTO Author {get;set;}
     }
 }

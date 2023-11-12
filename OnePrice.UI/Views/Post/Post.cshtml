@@ -26,13 +26,13 @@
 
 			<div class="p-2 rounded-3 bg-off-white user-info">
 				<div class="user-profile-picture">
-					<img src=@Model.ImgPath class="img-fluid rounded-circle">
+					<img src=@Model.Author.ImgPath class="img-fluid rounded-circle">
 				</div>
 
-				@*TODO: UPDATE AFTER IMPLEMENTING IDENTITY*@
+				
 				<div class="user-details">
-					<p class="mb-1"><strong>USERNAME_PLACEHOLDER</strong></p>
-					<p class="mb-0 text-muted">User since 12 of March, 2011</p>
+					<p class="mb-1"><strong>@Model.Author.Nickname</strong></p>
+					<p class="mb-0 text-muted">User since @Model.Author.CreatedAt.ToLongDateString()</p>
 				</div>
 
 				<!-- Buttons -->
@@ -63,7 +63,7 @@
 			<!-- Description -->
 			<div class=" m2 p-2">
 				<h3 class="m-2 p-2">Description</h3>
-				<p class="p-2 m-2">
+				<p class="p-2 m-2 overflow-hidden text-break">
 					@Model.Description
 				</p>
 				<hr>

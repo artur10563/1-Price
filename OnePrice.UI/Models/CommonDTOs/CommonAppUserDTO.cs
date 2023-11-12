@@ -16,5 +16,7 @@ namespace OnePrice.UI.Models.CommonDTOs
 		[StringLength(15, MinimumLength = 10, ErrorMessage = "Phone Number must be between 10 and 15 characters")]
 		public string PhoneNumber { get; set; }
 		public string? ImgPath { get; set; }
+
+		public DateTime CreatedAt { get; set; }
 	}
 }
