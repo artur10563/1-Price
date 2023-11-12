@@ -17,12 +17,5 @@ namespace OnePrice.UI.Controllers
 				RedirectUri = "/"
 			});
 		}
-
-
-		//Not implemented yet
-		public IActionResult Register()
-		{
-			return Redirect("https://localhost:5001/account/register");
-		}
 	}
 }
