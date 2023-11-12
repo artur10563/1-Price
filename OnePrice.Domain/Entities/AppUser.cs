@@ -7,7 +7,7 @@ namespace OnePrice.Domain.Entities
 	{
 		public string Nickname { get; set; }
 		public string Email { get; set; }
-		public string PhoneNumber { get; set; }
+		public string? PhoneNumber { get; set; }
 		public string? ImgPath { get; set; }
 
 		public ICollection<Post>? Posts { get; set; }

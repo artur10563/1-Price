@@ -17,7 +17,7 @@ builder.Services.AddLocalizationSupport();
 builder.Services.AddStorage(builder.Configuration);
 builder.Services.AddLogging();
 
-
+builder.Services.AddScoped<EnsureUserExistsAttribute>();
 builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
 builder.Services.AddAutoMapper(typeof(TagProfile));
 builder.Services.AddAutoMapper(typeof(CategoryProfile));

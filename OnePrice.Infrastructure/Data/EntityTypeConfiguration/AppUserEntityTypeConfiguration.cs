@@ -22,11 +22,11 @@ namespace OnePrice.Infrastructure.Data.EntityTypeConfiguration
 
 			builder.Property(x => x.Nickname)
 				.HasMaxLength(50)
-				.IsRequired();
+				.IsRequired(true);
 
 			builder.Property(x => x.PhoneNumber)
 				.HasMaxLength(15)
-				.IsRequired(true);
+				.IsRequired(false);
 
 			builder.Property(x => x.Nickname)
 				.HasMaxLength(50)

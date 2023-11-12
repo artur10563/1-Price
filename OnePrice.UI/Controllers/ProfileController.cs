@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnePrice.Application.Repository;
+using OnePrice.Domain.Entities;
+using OnePrice.UI.Extensions;
 using OnePrice.UI.Models.CommonDTOs;
 
 namespace OnePrice.UI.Controllers
@@ -10,23 +12,20 @@ namespace OnePrice.UI.Controllers
 	{
 		private readonly IUnitOfWork _uow;
 		private readonly IMapper _mapper;
-		public ProfileController(IUnitOfWork uow)
+		public ProfileController(IUnitOfWork uow, IMapper mapper)
 		{
 			_uow = uow;
+			_mapper  = mapper;
 		}
 
 		[HttpGet]
 		[Authorize]
+		[ServiceFilter(typeof(EnsureUserExistsAttribute))]
 		public async Task<IActionResult> Index()
 		{
-			var emailClaim = User.FindFirst("email");
-			var userEmail = emailClaim.Value;
-
-			CommonAppUserDTO userDTO = null;
-			var user = await _uow.Users.GetByEmailAsync(userEmail);
-			if (user != null)
-				userDTO = _mapper.Map<CommonAppUserDTO>(user);
-
+			var email = User.FindFirst("email").Value;
+			var user = await _uow.Users.GetByEmailAsync(email);
+			var userDTO = _mapper.Map<CommonAppUserDTO>(user);
 			return View(userDTO);
 
 		}
