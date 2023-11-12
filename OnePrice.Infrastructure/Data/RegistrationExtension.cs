@@ -23,6 +23,7 @@ namespace OnePrice.Infrastructure.Data
 			serviceCollection.AddScoped<ITagRepository, TagRepository>();
 			serviceCollection.AddScoped<ICategoryRepository, CategoryRepository>();
 			serviceCollection.AddScoped<IPostRepository, PostRepository>();
+			serviceCollection.AddScoped<IAppUserRepository, AppUserRepository>();
 		}
 	}
 }

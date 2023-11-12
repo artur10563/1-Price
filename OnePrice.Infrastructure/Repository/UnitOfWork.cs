@@ -19,16 +19,19 @@ namespace OnePrice.Infrastructure.Repository
 
 		public IPostRepository Posts { get; private set; }
 
+		public IAppUserRepository Users { get; private set; }
 
 		public UnitOfWork(AppDbContext context,
-			ITagRepository TagRepo,
-			ICategoryRepository CategoryRepo,
-			IPostRepository PostRepository)
+			ITagRepository TagRepository,
+			ICategoryRepository CategoryRepository,
+			IPostRepository PostRepository,
+			IAppUserRepository UserRepository)
 		{
 			_context = context;
-			Tags = TagRepo ?? throw new ArgumentNullException(nameof(TagRepo));
-			Categories = CategoryRepo ?? throw new ArgumentNullException(nameof(CategoryRepo));
+			Tags = TagRepository ?? throw new ArgumentNullException(nameof(TagRepository));
+			Categories = CategoryRepository ?? throw new ArgumentNullException(nameof(CategoryRepository));
 			Posts = PostRepository ?? throw new ArgumentNullException(nameof(PostRepository));
+			Users = UserRepository ?? throw new ArgumentNullException(nameof(UserRepository));
 		}
 
 		public void Dispose()

@@ -10,8 +10,7 @@ namespace OnePrice.Infrastructure.Data
 		public DbSet<Category> Categories { get; set; }
 		public DbSet<Post> Posts { get; set; }
 		public DbSet<PostTag> PostTags { get; set; }
-
-		//public DbSet<CustomUser> Users {get;set;}
+		public DbSet<AppUser> Users {get;set;}
 
 
 		public AppDbContext(DbContextOptions<AppDbContext> options)

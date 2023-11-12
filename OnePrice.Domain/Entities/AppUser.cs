@@ -1,10 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
-using OnePrice.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OnePrice.Domain.Common;
+
 
 namespace OnePrice.Domain.Entities
 {

@@ -11,7 +11,7 @@ namespace OnePrice.Application.Repository
 		ITagRepository Tags { get; }
 		ICategoryRepository Categories { get; }
 		IPostRepository Posts { get; }
-
+		IAppUserRepository Users { get; }
 
 		int SaveChanges();
 		Task<int> SaveChangesAsync();
