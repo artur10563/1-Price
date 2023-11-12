@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using X.PagedList;
 using Microsoft.AspNetCore.Authorization;
+using OnePrice.UI.Extensions;
 
 namespace OnePrice.UI.Controllers
 {
@@ -29,24 +30,31 @@ namespace OnePrice.UI.Controllers
 			_hostingEnvironment = hostingEnvironment;
 		}
 
-
-		[HttpGet]
-		public async Task<IActionResult> Add()
+		private async Task GetAvailableTags(PostAddViewModel model)
 		{
-			PostAddViewModel model = new PostAddViewModel();
-
 			model.AvailableTags = await
 				_uow.Tags.GetAll()
 				.AsQueryable()
 				.ProjectTo<CommonIdTagDTO>(_mapper.ConfigurationProvider)
 				.ToListAsync();
-
-
+		}
+		private async Task GetAvailableCategories(PostAddViewModel model)
+		{
 			model.AvailableCategories = await
 				_uow.Categories.GetAll()
 				.AsQueryable()
 				.ProjectTo<CommonIdCategoryDTO>(_mapper.ConfigurationProvider)
 				.ToListAsync();
+		}
+
+		[HttpGet]
+		[Authorize]
+		public async Task<IActionResult> Add()
+		{
+			PostAddViewModel model = new PostAddViewModel();
+
+			await GetAvailableTags(model);
+			await GetAvailableCategories(model);
 
 			var errorMessage = TempData["ErrorMessage"] as string;
 			if (!string.IsNullOrEmpty(errorMessage))
@@ -62,41 +70,22 @@ namespace OnePrice.UI.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
+		[ServiceFilter(typeof(EnsureUserExistsAttribute))]
 		public async Task<IActionResult> Add(PostAddViewModel postViewModel, IFormFile? image)
 		{
 
 			if (!ModelState.IsValid)
 			{
-				postViewModel.AvailableTags = await
-					_uow.Tags.GetAll()
-					.AsQueryable()
-					.ProjectTo<CommonIdTagDTO>(_mapper.ConfigurationProvider)
-					.ToListAsync();
-
-
-				postViewModel.AvailableCategories = await
-					_uow.Categories.GetAll()
-					.AsQueryable()
-					.ProjectTo<CommonIdCategoryDTO>(_mapper.ConfigurationProvider)
-					.ToListAsync();
-
+				await GetAvailableTags(postViewModel);
+				await GetAvailableCategories(postViewModel);
 				return View(postViewModel);
 			}
 
 
 			PostAddDTO post = postViewModel.Post;
 
-			Post newPost = new Post()
-			{
-				Title = post.Title,
-				Description = post.Description,
-				Price = post.Price,
-				Currency = post.Currency,
-				ImgPath = post.ImgPath,
-				Category = await _uow.Categories
-				.GetByIdAsync(post.CategoryId)
-			};
-
+			Post newPost = _mapper.Map<Post>(post);
 
 			newPost.Tags = await
 				_uow.Tags.GetAll()
@@ -105,6 +94,8 @@ namespace OnePrice.UI.Controllers
 				.Select(t => new PostTag { Post = newPost, Tag = t })
 				.ToListAsync();
 
+			var author = await _uow.Users.GetByEmailAsync(User.FindFirst("email").Value);
+			newPost.AuthorId = author.Id;
 
 			if (image != null)
 			{
@@ -150,7 +141,6 @@ namespace OnePrice.UI.Controllers
 			return RedirectToAction("Add");
 		}
 
-		[Authorize(Policy ="Admin")]
 		[HttpGet]
 		public async Task<IActionResult> Posts(
 			string? category,
@@ -268,7 +258,7 @@ namespace OnePrice.UI.Controllers
 				.Where(pt => pt.PostId == toEdit.Id)
 				.ToList());
 
-			toEdit.Tags = await 
+			toEdit.Tags = await
 				editedPost.TagsId
 				.AsQueryable()
 				.Select(tagId => new PostTag { PostId = toEdit.Id, TagId = tagId })

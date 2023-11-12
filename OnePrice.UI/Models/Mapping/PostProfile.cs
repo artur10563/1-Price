@@ -24,8 +24,10 @@ namespace OnePrice.UI.Models.Mapping
 		   .ForMember(dest => dest.Day, opt => opt.MapFrom(src => src.CreatedAt.Day));
 
 			CreateMap<Post, PostAddDTO>()
-			.ForMember(dest => dest.TagsId, opt => opt.MapFrom(src => src.Tags.Select(pt => pt.TagId)
-			.ToList()));
+			.ForMember(dest => dest.TagsId, opt => opt.MapFrom(src => src.Tags.Select(pt => pt.TagId).ToList()))
+			.ReverseMap();
+
+
 
 			CreateMap<Post, PostEditDTO>()
 			.ForMember(dest => dest.TagsId, opt => opt.MapFrom(src => src.Tags.Select(pt => pt.TagId)
@@ -36,10 +38,10 @@ namespace OnePrice.UI.Models.Mapping
 			CreateMap<Post, FullPostDTO>()
 
 
-			   //.ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(tag => new CommonTagDTO
-			   //{
-			   //	Name = tag.Tag.Name
-			   //}).ToList()))
+			  //.ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(tag => new CommonTagDTO
+			  //{
+			  //	Name = tag.Tag.Name
+			  //}).ToList()))
 			  .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(pt => pt.Tag)))
 			  .ForMember(dest => dest.Year, opt => opt.MapFrom(src => src.CreatedAt.Year))
 			  .ForMember(dest => dest.Month, opt => opt.MapFrom(src => MonthConverter.Convert(src.CreatedAt.Month)))
