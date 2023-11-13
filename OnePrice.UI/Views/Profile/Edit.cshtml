@@ -1,9 +1,9 @@
-﻿@using OnePrice.UI.Models.CommonDTOs;
-@model CommonAppUserDTO
+﻿@using OnePrice.UI.Models.ProfileDTOs;
+@model ProfileEditDTO
 
 
 
-<form asp-controller="Post" asp-action="Add" method="post" enctype="multipart/form-data" class="form">
+<form asp-controller="Profile" asp-action="Edit" method="post" enctype="multipart/form-data" class="form">
 
 	<div class="form-group img-container">
 		<input type="file" id="fileInput" name="image" accept="image/*" max="5*1024*1024">
@@ -20,9 +20,11 @@
 		<span asp-validation-for="Nickname" class="text-danger"></span>
 	</div>
 
+	@*Email is only for display, can`t be edited*@
 	<div class="form-group">
 		<label asp-for="Email"></label>
-		<p asp-for="Email" class="form-control" style="background-color:#e9ecef">@Model.Email</p>
+		<input asp-for="Email" class="form-control" disabled />
+		@Html.HiddenFor(x=>x.Email)
 		<span asp-validation-for="Email" class="text-danger"></span>
 	</div>
 
@@ -34,6 +36,9 @@
 	</div>
 
 
+
+	<button type="submit" class="btn btn-primary">Save Changes</button>
+	<a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Back</a>
 </form>
 
 @section Scripts{
