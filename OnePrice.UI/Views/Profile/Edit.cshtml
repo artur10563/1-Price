@@ -1,14 +1,31 @@
 ﻿@using OnePrice.UI.Models.ProfileDTOs;
 @model ProfileEditDTO
+@{
+	ViewData["Title"] = "Edit profile";
+}
 
-
-
+@if (ViewData["EditStatus"] != null)
+{
+	<div id="popup" class="alert alert-success alert-dismissible fade show" role="alert">
+		@ViewData["EditStatus"]
+	</div>
+}
+@if (ViewData["ErrorMessage"] != null)
+{
+	<div id="popup" class="alert alert-success alert-dismissible fade show" role="alert">
+		@ViewData["EditStatus"]
+	</div>
+}
 <form asp-controller="Profile" asp-action="Edit" method="post" enctype="multipart/form-data" class="form">
 
 	<div class="form-group img-container">
+		@Html.HiddenFor(x=>x.ImgPath)
 		<input type="file" id="fileInput" name="image" accept="image/*" max="5*1024*1024">
-		<div class="prompt-text">Click to choose an image (max 5MB)</div>
-		<img id="uploadedImage" src="" class="uploadedImg">
+		@if (Model.ImgPath == null)
+		{
+			<div class="prompt-text">Click to choose an image (max 5MB)</div>
+		}
+		<img id="uploadedImage" src="@Model?.ImgPath" class="uploadedImg">
 		<span asp-validation-for="ImgPath" class="text-danger"></span>
 	</div>
 
