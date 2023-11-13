@@ -243,14 +243,7 @@ namespace OnePrice.UI.Controllers
 
 			if (toEdit == null) { return NotFound(); }
 
-
-
-			toEdit.Title = editedPost.Title;
-			toEdit.Description = editedPost.Description;
-			toEdit.Price = editedPost.Price;
-			toEdit.Currency = editedPost.Currency;
-			toEdit.IsActive = editedPost.IsActive;
-			toEdit.CategoryId = editedPost.CategoryId;
+			_mapper.Map(editedPost, toEdit);
 
 			//need to replace with uow
 			_context.PostTags.RemoveRange(
@@ -258,11 +251,12 @@ namespace OnePrice.UI.Controllers
 				.Where(pt => pt.PostId == toEdit.Id)
 				.ToList());
 
-			toEdit.Tags = await
+			//Throws error with ToListAsync()
+			toEdit.Tags = 
 				editedPost.TagsId
 				.AsQueryable()
 				.Select(tagId => new PostTag { PostId = toEdit.Id, TagId = tagId })
-				.ToListAsync();
+				.ToList();
 
 
 
