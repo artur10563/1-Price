@@ -11,5 +11,6 @@ namespace OnePrice.Application.Repository
 	public interface IAppUserRepository : IBaseRepository<AppUser>
 	{
 		Task<AppUser>? GetByEmailAsync(string email);
+		Task<AppUser?> GetByEmailWithPostsAsync(string email);
 	}
 }

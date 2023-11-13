@@ -13,6 +13,8 @@ namespace OnePrice.UI.Models.Mapping
 			CreateMap<AppUser, ProfileEditDTO>()
 				.ReverseMap()
 				.ForMember(dest => dest.ImgPath, opt => opt.Ignore());
+
+			CreateMap<AppUser, ProfileIndexDTO>().ReverseMap();
 		}
 	}
 }

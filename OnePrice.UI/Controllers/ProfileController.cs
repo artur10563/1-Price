@@ -6,7 +6,6 @@ using OnePrice.Domain.Entities;
 using OnePrice.Domain.Enums;
 using OnePrice.UI.Extensions;
 using OnePrice.UI.HelpersExtensions;
-using OnePrice.UI.Models.CommonDTOs;
 using OnePrice.UI.Models.ProfileDTOs;
 
 namespace OnePrice.UI.Controllers
@@ -22,6 +21,8 @@ namespace OnePrice.UI.Controllers
 			_mapper = mapper;
 			_hostingEnvironment = hostingEnvironment;
 		}
+
+		#region Edit
 
 		[HttpGet]
 		[Authorize]
@@ -104,6 +105,21 @@ namespace OnePrice.UI.Controllers
 			if (updateResult != 0) TempData["EditStatus"] = "Updated succesfully"; ;
 
 			return RedirectToAction(nameof(Edit));
+		}
+
+		#endregion
+
+		[HttpGet]
+		[Authorize]
+		[ServiceFilter(typeof(EnsureUserExistsAttribute))]
+		public async Task<IActionResult> Index()
+		{
+			//Nickname, ImgPath, Posts
+			var email = User.FindFirst("email").Value;
+			var user = await _uow.Users.GetByEmailWithPostsAsync(email);
+			var userDTO = _mapper.Map<AppUser, ProfileIndexDTO>(user);
+
+			return View(userDTO);
 		}
 	}
 }
