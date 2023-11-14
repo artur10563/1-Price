@@ -1,12 +1,10 @@
-﻿using OnePrice.Domain.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace OnePrice.UI.Models.PostDTOs
 {
 	public class PostEditDTO
 	{
-		[Key]
-		//used to find corresponding entity in database on editing 
+
 		public int Id { get; set; }
 
 		[Required(ErrorMessage = "Title required")]
@@ -22,10 +20,11 @@ namespace OnePrice.UI.Models.PostDTOs
 		public decimal Price { get; set; }
 
 		[Required(ErrorMessage = "Currency required")]
-		public Currency Currency { get; set; }
+		public int CurrencyId { get; set; }
 
 		public string? ImgPath { get; set; }
 
+		[Required(ErrorMessage = "Category required")]
 		public int CategoryId { get; set; }
 		[Required(ErrorMessage = "Select atleast one tag")]
 		public virtual ICollection<int> TagsId { get; set; }

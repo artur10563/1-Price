@@ -1,4 +1,4 @@
-﻿using OnePrice.Domain.Enums;
+﻿using OnePrice.UI.Models.CommonDTOs;
 using System.ComponentModel.DataAnnotations;
 
 namespace OnePrice.UI.Models.PostDTOs
@@ -17,7 +17,7 @@ namespace OnePrice.UI.Models.PostDTOs
 		public decimal Price { get; set; }
 
 		[Required(ErrorMessage = "Currency required")]
-		public Currency Currency { get; set; }
+		public CommonCurrencyDTO Currency { get; set; }
 
 		public string? ImgPath { get; set; }
 

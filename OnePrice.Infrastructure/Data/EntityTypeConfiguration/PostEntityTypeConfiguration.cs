@@ -34,8 +34,6 @@ namespace OnePrice.Infrastructure.Data.EntityTypeConfiguration
 				.HasColumnType("decimal(18, 2)")
 				.IsRequired();
 
-			builder.Property(p => p.Currency)
-				.IsRequired();
 
 
 			builder.Property(p => p.IsActive)

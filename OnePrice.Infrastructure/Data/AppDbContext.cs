@@ -11,6 +11,7 @@ namespace OnePrice.Infrastructure.Data
 		public DbSet<Post> Posts { get; set; }
 		public DbSet<PostTag> PostTags { get; set; }
 		public DbSet<AppUser> Users {get;set;}
+		public DbSet<Currency> Currencies { get; set; }
 
 
 		public AppDbContext(DbContextOptions<AppDbContext> options)

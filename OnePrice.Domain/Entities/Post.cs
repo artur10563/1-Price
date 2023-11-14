@@ -1,5 +1,4 @@
 ﻿using OnePrice.Domain.Common;
-using OnePrice.Domain.Enums;
 
 
 namespace OnePrice.Domain.Entities
@@ -12,11 +11,12 @@ namespace OnePrice.Domain.Entities
 
 		public decimal Price { get; set; }
 
-		public Currency Currency { get; set; }
-
 		public bool IsActive { get; set; }
 
 		public string? ImgPath { get; set; }
+
+		public int CurrencyId { get; set; }
+		public Currency Currency { get; set; }
 
 		public int CategoryId { get; set; }
 		public virtual Category Category { get; set; }

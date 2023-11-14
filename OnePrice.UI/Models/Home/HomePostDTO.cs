@@ -1,4 +1,4 @@
-﻿using OnePrice.Domain.Enums;
+﻿using OnePrice.UI.Models.CommonIdDTOs;
 using System.ComponentModel.DataAnnotations;
 
 namespace OnePrice.UI.Models.Home
@@ -19,7 +19,7 @@ namespace OnePrice.UI.Models.Home
 		public decimal Price { get; set; }
 
 		[Required(ErrorMessage = "Currency required")]
-		public Currency Currency { get; set; }
+		public CommonIdCurrencyDTO Currency { get; set; }
 
 		public string? ImgPath { get; set; }
 	}

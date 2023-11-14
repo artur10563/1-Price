@@ -30,7 +30,7 @@ namespace OnePrice.UI.Controllers
 			_hostingEnvironment = hostingEnvironment;
 		}
 
-		private async Task GetAvailableTags(PostAddViewModel model)
+		private async Task GetAvailableTags(IPostViewModel model) 
 		{
 			model.AvailableTags = await
 				_uow.Tags.GetAll()
@@ -38,12 +38,20 @@ namespace OnePrice.UI.Controllers
 				.ProjectTo<CommonIdTagDTO>(_mapper.ConfigurationProvider)
 				.ToListAsync();
 		}
-		private async Task GetAvailableCategories(PostAddViewModel model)
+		private async Task GetAvailableCategories(IPostViewModel model)
 		{
 			model.AvailableCategories = await
 				_uow.Categories.GetAll()
 				.AsQueryable()
 				.ProjectTo<CommonIdCategoryDTO>(_mapper.ConfigurationProvider)
+				.ToListAsync();
+		}
+		private async Task GetAvailableCurrencies(IPostViewModel model)
+		{
+			model.AvalaibleCurrencies = await
+				_uow.Currencies.GetAll()
+				.AsQueryable()
+				.ProjectTo<CommonIdCurrencyDTO>(_mapper.ConfigurationProvider)
 				.ToListAsync();
 		}
 
@@ -55,6 +63,7 @@ namespace OnePrice.UI.Controllers
 
 			await GetAvailableTags(model);
 			await GetAvailableCategories(model);
+			await GetAvailableCurrencies(model);
 
 			var errorMessage = TempData["ErrorMessage"] as string;
 			if (!string.IsNullOrEmpty(errorMessage))
@@ -79,6 +88,7 @@ namespace OnePrice.UI.Controllers
 			{
 				await GetAvailableTags(postViewModel);
 				await GetAvailableCategories(postViewModel);
+				await GetAvailableCurrencies(postViewModel);
 				return View(postViewModel);
 			}
 
@@ -194,20 +204,10 @@ namespace OnePrice.UI.Controllers
 
 			PostEditViewModel model = new PostEditViewModel();
 
-			model.AvailableTags = await
-				_uow.Tags.GetAll()
-				.AsQueryable()
-				.ProjectTo<CommonIdTagDTO>(_mapper.ConfigurationProvider)
-				.ToListAsync();
+			await GetAvailableTags(model);
+			await GetAvailableCategories(model);
+			await GetAvailableCurrencies(model);
 
-
-			model.AvailableCategories = await
-				_uow.Categories.GetAll()
-				.AsQueryable()
-				.ProjectTo<CommonIdCategoryDTO>(_mapper.ConfigurationProvider)
-				.ToListAsync();
-
-			//PostAddDTO
 			model.Post = _mapper.Map<PostEditDTO>(post);
 
 			if (TempData.ContainsKey("EditStatus"))
@@ -222,18 +222,9 @@ namespace OnePrice.UI.Controllers
 		{
 			if (!ModelState.IsValid)
 			{
-				postViewModel.AvailableTags = await
-					_uow.Tags.GetAll()
-					.AsQueryable()
-					.ProjectTo<CommonIdTagDTO>(_mapper.ConfigurationProvider)
-					.ToListAsync();
-
-
-				postViewModel.AvailableCategories = await
-					_uow.Categories.GetAll()
-					.AsQueryable()
-					.ProjectTo<CommonIdCategoryDTO>(_mapper.ConfigurationProvider)
-					.ToListAsync();
+				await GetAvailableTags(postViewModel);
+				await GetAvailableCategories(postViewModel);
+				await GetAvailableCurrencies(postViewModel);
 
 				return View(postViewModel);
 			}
@@ -252,7 +243,7 @@ namespace OnePrice.UI.Controllers
 				.ToList());
 
 			//Throws error with ToListAsync()
-			toEdit.Tags = 
+			toEdit.Tags =
 				editedPost.TagsId
 				.AsQueryable()
 				.Select(tagId => new PostTag { PostId = toEdit.Id, TagId = tagId })

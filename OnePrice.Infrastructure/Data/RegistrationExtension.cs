@@ -24,6 +24,7 @@ namespace OnePrice.Infrastructure.Data
 			serviceCollection.AddScoped<ICategoryRepository, CategoryRepository>();
 			serviceCollection.AddScoped<IPostRepository, PostRepository>();
 			serviceCollection.AddScoped<IAppUserRepository, AppUserRepository>();
+			serviceCollection.AddScoped<ICurrencyRepository, CurrencyRepository>();
 		}
 	}
 }

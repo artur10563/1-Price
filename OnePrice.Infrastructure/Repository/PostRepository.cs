@@ -18,17 +18,19 @@ namespace OnePrice.Infrastructure.Repository
 		public async Task<Post?> GetByIdFullAsync(int id)
 		{
 			return await _context.Posts
+				.Include(p => p.Currency)
 				.Include(post => post.Tags)
 					.ThenInclude(post => post.Tag)
-				.Include(post=>post.Category)
+				.Include(post => post.Category)
 				//.Include(post=>post.Comments)
-				.Include(post=>post.Author)
+				.Include(post => post.Author)
 				.FirstOrDefaultAsync(p => p.Id == id);
 		}
 
 		public async Task<Post?> GetByIdWithTagsAsync(int id)
 		{
 			return await _context.Posts
+				.Include(post => post.Currency)
 				.Include(post => post.Tags)
 				.FirstOrDefaultAsync(p => p.Id == id);
 		}

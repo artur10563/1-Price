@@ -46,6 +46,17 @@ namespace OnePrice.Infrastructure.Data
 
 						context.SaveChanges();
 					}
+
+					if (context.Currencies.Count() == 0)
+					{
+						context.Currencies.AddRange(
+							new Currency { FullName = "Dollar", Symbol = '$', Code = "USD" },
+							new Currency { FullName = "Hryvnia", Symbol = '₴', Code = "UAH"},
+							new Currency { FullName = "Euro", Symbol = '€', Code = "EUR" },
+							new Currency { FullName = "Yen", Symbol = '¥', Code = "JPY" }
+							);
+						context.SaveChanges();
+					}
 				}
 				catch (Exception ex)
 				{
