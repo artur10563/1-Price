@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\img\category\" />
+    <Folder Include="wwwroot\img\post\" />
     <Folder Include="wwwroot\img\profile\" />
   </ItemGroup>
 

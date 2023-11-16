@@ -131,10 +131,8 @@ namespace OnePrice.UI.Controllers
 						}
 					case ImageStatus.Success:
 						{
-							string relativePath = "img/category";
+							string relativePath = "img/post";
 
-							//need to change to  E-SHOP_\\E-SHOP.Infrastructure\\img/category
-							//E-SHOP_\\E-SHOP.UI\\wwwroot + img/category
 							string savePath = Path.Combine(_hostingEnvironment.WebRootPath, relativePath);
 							string fileName = await IFormFileHelper.SaveAsync(image, Guid.NewGuid().ToString(), savePath);
 							newPost.ImgPath = "/" + relativePath + "/" + fileName;
@@ -275,8 +273,9 @@ namespace OnePrice.UI.Controllers
 						}
 					case ImageStatus.Success:
 						{
-							string relativePath = "img/category";
+							string relativePath = "img/post";
 							string savePath = Path.Combine(_hostingEnvironment.WebRootPath, relativePath);
+							
 							string name = "";
 							if (!string.IsNullOrEmpty(toEdit.ImgPath))
 							{
