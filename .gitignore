@@ -4,7 +4,11 @@
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
 #images from web-ui
-OnePrice.UI/wwwroot/img/*
+OnePrice.UI/wwwroot/img/category/*
+OnePrice.UI/wwwroot/img/profile/*
+OnePrice.UI/wwwroot/img/post/*
+
+
 
 # User-specific files
 *.rsuser
