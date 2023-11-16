@@ -1,4 +1,5 @@
-﻿using OnePrice.UI.Models.CommonDTOs;
+﻿using OnePrice.UI.Models.CommentDTOs;
+using OnePrice.UI.Models.CommonDTOs;
 
 
 namespace OnePrice.UI.Models.PostDTOs
@@ -26,7 +27,7 @@ namespace OnePrice.UI.Models.PostDTOs
 		public CommonCategoryDTO Category { get; set; }
         public List<CommonTagDTO> Tags { get; set; }
 
-        //public List<CommentsDTO> Comments { get; set; }
+        public List<CommentDisplayDTO> Comments { get; set; }
 
         public CommonAppUserDTO Author {get;set;}
     }

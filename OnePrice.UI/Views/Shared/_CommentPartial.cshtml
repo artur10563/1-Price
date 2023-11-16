@@ -1,0 +1,18 @@
+﻿@using OnePrice.UI.Models.CommentDTOs;
+@model CommentDisplayDTO
+
+
+<div class="comment bg-off-white rounded p-2 mb-2">
+	<div class="d-flex align-items-center">
+
+		<div class="user-profile-picture mr-2">
+			<img src="@Model.Author.ImgPath" class="img-fluid rounded-circle">
+		</div>
+
+		<div>
+			<p class="mb-0"><strong>@Model.Author.Nickname</strong> <small class="text-muted">- @Model.CreatedAt.ToLongDateString(), @Model.CreatedAt.ToLongTimeString()</small></p>
+		</div>
+	</div>
+
+	<p class="mb-0 mt-2">@Model.Content</p>
+</div>

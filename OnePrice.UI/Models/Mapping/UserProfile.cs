@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using OnePrice.Domain.Entities;
+using OnePrice.UI.Models.CommentDTOs;
 using OnePrice.UI.Models.CommonDTOs;
 using OnePrice.UI.Models.ProfileDTOs;
 
@@ -15,6 +16,8 @@ namespace OnePrice.UI.Models.Mapping
 				.ForMember(dest => dest.ImgPath, opt => opt.Ignore());
 
 			CreateMap<AppUser, ProfileIndexDTO>().ReverseMap();
+
+			CreateMap<AppUser, CommentAppUserDTO>();
 		}
 	}
 }

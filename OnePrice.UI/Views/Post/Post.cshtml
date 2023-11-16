@@ -29,13 +29,13 @@
 					<img src=@Model.Author.ImgPath class="img-fluid rounded-circle">
 				</div>
 
-				
+
 				<div class="user-details">
 					<p class="mb-1"><strong>@Model.Author.Nickname</strong></p>
 					<p class="mb-0 text-muted">User since @Model.Author.CreatedAt.ToLongDateString()</p>
 				</div>
 
-				<!-- Buttons -->
+
 			</div>
 			<div class="bg-off-white rounded-3 m-2">
 				<div class="mb-2">
@@ -60,7 +60,7 @@
 				}
 			</div>
 
-			<!-- Description -->
+
 			<div class=" m2 p-2">
 				<h3 class="m-2 p-2">Description</h3>
 				<p class="p-2 m-2 overflow-hidden text-break">
@@ -72,31 +72,21 @@
 		</div>
 
 		<div id="comments" class="bg-white rounded p-2 m-1">
-			<!-- Comment Input -->
+
 			<div class="mb-3 bg-off-white">
 				<h3 class="p-2 m-2">
-					Leave a comment</h5>
-					<textarea class="form-control comment-input m-3" id="commentInput" rows="1" placeholder="Write your comment..."></textarea>
-
-					@*redirect to add comment?*@
-					<button class="btn btn-primary mb-3 mt-3" onclick="">Submit</button>
+					Leave a comment
+				</h3>
+				<textarea class="form-control comment-input m-3" id="commentInput" rows="1" placeholder="Write your comment..."></textarea>
+				<div id="validationErrors"></div>
+				<button type="submit" id="submitCommentBtn" class="btn btn-primary m-3" onclick="">Submit</button>
 			</div>
 
-			<!-- Example comment -->
-			<div class="comment bg-off-white rounded p-2 mb-2">
-				<div class="d-flex align-items-center">
-
-					<div class="user-profile-picture mr-2">
-						@*Replace with USER.ImgPath*@
-						<img src="@Model.ImgPath" class="img-fluid rounded-circle">
-					</div>
-
-					<div>
-						<p class="mb-0"><strong>User1</strong> <small class="text-muted">- DAY MONTH YEAR, HH:MM</small></p>
-					</div>
-				</div>
-
-				<p class="mb-0 mt-2">COMMENT_TEXT</p>
+			<div id="commentsContainer" class="mb-3 bg-off-white">
+				@foreach (var comment in Model.Comments)
+				{
+					await Html.RenderPartialAsync("_CommentPartial", comment);
+				}
 			</div>
 
 		</div>
@@ -104,3 +94,45 @@
 
 	</div>
 </div>
+
+@section Scripts {
+	<script>
+		$(document).ready(function () {
+			$("#submitCommentBtn").click(function () {
+				var commentText = $("#commentInput").val();
+				var commentData = {
+					PostId: @Model.Id,
+					Content: commentText
+				};
+				$.ajax({
+					url: '@Url.Action("AddComment", "Comment")',
+					type: 'POST',
+					data: commentData,
+					success: function (result) {
+						$("#commentsContainer").append(result);
+						$("#commentInput").val('');
+					},
+					//Error is corectly displayed at console, but #validationErrors is empty
+					error: function (xhr) {
+						console.log(xhr.responseJSON); // Log the entire responseJSON object
+						if (xhr.responseJSON && xhr.responseJSON.Errors) {
+							// Handle validation errors
+							var errorsHtml = xhr.responseJSON.Errors.map(function (error) {
+								return '<li>' + error + '</li>';
+							}).join('');
+							$("#validationErrors").html('<ul>' + errorsHtml + '</ul>');
+						} else {
+							// Handle other errors or non-JSON responses
+							alert('An error occurred while loading comments.');
+						}
+					}
+
+				}); 
+			});
+		});
+	</script>
+}
+
+
+
+
