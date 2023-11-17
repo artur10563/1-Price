@@ -24,6 +24,7 @@ namespace OnePrice.Infrastructure.Repository
 				.Include(post => post.Category)
 				.Include(post => post.Comments
 					.OrderByDescending(c => c.CreatedAt))
+					.ThenInclude(c=>c.Author)
 				.Include(post => post.Author)
 				.FirstOrDefaultAsync(p => p.Id == id);
 		}
