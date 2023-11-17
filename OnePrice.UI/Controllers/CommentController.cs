@@ -19,32 +19,36 @@ namespace OnePrice.UI.Controllers
 		}
 
 		[HttpPost]
-		[Authorize]
 		[ServiceFilter(typeof(EnsureUserExistsAttribute))]
 		public async Task<IActionResult> AddComment(CommentAddDTO commentData)
 		{
+			if (!User.Identity.IsAuthenticated) return BadRequest(new
+			{
+				Errors = new[] { "Log in to leave a comment" }
+			});
+
 			if (!ModelState.IsValid)
 			{
 				var errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage));
-				return  BadRequest(new { Errors = errors });
+				return BadRequest(new
+				{
+					Errors = errors
+				});
 			}
-			return Ok("new comment");
 
-			////need to add validation (remake as model?)
-			//var email = User.FindFirst("email").Value;
-			//var author = await _uow.Users.GetByEmailAsync(email);
+			var email = User.FindFirst("email").Value;
+			var author = await _uow.Users.GetByEmailAsync(email);
 
-			//Comment comment = new Comment()
-			//{
-			//	Author = author,
-			//	PostId = postId,
-			//	Content = content,
-			//};
+			//Comment for database
+			var comment = _mapper.Map<Comment>(commentData);
+			comment.Author = author;
 
-			//CommentDisplayDTO newComment = _mapper.Map<CommentDisplayDTO>(comment);
+			await _uow.Comments.AddAsync(comment);
+			await _uow.SaveChangesAsync();
 
-			//await _uow.SaveChangesAsync();
-			//return PartialView("_CommentPartial", newComment);
+			var newComment = _mapper.Map<CommentDisplayDTO>(comment);
+
+			return PartialView("_CommentPartial", newComment);
 		}
 	}
 }

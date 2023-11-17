@@ -13,6 +13,7 @@ namespace OnePrice.Application.Repository
 		IPostRepository Posts { get; }
 		IAppUserRepository Users { get; }
 		ICurrencyRepository Currencies { get; }
+		ICommentRepository Comments { get; }
 
 		int SaveChanges();
 		Task<int> SaveChangesAsync();

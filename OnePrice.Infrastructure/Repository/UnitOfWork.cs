@@ -14,21 +14,19 @@ namespace OnePrice.Infrastructure.Repository
 		private readonly AppDbContext _context;
 
 		public ITagRepository Tags { get; private set; }
-
 		public ICategoryRepository Categories { get; private set; }
-
 		public IPostRepository Posts { get; private set; }
-
 		public IAppUserRepository Users { get; private set; }
-
 		public ICurrencyRepository Currencies { get; private set; }
+		public ICommentRepository Comments { get; private set; }
 
 		public UnitOfWork(AppDbContext context,
 			ITagRepository TagRepository,
 			ICategoryRepository CategoryRepository,
 			IPostRepository PostRepository,
 			IAppUserRepository UserRepository,
-			ICurrencyRepository CurrencyRepository)
+			ICurrencyRepository CurrencyRepository,
+			ICommentRepository CommentRepository)
 		{
 			_context = context;
 			Tags = TagRepository ?? throw new ArgumentNullException(nameof(TagRepository));
@@ -36,6 +34,7 @@ namespace OnePrice.Infrastructure.Repository
 			Posts = PostRepository ?? throw new ArgumentNullException(nameof(PostRepository));
 			Users = UserRepository ?? throw new ArgumentNullException(nameof(UserRepository));
 			Currencies = CurrencyRepository ?? throw new ArgumentNullException(nameof(CurrencyRepository));
+			Comments = CommentRepository ?? throw new ArgumentNullException(nameof(CommentRepository));
 		}
 
 		public void Dispose()

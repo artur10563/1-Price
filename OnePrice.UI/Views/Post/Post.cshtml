@@ -78,7 +78,7 @@
 					Leave a comment
 				</h3>
 				<textarea class="form-control comment-input m-3" id="commentInput" rows="1" placeholder="Write your comment..."></textarea>
-				<div id="validationErrors"></div>
+				<div id="validationErrors" class="text-danger bg-off-white m-3"></div>
 				<button type="submit" id="submitCommentBtn" class="btn btn-primary m-3" onclick="">Submit</button>
 			</div>
 
@@ -108,22 +108,21 @@
 					url: '@Url.Action("AddComment", "Comment")',
 					type: 'POST',
 					data: commentData,
+
 					success: function (result) {
-						$("#commentsContainer").append(result);
+						$("#commentsContainer").prepend(result);
 						$("#commentInput").val('');
+						$("#validationErrors").empty();
 					},
-					//Error is corectly displayed at console, but #validationErrors is empty
+					
 					error: function (xhr) {
-						console.log(xhr.responseJSON); // Log the entire responseJSON object
-						if (xhr.responseJSON && xhr.responseJSON.Errors) {
-							// Handle validation errors
-							var errorsHtml = xhr.responseJSON.Errors.map(function (error) {
-								return '<li>' + error + '</li>';
+						if (xhr.responseJSON && xhr.responseJSON.errors) {
+							var errorsHtml = xhr.responseJSON.errors.map(function (error) {
+								return '<p>' + error + '</p>';
 							}).join('');
-							$("#validationErrors").html('<ul>' + errorsHtml + '</ul>');
+							$("#validationErrors").html(errorsHtml);
 						} else {
-							// Handle other errors or non-JSON responses
-							alert('An error occurred while loading comments.');
+							$("#validationErrors").html("Could not post a comment. Try again later.");
 						}
 					}
 
