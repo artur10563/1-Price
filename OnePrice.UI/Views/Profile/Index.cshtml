@@ -4,3 +4,27 @@
 	ViewData["Title"] = "Profile";
 }
 
+<div class="row">
+    
+    <div class="img-container p-0 m-2" style="width:250px;height:250px;">
+        <img class="img-fluid" src=@Model.ImgPath alt="Profile Image">
+    </div>
+
+    <div class="col-md-6">
+        <p>@Model.Nickname</p>
+    </div>
+
+    <h1 class="mt-4">Your posts</h1>
+    <hr />
+
+    <div class="container-lg mt-5 col-md-12">
+
+        @foreach (var p in Model.Posts)
+        {
+            await Html.RenderPartialAsync("_LongPostPartial", p);
+        }
+
+    </div>
+
+</div>
+

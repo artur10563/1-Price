@@ -118,7 +118,7 @@ namespace OnePrice.UI.Controllers
 			var email = User.FindFirst("email").Value;
 			var user = await _uow.Users.GetByEmailWithPostsAsync(email);
 			var userDTO = _mapper.Map<AppUser, ProfileIndexDTO>(user);
-
+			Console.WriteLine(1);
 			return View(userDTO);
 		}
 	}
