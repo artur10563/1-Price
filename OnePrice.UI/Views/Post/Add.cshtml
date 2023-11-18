@@ -62,7 +62,7 @@
 				<div class="form-group">
 					<label for="currencySelect">Currency</label>
 					<select class="form-control" asp-for="Post.CurrencyId"
-							asp-items="new SelectList(Model.AvalaibleCurrencies, nameof(CommonIdCurrencyDTO.Id),nameof(CommonIdCurrencyDTO.FullName))">
+							asp-items="new SelectList(Model.AvailableCurrencies, nameof(CommonIdCurrencyDTO.Id),nameof(CommonIdCurrencyDTO.FullName))">
 					</select>
 					<span asp-validation-for="Post.CurrencyId" class="text-danger"></span>
 				</div>

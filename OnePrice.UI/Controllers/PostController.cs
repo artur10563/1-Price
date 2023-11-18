@@ -12,6 +12,9 @@ using Microsoft.EntityFrameworkCore;
 using X.PagedList;
 using Microsoft.AspNetCore.Authorization;
 using OnePrice.UI.Extensions;
+using OnePrice.UI.Helpers;
+using OnePrice.UI.Models.CommonDTOs;
+using Humanizer;
 
 namespace OnePrice.UI.Controllers
 {
@@ -22,37 +25,14 @@ namespace OnePrice.UI.Controllers
 		private readonly IMapper _mapper;
 		private readonly AppDbContext _context;
 		private readonly IWebHostEnvironment _hostingEnvironment;
-		public PostController(IUnitOfWork uow, IMapper mapper, AppDbContext context, IWebHostEnvironment hostingEnvironment)
+		private readonly AvailableDataService _availableDataService;
+		public PostController(IUnitOfWork uow, IMapper mapper, AppDbContext context, IWebHostEnvironment hostingEnvironment, AvailableDataService availableDataService)
 		{
 			_uow = uow;
 			_mapper = mapper;
 			_context = context;
 			_hostingEnvironment = hostingEnvironment;
-		}
-
-		private async Task GetAvailableTags(IPostViewModel model) 
-		{
-			model.AvailableTags = await
-				_uow.Tags.GetAll()
-				.AsQueryable()
-				.ProjectTo<CommonIdTagDTO>(_mapper.ConfigurationProvider)
-				.ToListAsync();
-		}
-		private async Task GetAvailableCategories(IPostViewModel model)
-		{
-			model.AvailableCategories = await
-				_uow.Categories.GetAll()
-				.AsQueryable()
-				.ProjectTo<CommonIdCategoryDTO>(_mapper.ConfigurationProvider)
-				.ToListAsync();
-		}
-		private async Task GetAvailableCurrencies(IPostViewModel model)
-		{
-			model.AvalaibleCurrencies = await
-				_uow.Currencies.GetAll()
-				.AsQueryable()
-				.ProjectTo<CommonIdCurrencyDTO>(_mapper.ConfigurationProvider)
-				.ToListAsync();
+			_availableDataService = availableDataService;
 		}
 
 		[HttpGet]
@@ -61,9 +41,9 @@ namespace OnePrice.UI.Controllers
 		{
 			PostAddViewModel model = new PostAddViewModel();
 
-			await GetAvailableTags(model);
-			await GetAvailableCategories(model);
-			await GetAvailableCurrencies(model);
+			model.AvailableTags = _availableDataService.GetAvailableTags().ToList();
+			model.AvailableCategories = _availableDataService.GetAvailableCategories().ToList();
+			model.AvailableCurrencies = _availableDataService.GetAvailableCurrencies().ToList();
 
 			var errorMessage = TempData["ErrorMessage"] as string;
 			if (!string.IsNullOrEmpty(errorMessage))
@@ -86,9 +66,9 @@ namespace OnePrice.UI.Controllers
 
 			if (!ModelState.IsValid)
 			{
-				await GetAvailableTags(postViewModel);
-				await GetAvailableCategories(postViewModel);
-				await GetAvailableCurrencies(postViewModel);
+				postViewModel.AvailableTags = _availableDataService.GetAvailableTags().ToList();
+				postViewModel.AvailableCategories = _availableDataService.GetAvailableCategories().ToList();
+				postViewModel.AvailableCurrencies = _availableDataService.GetAvailableCurrencies().ToList();
 				return View(postViewModel);
 			}
 
@@ -151,33 +131,45 @@ namespace OnePrice.UI.Controllers
 
 		[HttpGet]
 		public async Task<IActionResult> Posts(
-			string? category,
-			string? search,
+			string search,
+			string category,
+			string currency,
+			string sortOrder,
+			string sortField,
+			int? minPrice,
+			int? maxPrice,
 			int page = 1,
 			int pageSize = 5)
 		{
 
-			var posts =
-				 _context.Posts
-				.Where(p => p.IsActive == true)
-				.Where(p => p.Category.Name.CompareTo(category) == 0 || String.IsNullOrWhiteSpace(category))
-				.Where(p =>
-						String.IsNullOrWhiteSpace(search) || (
-						p.Title.ToLower().Contains(search.ToLower())) ||
-						p.Description.ToLower().Contains(search.ToLower()) ||
-						p.Id.ToString() == search
-						)
+			var posts = _uow.Posts.GetFiltered(search, category, currency, minPrice, maxPrice, sortField, sortOrder)
+				.AsQueryable()
 				.ProjectTo<PostDisplayDTO>(_mapper.ConfigurationProvider);
-
 
 
 			if (page < 1) page = 1;
 			if (pageSize < 5) pageSize = 5;
 			if (pageSize > 50) pageSize = 50;
 
-			ViewData["Category"] = category;
-			ViewData["Search"] = search;
-			return View(await posts.ToPagedListAsync(page, pageSize));
+			var model = new SearchPostDisplayViewModel()
+			{
+				Posts = await posts.ToPagedListAsync(page, pageSize),
+				Filters = new()
+				{
+					AvailableCategories = _availableDataService.GetAvailableCategories().ToList(),
+					AvailableCurrencies = _availableDataService.GetAvailableCurrencies().ToList(),
+					Search = search,
+					Category = category,
+					Currency = currency,
+					MaxPrice = maxPrice,
+					MinPrice = minPrice,
+					SortField = sortField,
+					SortOrder = sortOrder
+				}
+			};
+
+			return View(model);
+
 		}
 
 
@@ -202,9 +194,10 @@ namespace OnePrice.UI.Controllers
 
 			PostEditViewModel model = new PostEditViewModel();
 
-			await GetAvailableTags(model);
-			await GetAvailableCategories(model);
-			await GetAvailableCurrencies(model);
+
+			model.AvailableTags = _availableDataService.GetAvailableTags().ToList();
+			model.AvailableCategories = _availableDataService.GetAvailableCategories().ToList();
+			model.AvailableCurrencies = _availableDataService.GetAvailableCurrencies().ToList();
 
 			model.Post = _mapper.Map<PostEditDTO>(post);
 
@@ -220,9 +213,10 @@ namespace OnePrice.UI.Controllers
 		{
 			if (!ModelState.IsValid)
 			{
-				await GetAvailableTags(postViewModel);
-				await GetAvailableCategories(postViewModel);
-				await GetAvailableCurrencies(postViewModel);
+
+				postViewModel.AvailableTags = _availableDataService.GetAvailableTags().ToList();
+				postViewModel.AvailableCategories = _availableDataService.GetAvailableCategories().ToList();
+				postViewModel.AvailableCurrencies = _availableDataService.GetAvailableCurrencies().ToList();
 
 				return View(postViewModel);
 			}
@@ -275,7 +269,7 @@ namespace OnePrice.UI.Controllers
 						{
 							string relativePath = "img/post";
 							string savePath = Path.Combine(_hostingEnvironment.WebRootPath, relativePath);
-							
+
 							string name = "";
 							if (!string.IsNullOrEmpty(toEdit.ImgPath))
 							{

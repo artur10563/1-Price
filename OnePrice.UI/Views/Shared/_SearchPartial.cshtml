@@ -1,20 +1,77 @@
-﻿@*string is search term, used to store it between pages*@
-@model string
+﻿@using OnePrice.UI.Models.CommonDTOs;
+@using OnePrice.UI.Models.CommonIdDTOs;
 
-@{
-	string searchValue = !string.IsNullOrEmpty(Model) ? Model : "";
-}
+@model SearchDTO
+
 
 <form method="get" asp-controller="Post" asp-action="Posts">
 	<div class="input-group">
-		<input class="form-control" type="search" name="search"
-			   value="@searchValue"
-			   placeholder="@(!string.IsNullOrEmpty(Model) ? "" : "Find posts by name or Id")"/>
+		<input asp-for="@Model.Search" class="form-control" type="search"
+			   placeholder="Find posts by name or Id" />
 
 		<button type="submit" class="btn btn-outline-secondary">
 			<i class="fas fa-search"></i>
 		</button>
 
 	</div>
+
+	<div name="filters" class="container-md col-md-12 row">
+
+		<div class="form-group col-md-3">
+			<label asp-for="Category">Category</label>
+			<select class="form-control" asp-for="Category"
+					asp-items="new SelectList(Model.AvailableCategories, nameof(CommonIdTagDTO.Name), nameof(CommonIdTagDTO.Name), selectedValue:Model.Category)">
+				<option value="">All</option>
+			</select>
+		</div>
+
+		<div class="form-group col-md-3">
+			<label asp-for="Currency">Currency</label>
+			<select class="form-control" asp-for="Currency"
+					asp-items="new SelectList(Model.AvailableCurrencies, nameof(CommonIdCurrencyDTO.FullName), nameof(CommonIdCurrencyDTO.FullName), selectedValue:Model.Currency)">
+				<option value="">All</option>
+			</select>
+		</div>
+
+		<div class="form-group row col-md-4">
+
+			<div class="form-group col-6">
+				<label asp-for="MinPrice">MIN price</label>
+				<input asp-for="MinPrice" type="number" class="form-control" placeholder="MIN price">
+			</div>
+			<div class="form-group col-6">
+				<label asp-for="MaxPrice">MAX price</label>
+				<input asp-for="MaxPrice" type="number" class="form-control" placeholder="MAX price">
+			</div>
+
+		</div>
+
+		<div class="form-group col-md-2">
+			<label asp-for="SortField">Sort by</label>
+			<div class="input-group">
+				<select asp-for="SortField" class="form-control">
+					<option value="CreatedAt">Created</option>
+					<option value="Price">Price</option>
+					<option value="Name">Name</option>
+					<option value="Currency">Currency</option>
+				</select>
+
+				<div class="input-group-append">
+					<button type="button" class="btn btn-outline-secondary" id="sortOrderToggle">
+						<i id="sortOrderIcon" class="fas fa-sort"></i>
+					</button>
+				</div>
+
+				<input type="hidden" asp-for="SortOrder" id="sortOrderInput" />
+			</div>
+		</div>
+
+	</div>
 </form>
+
+
+@*For some reason not working when placed inside @section Scripts*@
+<script src="~/js/sortSwap.js"></script>
+
+
 

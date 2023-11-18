@@ -2,10 +2,10 @@
 
 namespace OnePrice.UI.Models.PostDTOs
 {
-	public interface IPostViewModel
+	public interface IAvailableDataDTO
 	{
 		ICollection<CommonIdTagDTO>? AvailableTags { get; set; }
 		ICollection<CommonIdCategoryDTO>? AvailableCategories { get; set; }
-		ICollection<CommonIdCurrencyDTO>? AvalaibleCurrencies { get; set; }
+		ICollection<CommonIdCurrencyDTO>? AvailableCurrencies { get; set; }
 	}
 }

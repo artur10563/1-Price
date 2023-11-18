@@ -8,6 +8,7 @@ using OnePrice.UI.Models.Home;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using OnePrice.UI.Helpers;
 
 namespace OnePrice.UI.Controllers
 {
@@ -15,13 +16,16 @@ namespace OnePrice.UI.Controllers
 	{
 		private readonly IUnitOfWork _uow;
 		private readonly IMapper _mapper;
+		private readonly AvailableDataService _availableDataService;
 
 		public HomeController(
 			IUnitOfWork uow,
-			IMapper mapper)
+			IMapper mapper,
+			AvailableDataService availableDataService)
 		{
 			_uow = uow;
 			_mapper = mapper;
+			_availableDataService = availableDataService;
 		}
 
 		public async Task<IActionResult> Index()
@@ -43,10 +47,18 @@ namespace OnePrice.UI.Controllers
 				.ProjectTo<CommonCategoryDTO>(_mapper.ConfigurationProvider)
 				.ToListAsync();
 
+			HomeViewModel homeViewModel = new()
+			{
+				Categories = categories,
+				Posts = posts,
+				Filters = new()
+				{
 
-
-			HomeViewModel homeViewModel = new() { Categories = categories, Posts = posts };
-
+					AvailableTags = _availableDataService.GetAvailableTags().ToList(),
+					AvailableCategories = _availableDataService.GetAvailableCategories().ToList(),
+					AvailableCurrencies = _availableDataService.GetAvailableCurrencies().ToList(),
+				}
+			};
 			return View(homeViewModel);
 		}
 

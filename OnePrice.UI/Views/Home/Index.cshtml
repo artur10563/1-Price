@@ -9,7 +9,7 @@
 }
 
 @{
-	await Html.RenderPartialAsync("_SearchPartial", "");
+	await Html.RenderPartialAsync("_SearchPartial", Model.Filters);
 }
 
 <div class="text-center mb-3 mt-3">

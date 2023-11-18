@@ -3,11 +3,7 @@ using OnePrice.Domain.Entities;
 using OnePrice.Infrastructure.Data;
 using OnePrice.Infrastructure.Repository.Common;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace OnePrice.Infrastructure.Repository
 {
@@ -24,7 +20,7 @@ namespace OnePrice.Infrastructure.Repository
 				.Include(post => post.Category)
 				.Include(post => post.Comments
 					.OrderByDescending(c => c.CreatedAt))
-					.ThenInclude(c=>c.Author)
+					.ThenInclude(c => c.Author)
 				.Include(post => post.Author)
 				.FirstOrDefaultAsync(p => p.Id == id);
 		}
@@ -36,5 +32,75 @@ namespace OnePrice.Infrastructure.Repository
 				.Include(post => post.Tags)
 				.FirstOrDefaultAsync(p => p.Id == id);
 		}
+
+		public IEnumerable<Post>? GetFiltered(
+			string search = "",
+			string category = "",
+			string currency = "",
+			int? minPrice = null,
+			int? maxPrice = null,
+			string sortField = "",
+			string sortOrder = "asc")
+		{
+			var query = _context.Posts.Where(p => p.IsActive);
+
+			if (!string.IsNullOrEmpty(category))
+				query = query.Where(p => p.Category.Name.ToLower() == category.ToLower());
+
+
+			if (!string.IsNullOrWhiteSpace(search))
+			{
+				search = search.ToLower();
+				query = query.Where(p =>
+					p.Title.ToLower().Contains(search) ||
+					p.Description.ToLower().Contains(search) ||
+					p.Id.ToString() == search);
+			}
+
+			if (!string.IsNullOrEmpty(currency))
+				query = query.Where(p => p.Currency.FullName.ToLower() == currency.ToLower());
+
+
+			if (minPrice != null || maxPrice != null)
+			{
+				if (minPrice != null)
+				{
+					query = query.Where(p => p.Price >= minPrice);
+				}
+
+				if (maxPrice != null)
+				{
+					query = query.Where(p => p.Price <= maxPrice);
+				}
+			}
+
+			//Sorting
+			if (!string.IsNullOrEmpty(sortField))
+			{
+				sortOrder = sortOrder == null ? "asc" : sortOrder;
+				switch (sortField.ToLower())
+				{
+					case "createdat":
+						query = sortOrder.ToLower() == "desc" ? query.OrderByDescending(p => p.CreatedAt) : query.OrderBy(p => p.CreatedAt);
+						break;
+					case "price":
+						query = sortOrder.ToLower() == "desc" ? query.OrderByDescending(p => p.Price) : query.OrderBy(p => p.Price);
+						break;
+					case "name":
+						query = sortOrder.ToLower() == "desc" ? query.OrderByDescending(p => p.Title) : query.OrderBy(p => p.Title);
+						break;
+					case "currency":
+						query = sortOrder.ToLower() == "desc" ? query.OrderByDescending(p => p.Currency) : query.OrderBy(p => p.Currency.Symbol);
+						break;
+				}
+			}
+			return query;
+
+		}
+
+
+
+
+
 	}
 }

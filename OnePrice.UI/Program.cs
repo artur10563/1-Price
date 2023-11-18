@@ -1,5 +1,6 @@
 using OnePrice.Infrastructure.Data;
 using OnePrice.UI.Extensions;
+using OnePrice.UI.Helpers;
 using OnePrice.UI.Middlewares;
 
 
@@ -17,6 +18,7 @@ builder.Services.AddAutoMapperStorage();
 builder.Services.AddLogging();
 builder.Services.AddScoped<EnsureUserExistsAttribute>();
 builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
+builder.Services.AddScoped<AvailableDataService>();
 
 var app = builder.Build();
 
