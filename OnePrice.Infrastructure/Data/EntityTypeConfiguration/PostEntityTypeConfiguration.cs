@@ -47,13 +47,13 @@ namespace OnePrice.Infrastructure.Data.EntityTypeConfiguration
 			builder.HasOne(p => p.Category)
 				.WithMany(c => c.Posts)
 				.HasForeignKey(p => p.CategoryId)
-				.OnDelete(DeleteBehavior.NoAction);
+				.OnDelete(DeleteBehavior.Restrict);
 
 
 			builder.HasOne(p => p.Author)
 			.WithMany(u => u.Posts)
 			.HasForeignKey(p => p.AuthorId)
-			.OnDelete(DeleteBehavior.NoAction);
+			.OnDelete(DeleteBehavior.Cascade);
 
 
 

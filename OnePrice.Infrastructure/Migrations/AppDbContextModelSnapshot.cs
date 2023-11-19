@@ -287,13 +287,13 @@ namespace OnePrice.Infrastructure.Migrations
                     b.HasOne("OnePrice.Domain.Entities.AppUser", "Author")
                         .WithMany("Comments")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("OnePrice.Domain.Entities.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Author");
@@ -306,19 +306,19 @@ namespace OnePrice.Infrastructure.Migrations
                     b.HasOne("OnePrice.Domain.Entities.AppUser", "Author")
                         .WithMany("Posts")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("OnePrice.Domain.Entities.Category", "Category")
                         .WithMany("Posts")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("OnePrice.Domain.Entities.Currency", "Currency")
                         .WithMany("Posts")
                         .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Author");
@@ -339,7 +339,7 @@ namespace OnePrice.Infrastructure.Migrations
                     b.HasOne("OnePrice.Domain.Entities.Tag", "Tag")
                         .WithMany("Posts")
                         .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Post");

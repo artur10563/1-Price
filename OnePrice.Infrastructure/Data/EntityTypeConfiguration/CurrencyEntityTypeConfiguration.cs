@@ -37,7 +37,8 @@ namespace OnePrice.Infrastructure.Data.EntityTypeConfiguration
 
 			builder.HasMany(c => c.Posts)
 				.WithOne(p => p.Currency)
-				.HasForeignKey(p => p.CurrencyId);
+				.HasForeignKey(p => p.CurrencyId)
+				.OnDelete(DeleteBehavior.Restrict);
 		}
 	}
 }

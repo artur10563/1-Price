@@ -27,12 +27,12 @@ namespace OnePrice.Infrastructure.Data.EntityTypeConfiguration
 			builder.HasOne(c => c.Post)
 				.WithMany(p => p.Comments)
 				.HasForeignKey(c => c.PostId)
-				.OnDelete(DeleteBehavior.NoAction);
+				.OnDelete(DeleteBehavior.Cascade);
 
 			builder.HasOne(c => c.Author)
 				.WithMany(u => u.Comments)
 				.HasForeignKey(c => c.AuthorId)
-				.OnDelete(DeleteBehavior.NoAction);
+				.OnDelete(DeleteBehavior.Cascade);
 
 		}
 	}
