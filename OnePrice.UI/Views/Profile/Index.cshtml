@@ -4,27 +4,43 @@
 	ViewData["Title"] = "Profile";
 }
 
+
+
+
 <div class="row">
-    
-    <div class="img-container p-0 m-2" style="width:250px;height:250px;">
-        <img class="img-fluid" src=@Model.ImgPath alt="Profile Image">
-    </div>
 
-    <div class="col-md-6">
-        <p>@Model.Nickname</p>
-    </div>
+	<div class="img-container p-0 m-2" style="width:250px;height:250px;">
+		<img class="img-fluid" src=@Model.ImgPath alt="Profile Image">
+	</div>
 
-    <h1 class="mt-4">Your posts</h1>
-    <hr />
+	<div class="col-md-6">
+		<p>@Model.Nickname</p>
+	</div>
 
-    <div class="container-lg mt-5 col-md-12">
+	<h1 class="mt-4">Your posts</h1>
+	<hr />
+	@if (TempData["SuccessMessage"] != null)
+	{
+		<div class="alert alert-success">
+			@TempData["SuccessMessage"]
+		</div>
+	}
 
-        @foreach (var p in Model.Posts)
-        {
-            await Html.RenderPartialAsync("_LongPostPartial", p);
-        }
+	@if (TempData["ErrorMessage"] != null)
+	{
+		<div class="alert alert-danger">
+			@TempData["ErrorMessage"]
+		</div>
+	}
 
-    </div>
+	<div class="container-lg mt-5 col-md-12">
+
+		@foreach (var p in Model.Posts)
+		{
+			await Html.RenderPartialAsync("_LongPostPartial", p);
+		}
+
+	</div>
 
 </div>
 

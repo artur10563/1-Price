@@ -10,7 +10,15 @@ namespace OnePrice.Infrastructure.Repository
 	public class PostRepository : BaseRepository<Post>, IPostRepository
 	{
 		public PostRepository(AppDbContext context) : base(context) { }
-
+		public async Task<Post?> GetByIdCommentsTags(int id)
+		{
+			return await _context.Posts
+				.Include(p => p.Author)
+				.Include(p => p.Comments)
+				.Include(p => p.Tags)
+					.ThenInclude(pt => pt.Tag)
+					.FirstOrDefaultAsync();
+		}
 		public async Task<Post?> GetByIdFullAsync(int id)
 		{
 			return await _context.Posts
@@ -30,6 +38,7 @@ namespace OnePrice.Infrastructure.Repository
 			return await _context.Posts
 				.Include(post => post.Currency)
 				.Include(post => post.Tags)
+				.Include(post => post.Author)
 				.FirstOrDefaultAsync(p => p.Id == id);
 		}
 

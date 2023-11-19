@@ -35,8 +35,9 @@ namespace OnePrice.UI.Controllers
 			_availableDataService = availableDataService;
 		}
 
-		[HttpGet]
 		[Authorize]
+		[ServiceFilter(typeof(EnsureUserExistsAttribute))]
+		[HttpGet]
 		public async Task<IActionResult> Add()
 		{
 			PostAddViewModel model = new PostAddViewModel();
@@ -183,7 +184,8 @@ namespace OnePrice.UI.Controllers
 
 		}
 
-
+		[Authorize]
+		[ServiceFilter(typeof(EnsureUserExistsAttribute))]
 		[HttpGet]
 		public async Task<IActionResult> Edit(int id)
 		{
@@ -191,15 +193,23 @@ namespace OnePrice.UI.Controllers
 			Post post = await _uow.Posts.GetByIdWithTagsAsync(id);
 			if (post == null) return NotFound();
 
+			var email = User.FindFirst("email").Value;
+			var user = await _uow.Users.GetByEmailAsync(email);
 
-			PostEditViewModel model = new PostEditViewModel();
+			if (post.Author.Id != user.Id)
+			{
+				TempData["ErrorMessage"] = "You do not have permission to edit this post.";
+				return RedirectToAction("Index", "Profile");
+			}
 
+			var model = new PostEditViewModel()
+			{
+				AvailableTags = _availableDataService.GetAvailableTags().ToList(),
+				AvailableCategories = _availableDataService.GetAvailableCategories().ToList(),
+				AvailableCurrencies = _availableDataService.GetAvailableCurrencies().ToList(),
+				Post = _mapper.Map<PostEditDTO>(post)
+			};
 
-			model.AvailableTags = _availableDataService.GetAvailableTags().ToList();
-			model.AvailableCategories = _availableDataService.GetAvailableCategories().ToList();
-			model.AvailableCurrencies = _availableDataService.GetAvailableCurrencies().ToList();
-
-			model.Post = _mapper.Map<PostEditDTO>(post);
 
 			if (TempData.ContainsKey("EditStatus"))
 			{
@@ -208,6 +218,8 @@ namespace OnePrice.UI.Controllers
 			return View(model);
 		}
 
+		[Authorize]
+		[ServiceFilter(typeof(EnsureUserExistsAttribute))]
 		[HttpPost]
 		public async Task<IActionResult> Edit(PostEditViewModel postViewModel, IFormFile? image)
 		{
@@ -301,21 +313,32 @@ namespace OnePrice.UI.Controllers
 			return RedirectToAction("Edit", toEdit.Id);
 		}
 
-
-		//[HttpPost]
+		[Authorize]
+		[ServiceFilter(typeof(EnsureUserExistsAttribute))]
+		[HttpPost]
 		public async Task<IActionResult> Delete(int id)
 		{
 			var toDelete = await _uow.Posts
-			   .GetByIdAsync(id);
+			   .GetByIdCommentsTags(id);
 
 			if (toDelete == null) return NotFound();
 
-			_uow.Posts.Remove(toDelete);
-			await _uow.SaveChangesAsync();
+			var email = User.FindFirst("email").Value;
+			var user = await _uow.Users.GetByEmailAsync(email);
 
+			if (toDelete.Author.Id == user.Id)
+			{
+				_uow.Posts.Remove(toDelete);
+				await _uow.SaveChangesAsync();
 
-			//redirect to profile/posts later
-			return RedirectToAction("Index", "Home");
+				TempData["SuccessMessage"] = "Successfully deleted";
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "You do not have permission to delete this post";
+			}
+
+			return RedirectToAction("Index", "Profile");
 		}
 
 
