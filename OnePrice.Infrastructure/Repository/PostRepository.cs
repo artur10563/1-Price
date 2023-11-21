@@ -17,7 +17,7 @@ namespace OnePrice.Infrastructure.Repository
 				.Include(p => p.Comments)
 				.Include(p => p.Tags)
 					.ThenInclude(pt => pt.Tag)
-					.FirstOrDefaultAsync();
+					.FirstOrDefaultAsync(p => p.Id == id);
 		}
 		public async Task<Post?> GetByIdFullAsync(int id)
 		{
