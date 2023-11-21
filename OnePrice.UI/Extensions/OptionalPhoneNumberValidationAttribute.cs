@@ -6,7 +6,7 @@ namespace OnePrice.UI.Extensions
 	[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
 	public class OptionalPhoneNumberValidationAttribute : ValidationAttribute
 	{
-		private static readonly Regex PhoneNumberRegex = new Regex(@"^\d{10,15}$");
+		private static readonly Regex PhoneNumberRegex = new Regex(@"^\d{10}$|^\d{12}$");
 
 		protected override ValidationResult IsValid(object value, ValidationContext validationContext)
 		{

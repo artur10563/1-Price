@@ -45,11 +45,15 @@ namespace OnePrice.UI.Controllers
 		[ServiceFilter(typeof(EnsureUserExistsAttribute))]
 		public async Task<IActionResult> Edit(ProfileEditDTO edited, IFormFile? image)
 		{
-			if (!ModelState.IsValid) return View();
 
 			var email = User.FindFirst("email").Value;
 			var user = await _uow.Users.GetByEmailAsync(email);
 
+			if (!ModelState.IsValid)
+			{
+				var userDTO = _mapper.Map<ProfileEditDTO>(user);
+				return View(userDTO);
+			}
 			_mapper.Map(edited, user);
 			//Dont allow user to change email
 			user.Email = email;
@@ -114,11 +118,9 @@ namespace OnePrice.UI.Controllers
 		[ServiceFilter(typeof(EnsureUserExistsAttribute))]
 		public async Task<IActionResult> Index()
 		{
-			//Nickname, ImgPath, Posts
 			var email = User.FindFirst("email").Value;
 			var user = await _uow.Users.GetByEmailWithPostsAsync(email);
 			var userDTO = _mapper.Map<AppUser, ProfileIndexDTO>(user);
-			Console.WriteLine(1);
 			return View(userDTO);
 		}
 	}

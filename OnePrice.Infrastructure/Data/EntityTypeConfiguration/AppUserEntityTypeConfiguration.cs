@@ -25,7 +25,7 @@ namespace OnePrice.Infrastructure.Data.EntityTypeConfiguration
 				.IsRequired(true);
 
 			builder.Property(x => x.PhoneNumber)
-				.HasMaxLength(15)
+				.HasMaxLength(12)
 				.IsRequired(false);
 
 			builder.Property(x => x.Nickname)
