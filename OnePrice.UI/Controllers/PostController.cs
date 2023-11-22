@@ -341,7 +341,19 @@ namespace OnePrice.UI.Controllers
 			return RedirectToAction("Index", "Profile");
 		}
 
+		[HttpGet]
+		public async Task<IActionResult> UserFilteredPosts(bool isActive)
+		{
+			var email = User.FindFirst("email").Value;
+			var user = await _uow.Users.GetByEmailWithPostsAsync(email);
 
+			var posts = user.Posts
+				.Where(p => p.IsActive == isActive)
+				.AsQueryable()
+				.ProjectTo<PostDisplayDTO>(_mapper.ConfigurationProvider)
+				.ToList();
+			return PartialView("_LongPostListPartial", posts);
+		}
 
 	}
 }

@@ -133,8 +133,8 @@ body {
     object-fit: contain;
 }
 
-.img-cover{
-    object-fit:cover;
+.img-cover {
+    object-fit: cover;
 }
 
 .card-clickable {
@@ -190,14 +190,35 @@ body {
     background-color: #007bff;
     color: #fff;
     border: none;
-    border-radius: 50%; 
+    border-radius: 50%;
     width: 50px;
-    height: 50px; 
+    height: 50px;
     font-size: 20px;
     cursor: pointer;
-
 }
 
     #scrollUpButton:hover {
-        background-color: #0056b3; 
+        background-color: #0056b3;
+    }
+
+.btn-underline {
+    position: relative;
+    line-height: 18px;
+    margin: 0;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: rgb(64, 99, 103);
+    display: inline-block;
+    border: none;
+    border-bottom: 1px solid rgb(127, 151, 153);
+    transition: border-bottom 0.09s ease;
+    white-space: nowrap;
+}
+
+    .btn-underline.active,
+    .btn-underline:hover {
+        line-height: 18px;
+        border-bottom: 2px solid rgb(0, 47, 52);
+        color: rgb(0, 47, 52);
+        font-weight: 700;
     }

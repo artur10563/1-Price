@@ -6,41 +6,51 @@
 
 
 
+<a asp-controller="Profile" asp-action="Edit" class="position-absolute end-0 p-4 text-decoration-none" style="cursor:pointer">
+	<i class="fas fa-pen"></i>
+	Edit
+</a>
 
 <div class="row">
 
-	<div class="img-container p-0 m-2" style="width:250px;height:250px;">
-		<img class="img-fluid" src=@Model.ImgPath alt="Profile Image">
+	<div class="img-container p-0 m-2 rounded-circle"
+		 style="width:150px;height: 150px;">
+		<img class="img-fluid rounded-circle" src=@Model.ImgPath>
 	</div>
 
-	<div class="col-md-6">
-		<p>@Model.Nickname</p>
-	</div>
-
-	<h1 class="mt-4">Your posts</h1>
-	<hr />
-	@if (TempData["SuccessMessage"] != null)
-	{
-		<div class="alert alert-success">
-			@TempData["SuccessMessage"]
-		</div>
-	}
-
-	@if (TempData["ErrorMessage"] != null)
-	{
-		<div class="alert alert-danger">
-			@TempData["ErrorMessage"]
-		</div>
-	}
-
-	<div class="container-lg mt-5 col-md-12">
-
-		@foreach (var p in Model.Posts)
-		{
-			await Html.RenderPartialAsync("_LongPostPartial", p);
-		}
-
+	<div class="col-sm-6">
+		<h2 class="pt-2 mt-2">@Model.Nickname</h2>
+		<p>@Model.PhoneNumber</p>
 	</div>
 
 </div>
 
+<h1 class="mt-4">Your posts</h1>
+<hr />
+
+<div class="d-flex">
+
+	<a class="btn-underline" id="btnActive">Active</a>
+	<a class="btn-underline" id="btnDisabled">Disabled</a>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+	<div class="alert alert-success">
+		@TempData["SuccessMessage"]
+	</div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+	<div class="alert alert-danger">
+		@TempData["ErrorMessage"]
+	</div>
+}
+
+<div class="container-lg mt-5 col-md-12" id="filteredPostsContainer"></div>
+
+
+@section Scripts{
+	<script src="~/js/profilePosts.js"></script>
+}

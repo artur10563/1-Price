@@ -16,7 +16,7 @@ namespace OnePrice.UI.Models.ProfileDTOs
 		[StringLength(50, MinimumLength = 3, ErrorMessage = "Email must be between 3 and 50 characters")]
 		public string Email { get; set; }
 
-		[OptionalPhoneNumberValidation(ErrorMessage ="Phone number must be 10-15 symbols long")]
+		[OptionalPhoneNumberValidation(ErrorMessage = "Phone number must be 10 or 12 symbols long")]
 		public string? PhoneNumber { get; set; }
 		public string? ImgPath { get; set; }
 
