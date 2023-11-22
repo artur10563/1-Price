@@ -99,7 +99,7 @@ namespace OnePrice.Infrastructure.Repository
 						query = sortOrder.ToLower() == "desc" ? query.OrderByDescending(p => p.Title) : query.OrderBy(p => p.Title);
 						break;
 					case "currency":
-						query = sortOrder.ToLower() == "desc" ? query.OrderByDescending(p => p.Currency) : query.OrderBy(p => p.Currency.Symbol);
+						query = sortOrder.ToLower() == "desc" ? query.OrderByDescending(p => p.Currency) : query.OrderBy(p => p.Currency.FullName);
 						break;
 				}
 			}
