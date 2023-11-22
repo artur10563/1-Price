@@ -32,8 +32,21 @@
 							<a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index">Profile</a>
 						</li>
 
+						@if (User.Identity.IsAuthenticated && User.HasClaim("role", "admin"))
+						{
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle text-dark" href="#" id="managementDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									Management
+								</a>
+								<div class="dropdown-menu" aria-labelledby="managementDropdown">
+									<a class="dropdown-item" asp-controller="Tag" asp-action="Index">Tags</a>
+									<a class="dropdown-item" asp-controller="Category" asp-action="Index">Categories</a>
+									<a class="dropdown-item" asp-controller="Currency" asp-action="Index">Currencies</a>
+								</div>
+							</li>
+						}
 					</ul>
-					<partial class="p-3" name ="_LanguagePartial" />
+					<partial class="p-3" name="_LanguagePartial" />
 					<partial name="_LoginPartial" />
 				</div>
 			</div>

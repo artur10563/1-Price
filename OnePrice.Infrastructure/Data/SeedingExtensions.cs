@@ -23,9 +23,9 @@ namespace OnePrice.Infrastructure.Data
 					{
 
 						context.Categories.AddRange(
-							new Category { Name = "Electronics and Gadgets", ImgPath = "https://www.enrgtech.co.uk/blog/wp-content/uploads/2022/12/jbareham_160418_0931_0086_FINAL_NO_BUFFER_5MB_02.0.jpg" },
-							new Category { Name = "Sports and Outdoors", ImgPath = "https://www.listchallenges.com/f/lists/83296a8f-1b97-41af-b9cb-7d239d45decb.jpg" },
-							new Category { Name = "Home and Living", ImgPath = "https://www.thespruce.com/thmb/P4hBQtEPZVrrWPdbtXy7-wv9fiE=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-1161177015-f1de4ba58a6c4f50969d9119d80405a6.jpg" }
+							new Category { Name = "Electronics and Gadgets", ImgPath = "/img/category/c1.jpg" },
+							new Category { Name = "Sports and Outdoors", ImgPath = "/img/category/c2.jpg" },
+							new Category { Name = "Home and Living", ImgPath = "/img/category/c3.jpg" }
 						   );
 
 						context.SaveChanges();

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using OnePrice.Domain.Entities;
+using OnePrice.UI.Models.CategoryDTOs;
 using OnePrice.UI.Models.CommonDTOs;
 using OnePrice.UI.Models.CommonIdDTOs;
 
@@ -14,6 +15,7 @@ namespace OnePrice.UI.Models.Mapping
 		
 			CreateMap<Category, CommonCategoryDTO>();
 
+			CreateProjection<Category, FullCategoryDTO>();
 		
 		}
 	}

@@ -1,0 +1,269 @@
+﻿@using OnePrice.UI.Models.CategoryDTOs;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+
+@model IPagedList<FullCategoryDTO>
+@{
+	ViewData["Title"] = "Categories";
+}
+
+<h2>Categories</h2>
+
+<div class="alert alert-info alert-dismissible fade show" id="changes" hidden>
+</div>
+
+<p>
+	<a class="link-primary" onclick="openCreateModal()">Create New</a>
+</p>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Name</th>
+			<th>Has Image</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody id="contents">
+		@foreach (var category in Model)
+		{
+			<tr>
+				<td>@category.Id</td>
+				<td id="@category.Id">@category.Name</td>
+				<td>@(string.IsNullOrEmpty(category.ImgPath) ? "No" : "Yes")</td>
+				<td>
+					<button class="btn btn-primary btn-edit" onclick="openEditModal('@category.Id', '@category.Name', '@category.ImgPath')">Edit</button>
+					<a class="btn btn-danger" asp-action="Delete" asp-route-id="@category.Id">Delete</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+
+<div class="justify-content-center align-items-center">
+	<p>
+		Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+	</p>
+
+
+	@Html.PagedListPager(
+	Model,
+
+	page => Url.Action("Index", new
+	{
+	page = page
+	}),
+	PagedListRenderOptions.Classic
+	)
+
+</div>
+
+<div class="modal" id="editModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Edit Category</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+				<div class="cat-wrap">
+					<div class="form-group img-container rounded-circle" style="width:160px; height:160px;">
+						<input type="file" id="fileInput" name="image" accept="image/*" max="5*1024*1024">
+						<div class="prompt-text">Click to choose an image (max 5MB)</div>
+						<img id="uploadedImage" src="" class="uploadedImg">
+					</div>
+
+					<h5 id="editModalName"></h5>
+				</div>
+
+
+				<div class="form-group">
+					<label for="editId">ID:</label>
+					<input type="text" class="form-control" id="editId" name="editId" readonly>
+				</div>
+
+				<div class="form-group">
+					<label for="editName">Name:</label>
+					<input type="text" class="form-control" id="editName" name="editName">
+				</div>
+
+
+
+				<input type="hidden" id="originalImgPath" name="originalImgPath">
+
+				<button type="button" class="btn btn-primary" onclick="submitEdit()">Save changes</button>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+					Close
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal" id="createModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Add Category</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+				<div class="cat-wrap">
+					<div class="form-group img-container rounded-circle" style="width:160px; height:160px;">
+						<input type="file" id="fileInputCreate" name="image" accept="image/*" max="5*1024*1024">
+						<div class="prompt-text">Click to choose an image (max 5MB)</div>
+						<img id="uploadedImageCreate" src="" class="uploadedImg">
+					</div>
+				</div>
+
+
+
+					<div class="form-group">
+						<label for="createName">Name:</label>
+						<input type="text" class="form-control" id="createName" name="createName">
+					</div>
+
+
+					<button type="button" class="btn btn-primary" onclick="submitCreate()">Save changes</button>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+						Close
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+@*TODO: Move to separate file*@
+@section scripts
+	{
+
+	<script src="~/js/imagePreview.js"></script>
+	<script>
+		function clearForm() {
+			$('#editId').val('');
+			$('#editName').val('');
+			$('#fileInput').val('');
+			$('#originalImgPath').val('');
+			$('#uploadedImage').attr('src', '');
+			$('#editModalName').text('');
+		}
+
+		function openEditModal(categoryId, categoryName, imgPath) {
+
+			$('#editModal #editId').val(categoryId);
+			$('#editModal #editName').val(categoryName);
+			$('#editModal #originalImgPath').val(imgPath);
+			$('#uploadedImage').attr('src', imgPath);
+			$('#editModalName').text(categoryName);
+			$('#editModal').modal('show');
+		}
+
+		$(document).on('click', '.btn-edit', function () {
+			openEditModal(categoryId, categoryName, imgPath);
+		});
+	</script>
+
+	<script>
+		function submitEdit() {
+			var editItemId = $('#editId').val();
+			var editName = $('#editName').val();
+			var editImgPath = $('#fileInput')[0].files[0];
+			var originalImgPath = $('#originalImgPath').val();
+
+			var formData = new FormData();
+
+			formData.append('Id', editItemId);
+			formData.append('Name', editName);
+			formData.append('ImgPath', originalImgPath);
+
+			if (editImgPath) {
+				formData.append('Img', editImgPath);
+			} else {
+				formData.append('Img', null);
+			}
+
+			$.ajax({
+				url: '@Url.Action("Edit", "Category")',
+				type: 'POST',
+				processData: false,
+				contentType: false,
+				data: formData,
+
+				success: function (data) {
+					$('#editModal').modal('hide');
+					$('#' + editItemId).html(editName);
+					clearForm();
+				},
+				error: function (error) {
+					console.error('Error during edit:', error);
+				}
+			});
+		}
+
+		$('#editModal').on('hidden.bs.modal', function () {
+			clearForm();
+		});
+	</script>
+
+
+	<script>
+		function openCreateModal() {
+			$('#createModal #createName').val('');
+			$('#createModal #uploadedImageCreate').attr('src', '');
+			$('#createModal .prompt-text').text('Click to choose an image (max 5MB)');
+			$('#createModal').modal('show');
+		}
+	</script>
+	<script>
+		function submitCreate() {
+			var createName = $('#createName').val();
+			var createImgPath = $('#fileInputCreate')[0].files[0];
+
+			var formData = new FormData();
+
+			formData.append('Name', createName);
+
+			if (createImgPath) {
+				formData.append('Img', createImgPath);
+			} else {
+				formData.append('Img', null);
+			}
+
+			$.ajax({
+				url: '@Url.Action("Add", "Category")',
+				type: 'POST',
+				processData: false,
+				contentType: false,
+				data: formData,
+
+				success: function (data) {
+					$('#createModal').modal('hide');
+					$('#changes').html('<strong>New categories will be visible after refreshing the page.</strong>').removeAttr('hidden');
+					clearForm();
+				},
+				error: function (error) {
+					console.error('Error during create:', error);
+				}
+			});
+		}
+
+		$('#createModal').on('hidden.bs.modal', function () {
+			clearForm();
+		});
+	</script>
+
+}
+
+
