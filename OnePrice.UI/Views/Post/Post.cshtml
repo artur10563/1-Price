@@ -45,7 +45,7 @@
 					<button class="btn btn-primary w-100 m-1 p-1">Send Message</button>
 				</div>
 				<div>
-					<button class="btn btn-secondary w-100 m-1 p-1">Show contacs</button>
+					<button id="showContacts" class="btn btn-secondary w-100 m-1 p-1">Show contacs</button>
 				</div>
 			</div>
 
@@ -83,7 +83,7 @@
 								<i class="fas fa-trash" style="color: #a91919;"></i> Delete
 							</a>
 
-							<a  asp-controller="Post" asp-action="Edit" asp-route-id=@Model.Id
+							<a asp-controller="Post" asp-action="Edit" asp-route-id=@Model.Id
 							   class="text-primary p-2 m-2 mt-0 pt-0 text-decoration-none ">
 								<i class="fas fa-pen" style="color: #0d5be3;"></i> Edit
 							</a>
@@ -154,6 +154,20 @@
 					}
 
 				});
+			});
+		});
+	</script>
+
+	<script>
+		$(document).ready(function () {
+			$('#showContacts').click(function () {
+				var phoneNumber = '@Model.Author.PhoneNumber';
+
+				if (phoneNumber.length > 0) {
+					$('#showContacts').html(phoneNumber);
+				} else {
+					$('#showContacts').html('Phone number is not available');
+				}
 			});
 		});
 	</script>
