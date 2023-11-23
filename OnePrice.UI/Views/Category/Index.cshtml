@@ -12,6 +12,8 @@
 
 <div class="alert alert-info alert-dismissible fade show" id="changes" hidden>
 </div>
+<div class="alert alert-danger alert-dismissible fade show" id="deleted" hidden>
+</div>
 
 <p>
 	<a class="link-primary" onclick="openCreateModal()">Create New</a>
@@ -29,13 +31,13 @@
 	<tbody id="contents">
 		@foreach (var category in Model)
 		{
-			<tr>
+			<tr id="tr@(category.Id)">
 				<td>@category.Id</td>
 				<td id="@category.Id">@category.Name</td>
 				<td>@(string.IsNullOrEmpty(category.ImgPath) ? "No" : "Yes")</td>
 				<td>
 					<button class="btn btn-primary btn-edit" onclick="openEditModal('@category.Id', '@category.Name', '@category.ImgPath')">Edit</button>
-					<a class="btn btn-danger" asp-action="Delete" asp-route-id="@category.Id">Delete</a>
+					<a class="btn btn-danger btn-delete" data-category-id="@category.Id">Delete</a>
 				</td>
 			</tr>
 		}
@@ -125,24 +127,26 @@
 
 
 
-					<div class="form-group">
-						<label for="createName">Name:</label>
-						<input type="text" class="form-control" id="createName" name="createName">
-					</div>
+				<div class="form-group">
+					<label for="createName">Name:</label>
+					<input type="text" class="form-control" id="createName" name="createName">
+				</div>
 
 
-					<button type="button" class="btn btn-primary" onclick="submitCreate()">Save changes</button>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-						Close
-					</button>
-				</div>
+				<button type="button" class="btn btn-primary" onclick="submitCreate()">Save changes</button>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+					Close
+				</button>
 			</div>
 		</div>
 	</div>
 </div>
 
+@{
+	await Html.RenderPartialAsync("_ConfirmModalPartial", "Confirm");
+}
 
 
 @*TODO: Move to separate file*@
@@ -261,6 +265,42 @@
 
 		$('#createModal').on('hidden.bs.modal', function () {
 			clearForm();
+		});
+	</script>
+
+	<script src="~/js/modalOpen.js"></script>
+	<script>
+		$(document).ready(function () {
+			function openDeleteModal(categoryId, categoryName, imgPath) {
+				$("#modalPopup .modal-title").text("Confirm Delete");
+				$("#modalPopup .modal-body pre").text(categoryId + " - " + categoryName);
+
+				$("#modalPopup").modal('show');
+
+				$("#modalPopup").data("category-id", categoryId);
+			}
+			$(".btn-delete").click(function () {
+				var categoryId = $(this).data("category-id");
+
+				openDeleteModal(categoryId, '', '');
+			});
+
+			$("#continueBtn").click(function () {
+				var categoryId = $("#modalPopup").data("category-id");
+
+				$.ajax({
+					url: '@Url.Action("Delete", "Category")',
+					type: 'POST',
+					data: { id: categoryId },
+					success: function (result) {
+						$("#modalPopup").modal('hide');
+						$("#tr" + categoryId).remove();
+					},
+					error: function (error) {
+						$('#deleted').html('<strong>Category with id ' + categoryId + ' cant be deleted.</strong>').removeAttr('hidden');
+					}
+				});
+			});
 		});
 	</script>
 

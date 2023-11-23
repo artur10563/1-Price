@@ -12,6 +12,8 @@ using X.PagedList;
 
 namespace OnePrice.UI.Controllers
 {
+	[Authorize(Policy = "admin")]
+	[ServiceFilter(typeof(EnsureUserExistsAttribute))]
 	public class CategoryController : Controller
 	{
 		private readonly IUnitOfWork _uow;
@@ -45,8 +47,6 @@ namespace OnePrice.UI.Controllers
 
 
 		[HttpPost]
-		[Authorize(Policy = "admin")]
-		[ServiceFilter(typeof(EnsureUserExistsAttribute))]
 		public async Task<IActionResult> Edit(FullCategoryDTO edited, IFormFile? img)
 		{
 			//TODO: handle bad input
@@ -108,8 +108,6 @@ namespace OnePrice.UI.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Policy = "admin")]
-		[ServiceFilter(typeof(EnsureUserExistsAttribute))]
 		public async Task<IActionResult> Add(FullCategoryDTO newCategory, IFormFile? img)
 		{
 			if (!ModelState.IsValid) return BadRequest();
@@ -157,6 +155,23 @@ namespace OnePrice.UI.Controllers
 
 		}
 
+		[HttpPost]
+		public async Task<IActionResult> Delete(int id)
+		{
+			var toDelete = await _uow.Categories.GetByIdAsync(id);
+			if (toDelete == null) { return BadRequest(); }
+
+			try
+			{
+				_uow.Categories.Remove(toDelete);
+				await _uow.SaveChangesAsync();
+			}
+			catch (Exception)
+			{
+				return BadRequest();
+			}
+			return Ok();
+		}
 
 	}
 }
