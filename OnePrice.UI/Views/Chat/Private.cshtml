@@ -1,0 +1,74 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using OnePrice.UI.Models.CommentDTOs;
+@model ChatViewModel
+@inject IViewLocalizer _localizer;
+@{
+	ViewData["Title"] = "Chats";
+}
+
+
+@*TODO: Display receiver instead of title*@
+<div class="row">
+	<div class="col-md-4">
+		<h2>Available Chats</h2>
+		@if (Model?.AvailableChats.Count() == 0)
+		{
+			<p>Your chats will be displayed here.</p>
+		}
+		else
+		{
+			<ul class="list-group">
+				@foreach (var chat in Model.AvailableChats)
+				{
+					<li class="list-group-item">
+						<a asp-controller="Chat" asp-action="Private" asp-route-chatId="@chat.ChatId">@chat.Title</a>
+					</li>
+				}
+			</ul>
+		}
+	</div>
+
+	<div class="col-md-8">
+		<div class="card">
+			<div class="card-header">
+				@Model.Chat.Title
+			</div>
+			<div class="card-body">
+
+				<ul id="messagesList" class="list-group">
+					@foreach (var message in Model.Chat.Messages)
+					{
+						<li class="list-group-item pb-1">
+
+							<div class="d-flex justify-content-between align-items-center">
+								<span>@message.Author.Nickname: @message.Content </span>
+								<p class="small">@message.CreatedAt.ToLocalTime()</p>
+							</div>
+
+						</li>
+					}
+				</ul>
+
+
+				<div class="input-group mb-3 mt-3">
+					<input type="text" class="form-control" id="messageInput" placeholder="Write a message...">
+					<div class="input-group-append">
+						<button class="btn btn-primary" type="button" id="sendButton">
+							Send
+						</button>
+					</div>
+
+					<input type="hidden" id="chatInput" value="@Model.Chat.ChatId" />
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+
+
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/chat.js"></script>

@@ -1,0 +1,29 @@
+﻿@using OnePrice.UI.Models.ChatDTOs;
+@model IEnumerable<ChatDTO>
+
+<div class="row">
+	<div class="col-md-4">
+		<h2>Available Chats</h2>
+		@if (Model.Count() == 0)
+		{
+			<p>Your chats will be displayed here.</p>
+		}
+		else
+		{
+			<ul class="list-group">
+				@foreach (var chat in Model)
+				{
+					<li class="list-group-item">
+						<a asp-controller="Chat" asp-action="Private" asp-route-chatId="@chat.ChatId">@chat.Title</a>
+					</li>
+				}
+			</ul>
+		}
+	</div>
+</div>
+
+
+
+
+
+

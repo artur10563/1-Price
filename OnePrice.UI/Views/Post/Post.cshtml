@@ -41,9 +41,11 @@
 
 			</div>
 			<div class="bg-off-white rounded-3 m-2">
-				<div class="mb-2">
-					<button class="btn btn-primary w-100 m-1 p-1">Send Message</button>
-				</div>
+				<form method="post" asp-controller="Chat" asp-action="Create" asp-route-receiverId="@Model.Author.Id">
+					<div class="mb-2">
+						<button type="submit" class="btn btn-primary w-100 m-1 p-1">Send Message</button>
+					</div>
+				</form>
 				<div>
 					<button id="showContacts" class="btn btn-secondary w-100 m-1 p-1">Show contacs</button>
 				</div>

@@ -12,6 +12,7 @@ namespace OnePrice.UI.Extensions
 			serviceCollection.AddAutoMapper(typeof(CurrencyProfile));
 			serviceCollection.AddAutoMapper(typeof(CommentProfile));
 			serviceCollection.AddAutoMapper(typeof(UserProfile));
+			serviceCollection.AddAutoMapper(typeof(ChatProfile));
 
 			return serviceCollection;
 		}

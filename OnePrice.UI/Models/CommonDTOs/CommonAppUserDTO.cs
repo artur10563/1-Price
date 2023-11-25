@@ -4,6 +4,7 @@ namespace OnePrice.UI.Models.CommonDTOs
 {
 	public class CommonAppUserDTO
 	{
+		public int Id { get; set; }
 		[Required(ErrorMessage = "Nickname is required")]
 		[StringLength(50, MinimumLength = 3, ErrorMessage = "Nickname must be between 3 and 50 characters")]
 		public string Nickname { get; set; }

@@ -1,6 +1,7 @@
 using OnePrice.Infrastructure.Data;
 using OnePrice.UI.Extensions;
 using OnePrice.UI.Helpers;
+using OnePrice.UI.Hubs;
 using OnePrice.UI.Middlewares;
 
 
@@ -10,7 +11,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentitySupport();
 
-
+builder.Services.AddSignalR();
 builder.Services.AddLocalizationSupport();
 builder.Services.AddStorage(builder.Configuration);
 builder.Services.AddAutoMapperStorage();
@@ -51,6 +52,7 @@ app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapHub<ChatHub>("/chatHub");
 
 
 

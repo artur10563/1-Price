@@ -1,10 +1,5 @@
 ﻿using OnePrice.Application.Repository.Common;
 using OnePrice.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OnePrice.Application.Repository
 {
@@ -12,5 +7,6 @@ namespace OnePrice.Application.Repository
 	{
 		Task<AppUser>? GetByEmailAsync(string email);
 		Task<AppUser?> GetByEmailWithPostsAsync(string email);
+		Task<AppUser?> GetByEmailWithChatsAsync(string email);
 	}
 }

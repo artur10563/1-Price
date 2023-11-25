@@ -14,6 +14,7 @@ namespace OnePrice.Application.Repository
 		IAppUserRepository Users { get; }
 		ICurrencyRepository Currencies { get; }
 		ICommentRepository Comments { get; }
+		IChatRepository Chats { get; }
 
 		int SaveChanges();
 		Task<int> SaveChangesAsync();

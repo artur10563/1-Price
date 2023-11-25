@@ -1,5 +1,5 @@
 ﻿using OnePrice.Domain.Common;
-
+using OnePrice.Domain.Entities.ChatEntities;
 
 namespace OnePrice.Domain.Entities
 {
@@ -10,9 +10,10 @@ namespace OnePrice.Domain.Entities
 		public string? PhoneNumber { get; set; }
 		public string? ImgPath { get; set; }
 
-		public ICollection<Post>? Posts { get; set; }
-		public ICollection<Comment>? Comments { get; set; }
-
+		public virtual ICollection<Post>? Posts { get; set; }
+		public virtual ICollection<Comment>? Comments { get; set; }
+		public virtual ICollection<UserChat>? Chats { get; set; }
+		public virtual ICollection<Message>? Messages { get; set; }
 	}
 }
 
