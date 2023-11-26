@@ -13,8 +13,13 @@
 			<ul class="list-group">
 				@foreach (var chat in Model)
 				{
-					<li class="list-group-item">
-						<a asp-controller="Chat" asp-action="Private" asp-route-chatId="@chat.ChatId">@chat.Title</a>
+					<li class="list-group-item hoverable">
+						<a class="text-decoration-none text-black" asp-controller="Chat" asp-action="Private" asp-route-chatId="@chat.ChatId">
+							<div class="d-flex align-items-center">
+								<img src="@chat.Receiver.ImgPath" class="rounded-circle chat-img mr-2">
+								<p class="p-0 m-0">@chat.Receiver.Nickname</p>
+							</div>
+						</a>
 					</li>
 				}
 			</ul>

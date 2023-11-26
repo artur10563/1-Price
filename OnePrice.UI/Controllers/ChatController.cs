@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnePrice.Application.Repository;
+using OnePrice.Domain.Entities;
 using OnePrice.Domain.Entities.ChatEntities;
 using OnePrice.UI.Extensions;
 using OnePrice.UI.Models.ChatDTOs;
-using OnePrice.UI.Models.CommentDTOs;
+using OnePrice.UI.Models.CommonDTOs;
 
 namespace OnePrice.UI.Controllers
 {
@@ -16,12 +16,30 @@ namespace OnePrice.UI.Controllers
 	{
 		private readonly IUnitOfWork _uow;
 		private readonly IMapper _mapper;
+
 		public ChatController(IUnitOfWork uow, IMapper mapper)
 		{
 			_uow = uow;
 			_mapper = mapper;
 		}
 
+		//TODO: Repalce with automapper
+		private ICollection<ChatDTO>? GetChatDTOs(AppUser user)
+		{
+			return user.Chats
+				.Select(x => x.Chat)
+				.SelectMany(c => c.Members)
+				.GroupBy(uc => uc.ChatId)
+				.Select(group => new ChatDTO
+				{
+					ChatId = group.Key,
+					Title = "YourTitle",
+					Sender = _mapper.Map<CommonAppUserDTO>(group.FirstOrDefault(uc => uc.UserId == user.Id)?.User),
+					Receiver = _mapper.Map<CommonAppUserDTO>(group.FirstOrDefault(uc => uc.UserId != user.Id)?.User)
+				})
+				.ToList();
+
+		}
 
 		[HttpGet]
 		public async Task<IActionResult> Index()
@@ -29,12 +47,9 @@ namespace OnePrice.UI.Controllers
 			var email = User.FindFirst("email").Value;
 			var user = await _uow.Users.GetByEmailWithChatsAsync(email);
 
-			var model = user.Chats
-				.AsQueryable()
-				.ProjectTo<ChatDTO>(_mapper.ConfigurationProvider)
-				.ToList();
+			var availableChats = GetChatDTOs(user);
 
-			return View(model);
+			return View(availableChats);
 		}
 
 		[HttpGet]
@@ -54,14 +69,16 @@ namespace OnePrice.UI.Controllers
 
 			var model = new ChatViewModel()
 			{
-				AvailableChats = user.Chats
-				.AsQueryable()
-				.ProjectTo<ChatDTO>(_mapper.ConfigurationProvider)
-				.ToList(),
+				AvailableChats = GetChatDTOs(user),
 
-
-				Chat = _mapper.Map<ChatDTO>(chat)
+				Chat = _mapper.Map<ChatDTO>(chat),
 			};
+
+			model.Chat.Sender = _mapper.Map<CommonAppUserDTO>(user);
+			model.Chat.Receiver = _mapper.Map<CommonAppUserDTO>(chat.Members.Select(c => c.User).FirstOrDefault(u => u.Id != user.Id));
+
+
+
 
 
 			return View(model);
@@ -98,7 +115,7 @@ namespace OnePrice.UI.Controllers
 				await _uow.SaveChangesAsync();
 			}
 
-			return RedirectToAction(nameof(Index), new { chatId = chat.Id });
+			return RedirectToAction(nameof(Private), new { chatId = chat.Id });
 		}
 
 	}

@@ -42,7 +42,7 @@ namespace OnePrice.UI.Hubs
 			await _uow.SaveChangesAsync();
 
 
-			await Clients.Groups(group).SendAsync("ReceiveMessage", user.Nickname, message, newMessage.CreatedAt.ToLocalTime());
+			await Clients.Groups(group).SendAsync("ReceiveMessage", message, newMessage.CreatedAt.ToLocalTime(), user.Id);
 		}
 	}
 

@@ -29,8 +29,11 @@ namespace OnePrice.Infrastructure.Repository
 		{
 			return
 				await
-				_context.Users.Include(u => u.Chats)
-				.ThenInclude(c => c.Chat)
+				_context.Users
+				.Include(u => u.Chats)
+					.ThenInclude(c => c.Chat)
+						.ThenInclude(c=>c.Members)
+							.ThenInclude(m=>m.User)
 				.FirstOrDefaultAsync(u => u.Email == email);
 
 		}

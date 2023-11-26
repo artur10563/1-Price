@@ -222,3 +222,40 @@ body {
         color: rgb(0, 47, 52);
         font-weight: 700;
     }
+
+
+/*chat styles*/
+.max-width-75 {
+    max-width: 75%;
+}
+
+.bg-sender {
+    background-color: #007bff !important;
+}
+
+.bg-receiver {
+    background-color: #343a40 !important;
+}
+
+.chat-list {
+    height: 75vh;
+    overflow-y: scroll;
+}
+
+.bg-grey {
+    background-color: gray;
+}
+
+.chat-img {
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+}
+
+.hoverable {
+    transition: filter 0.2s ease;
+}
+
+.hoverable:hover {
+    filter: brightness(0.9);
+}
