@@ -30,7 +30,7 @@ connection.on("ReceiveMessage", function (message, date, authorId) {
     </div>
 `;
 
-    
+
     messagesList.appendChild(li);
     messagesList.scrollTop = messagesList.scrollHeight;
 });
@@ -49,7 +49,7 @@ connection.start().then(function () {
 sendButton.addEventListener("click", function (event) {
     var message = input.value;
     input.value = "";
-   
+
     connection.invoke("SendMessage", chat, message).catch(function (err) {
         return console.error(err.toString());
     });

@@ -27,6 +27,8 @@ namespace OnePrice.UI.Hubs
 		public async Task SendMessage(string group,
 			string message)
 		{
+			if (message.Length == 0) return;
+			if (message.Length > 4096) return;
 			var email = Context.User.FindFirst("email").Value;
 			var user = await _uow.Users.GetByEmailWithChatsAsync(email);
 			int groupId = int.Parse(group);
