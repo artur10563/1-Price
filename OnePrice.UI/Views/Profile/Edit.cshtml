@@ -23,7 +23,7 @@
 		<input type="file" id="fileInput" name="image" accept="image/*" max="5*1024*1024">
 		@if (Model.ImgPath == null)
 		{
-			<div class="prompt-text">Click to choose an image (max 5MB)</div>
+			<div class="prompt-text">@_localizer["Click to choose an image"] (max 5MB)</div>
 		}
 		<img id="uploadedImage" src="@Model?.ImgPath" class="uploadedImg">
 		<span asp-validation-for="ImgPath" class="text-danger"></span>
@@ -54,8 +54,8 @@
 
 
 
-	<button type="submit" class="btn btn-primary">Save Changes</button>
-	<a asp-controller="Profile" asp-action="Index" class="btn btn-secondary">Back</a>
+	<button type="submit" class="btn btn-primary">@_localizer["Save Changes"]</button>
+	<a asp-controller="Profile" asp-action="Index" class="btn btn-secondary">@_localizer["Back"]</a>
 </form>
 
 @section Scripts{

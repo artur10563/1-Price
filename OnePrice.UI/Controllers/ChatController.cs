@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
 using OnePrice.Application.Repository;
 using OnePrice.Domain.Entities;
 using OnePrice.Domain.Entities.ChatEntities;
@@ -16,11 +17,13 @@ namespace OnePrice.UI.Controllers
 	{
 		private readonly IUnitOfWork _uow;
 		private readonly IMapper _mapper;
+		private readonly IHtmlLocalizer<SharedResource> _localizer;
 
-		public ChatController(IUnitOfWork uow, IMapper mapper)
+		public ChatController(IUnitOfWork uow, IMapper mapper, IHtmlLocalizer<SharedResource> localizer)
 		{
 			_uow = uow;
 			_mapper = mapper;
+			_localizer = localizer;
 		}
 
 		//TODO: Repalce with automapper
@@ -60,8 +63,11 @@ namespace OnePrice.UI.Controllers
 			var user = await _uow.Users.GetByEmailWithChatsAsync(email);
 
 
-			if (!user.Chats.Any(c => c.ChatId == chatId)) return Ok("You dont have access to this chat");
-
+			if (!user.Chats.Any(c => c.ChatId == chatId))
+			{
+				TempData["ErrorMessage"] = _localizer["AccessDenied"].Value;
+				return RedirectToAction("Index", "Profile");
+			}
 			var chat = await _uow.Chats.GetFullByIdAsync(chatId);
 
 			if (chat == null) return BadRequest();

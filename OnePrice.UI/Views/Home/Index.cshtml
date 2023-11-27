@@ -5,7 +5,7 @@
 @model HomeViewModel
 
 @{
-	ViewData["Title"] = "Home Page";
+	ViewData["Title"] = _localizer["Home"];
 }
 
 @{
@@ -13,7 +13,7 @@
 }
 
 <div class="text-center mb-3 mt-3">
-	<h2>@Localizer["Categories"]</h2>
+	<h2>@_localizer["Categories"]</h2>
 	<div class="container-category container">
 		@foreach (CommonCategoryDTO c in Model.Categories)
 		{
@@ -31,7 +31,7 @@
 {
 	<div class="text-center mb-3 mt-3">
 		<div class="text-center">
-			<h2 class="mt-5">@Localizer["key"]</h2>
+			<h2 class="mt-5">@_localizer["You might be interested"]</h2>
 		</div>
 
 		<div class="row">

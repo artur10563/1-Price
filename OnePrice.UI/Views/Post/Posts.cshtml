@@ -7,7 +7,7 @@
 
 @model SearchPostDisplayViewModel
 @{
-	ViewData["Title"] = "Posts";
+	ViewData["Title"] = _localizer["Posts"];
 }
 
 @{
@@ -16,10 +16,10 @@
 
 @if (Model.Posts.Count() == 0)
 {
-	<h1>No posts match your search criteria</h1>
-	<p>We couldn't find any posts that match your search term or category.</p>
+	<h1>@_localizer["No posts match your search criteria"]</h1>
+	<p>@_localizer["We couldn't find any publications that match your search query"]</p>
 	<a href="/">
-		Return to the main page
+		@_localizer["Return to the main page"]
 	</a>
 }
 
@@ -35,7 +35,7 @@
 
 <div class="justify-content-center align-items-center">
 	<p>
-		Page @(Model.Posts.PageCount < Model.Posts.PageNumber ? 0 : Model.Posts.PageNumber) of @Model.Posts.PageCount
+		@_localizer["Page {0} of {1}",(Model.Posts.PageCount < Model.Posts.PageNumber ? 0 : Model.Posts.PageNumber), Model.Posts.PageCount]
 	</p>
 
 

@@ -15,6 +15,7 @@ using OnePrice.UI.Extensions;
 using OnePrice.UI.Helpers;
 using OnePrice.UI.Models.CommonDTOs;
 using Humanizer;
+using Microsoft.AspNetCore.Mvc.Localization;
 
 namespace OnePrice.UI.Controllers
 {
@@ -26,13 +27,15 @@ namespace OnePrice.UI.Controllers
 		private readonly AppDbContext _context;
 		private readonly IWebHostEnvironment _hostingEnvironment;
 		private readonly AvailableDataService _availableDataService;
-		public PostController(IUnitOfWork uow, IMapper mapper, AppDbContext context, IWebHostEnvironment hostingEnvironment, AvailableDataService availableDataService)
+		private readonly IHtmlLocalizer<SharedResource> _localizer;
+		public PostController(IUnitOfWork uow, IMapper mapper, AppDbContext context, IWebHostEnvironment hostingEnvironment, AvailableDataService availableDataService, IHtmlLocalizer<SharedResource> localizer)
 		{
 			_uow = uow;
 			_mapper = mapper;
 			_context = context;
 			_hostingEnvironment = hostingEnvironment;
 			_availableDataService = availableDataService;
+			_localizer = localizer;
 		}
 
 		[Authorize]
@@ -126,7 +129,7 @@ namespace OnePrice.UI.Controllers
 			await _uow.SaveChangesAsync();
 
 
-			TempData["AddStatus"] = "Post added successfully";
+			TempData["AddStatus"] = _localizer["PostAddSuccess"].Value;
 			return RedirectToAction("Add");
 		}
 
@@ -198,7 +201,7 @@ namespace OnePrice.UI.Controllers
 
 			if (post.Author.Id != user.Id)
 			{
-				TempData["ErrorMessage"] = "You do not have permission to edit this post.";
+				TempData["ErrorMessage"] = _localizer["AccessDenied"].Value;
 				return RedirectToAction("Index", "Profile");
 			}
 
@@ -308,7 +311,7 @@ namespace OnePrice.UI.Controllers
 			_uow.Posts.Update(toEdit);
 			await _uow.SaveChangesAsync();
 
-			TempData["EditStatus"] = "Post edited successfully";
+			TempData["EditStatus"] = _localizer["PostEditSuccess"].Value;
 
 			return RedirectToAction("Edit", toEdit.Id);
 		}
@@ -331,11 +334,11 @@ namespace OnePrice.UI.Controllers
 				_uow.Posts.Remove(toDelete);
 				await _uow.SaveChangesAsync();
 
-				TempData["SuccessMessage"] = "Successfully deleted";
+				TempData["SuccessMessage"] = _localizer["PostDeleteSuccess"].Value; 
 			}
 			else
 			{
-				TempData["ErrorMessage"] = "You do not have permission to delete this post";
+				TempData["ErrorMessage"] = _localizer["AccessDenied"].Value;
 			}
 
 			return RedirectToAction("Index", "Profile");

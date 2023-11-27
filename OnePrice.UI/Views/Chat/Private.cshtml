@@ -4,15 +4,15 @@
 @model ChatViewModel
 @inject IViewLocalizer _localizer;
 @{
-	ViewData["Title"] = "Chats";
+	ViewData["Title"] = Model.Chat.Receiver.Nickname;
 }
 
 <div class="row">
 	<div class="col-md-4">
-		<h2>Available Chats</h2>
+		<h2>@_localizer["Chats"]</h2>
 		@if (Model?.AvailableChats.Count() == 0)
 		{
-			<p>Your chats will be displayed here.</p>
+			<p>@_localizer["Your chats will be displayed here"]</p>
 		}
 		else
 		{
@@ -73,10 +73,10 @@
 				</ul>
 
 				<div class="input-group mb-3 mt-3">
-					<input type="text" class="form-control" id="messageInput" placeholder="Write a message...">
+					<input type="text" class="form-control" id="messageInput" placeholder="@_localizer["Write a message..."]">
 					<div class="input-group-append">
 						<button class="btn btn-primary" type="button" id="sendButton">
-							Send
+							@_localizer["Send"]
 						</button>
 					</div>
 

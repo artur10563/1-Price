@@ -11,8 +11,8 @@
 else
 {
 	<div class="justify-content-center align-items-center d-flex flex-column">
-		<h3>You dont have any posts yet </h3>
-		<p>Create a post to sell your items or services </p>
-		<a asp-controller="Post" asp-action="Add" class="btn btn-primary">Create post</a>
+		<h3>@_localizer["You dont have any posts yet"]</h3>
+		<p>@_localizer["Create a post to sell your items or services"]</p>
+		<a asp-controller="Post" asp-action="Add" class="btn btn-primary">@_localizer["Create post"]</a>
 	</div>
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
 using OnePrice.Application.Repository;
 using OnePrice.Domain.Entities;
 using OnePrice.Domain.Enums;
@@ -15,11 +16,13 @@ namespace OnePrice.UI.Controllers
 		private readonly IUnitOfWork _uow;
 		private readonly IMapper _mapper;
 		private readonly IWebHostEnvironment _hostingEnvironment;
-		public ProfileController(IUnitOfWork uow, IMapper mapper, IWebHostEnvironment hostingEnvironment)
+		private readonly IHtmlLocalizer<SharedResource> _localizer;
+		public ProfileController(IUnitOfWork uow, IMapper mapper, IWebHostEnvironment hostingEnvironment, IHtmlLocalizer<SharedResource> localizer)
 		{
 			_uow = uow;
 			_mapper = mapper;
 			_hostingEnvironment = hostingEnvironment;
+			_localizer = localizer;
 		}
 
 		#region Edit
@@ -106,7 +109,7 @@ namespace OnePrice.UI.Controllers
 			_uow.Users.Update(user);
 			var updateResult = await _uow.SaveChangesAsync();
 
-			if (updateResult != 0) TempData["EditStatus"] = "Updated succesfully"; ;
+			if (updateResult != 0) TempData["EditStatus"] = _localizer["Updated succesfully"].Value;
 
 			return RedirectToAction(nameof(Edit));
 		}

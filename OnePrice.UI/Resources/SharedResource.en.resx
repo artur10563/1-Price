@@ -117,10 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Categories" xml:space="preserve">
-    <value>Categorieskk</value>
+  <data name="AccessDenied" xml:space="preserve">
+    <value>Access to this resource is prohibited</value>
   </data>
-  <data name="key" xml:space="preserve">
-    <value>You might be interested</value>
+  <data name="ConfirmDeleteMessage" xml:space="preserve">
+    <value>Are you sure you want to delete this item?
+This action cannot be undone.
+All associated data and information will be lost.</value>
+  </data>
+  <data name="LoginRequired" xml:space="preserve">
+    <value>You must be authorized to perform this action</value>
+  </data>
+  <data name="PostAddSuccess" xml:space="preserve">
+    <value>Post has been successfully created</value>
+  </data>
+  <data name="PostDeleteSuccess" xml:space="preserve">
+    <value>Post has been succesfully deleted</value>
+  </data>
+  <data name="PostEditSuccess" xml:space="preserve">
+    <value>Post has been successfully updated</value>
   </data>
 </root>

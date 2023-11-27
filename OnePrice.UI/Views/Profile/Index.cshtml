@@ -1,14 +1,14 @@
 ﻿@using OnePrice.UI.Models.ProfileDTOs;
 @model ProfileIndexDTO
 @{
-	ViewData["Title"] = "Profile";
+	ViewData["Title"] = _localizer["Profile"];
 }
 
 
 
 <a asp-controller="Profile" asp-action="Edit" class="position-absolute end-0 p-4 text-decoration-none" style="cursor:pointer">
 	<i class="fas fa-pen"></i>
-	Edit
+	@_localizer["Edit"]
 </a>
 
 <div class="row">
@@ -25,13 +25,13 @@
 
 </div>
 
-<h1 class="mt-4">Your posts</h1>
+<h1 class="mt-4">@_localizer["Your posts"]</h1>
 <hr />
 
 <div class="d-flex">
 
-	<a class="btn-underline" id="btnActive">Active</a>
-	<a class="btn-underline" id="btnDisabled">Disabled</a>
+	<a class="btn-underline" id="btnActive">@_localizer["Active"]</a>
+	<a class="btn-underline" id="btnDisabled">@_localizer["Disabled"]</a>
 </div>
 
 @if (TempData["SuccessMessage"] != null)

@@ -1,12 +1,16 @@
 ﻿@using OnePrice.UI.Models.ChatDTOs;
 @model IEnumerable<ChatDTO>
+@{
+	ViewData["Title"] = _localizer["Chats"];
+}
+
 
 <div class="row">
 	<div class="col-md-4">
-		<h2>Available Chats</h2>
+		<h2>@_localizer["Chats"]</h2>
 		@if (Model.Count() == 0)
 		{
-			<p>Your chats will be displayed here.</p>
+			<p>@_localizer["Your chats will be displayed here"]</p>
 		}
 		else
 		{

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
 using OnePrice.Application.Repository;
 using OnePrice.Domain.Entities;
 using OnePrice.UI.Extensions;
@@ -12,10 +13,12 @@ namespace OnePrice.UI.Controllers
 	{
 		private readonly IUnitOfWork _uow;
 		private readonly IMapper _mapper;
-		public CommentController(IUnitOfWork uow, IMapper mapper)
+		private readonly IHtmlLocalizer<SharedResource> _localizer;
+		public CommentController(IUnitOfWork uow, IMapper mapper, IHtmlLocalizer<SharedResource> localizer)
 		{
 			_uow = uow;
 			_mapper = mapper;
+			_localizer = localizer;
 		}
 
 		[HttpPost]
@@ -24,7 +27,7 @@ namespace OnePrice.UI.Controllers
 		{
 			if (!User.Identity.IsAuthenticated) return BadRequest(new
 			{
-				Errors = new[] { "Log in to leave a comment" }
+				Errors = new[] { _localizer["LoginRequired"].Value }
 			});
 
 			if (!ModelState.IsValid)
