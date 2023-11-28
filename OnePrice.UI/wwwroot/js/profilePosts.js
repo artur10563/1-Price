@@ -12,6 +12,11 @@
         filterPosts(false);
     });
 
+    $("#btnFavorite").click(function () {
+        setActiveButton("#btnFavorite");
+        getFavorite();
+    });
+
     function setActiveButton(buttonId) {
         $(".btn-underline").removeClass('active');
         $(buttonId).addClass('active');
@@ -28,6 +33,19 @@
                 $('#filteredPostsContainer').html('');
                 $('#filteredPostsContainer').append(result);
             },
+        });
+    }
+
+    function getFavorite() {
+        var url = '/Post/GetFavorite';
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function (result) {
+                $('#filteredPostsContainer').html('');
+                $('#filteredPostsContainer').append(result);
+            }
         });
     }
 });

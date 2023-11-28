@@ -103,6 +103,7 @@ namespace OnePrice.Infrastructure.Repository
 						break;
 				}
 			}
+			query = query.Include(p => p.FavoritedBy).ThenInclude(f => f.User);
 			return query;
 
 		}

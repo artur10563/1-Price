@@ -22,5 +22,6 @@ namespace OnePrice.UI.Models.Home
 		public CommonIdCurrencyDTO Currency { get; set; }
 
 		public string? ImgPath { get; set; }
+		public bool IsFavorite { get; set; }
 	}
 }

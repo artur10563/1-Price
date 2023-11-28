@@ -24,5 +24,7 @@ namespace OnePrice.UI.Models.PostDTOs
 		public int Year { get; set; }
 		public string Month { get; set; }
 		public int Day { get; set; }
+
+		public bool IsFavorite { get; set; }
 	}
 }

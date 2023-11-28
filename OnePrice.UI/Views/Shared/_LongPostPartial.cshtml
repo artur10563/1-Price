@@ -1,8 +1,8 @@
 ﻿@using OnePrice.UI.Models.PostDTOs;
 @model PostDisplayDTO
 
-<a asp-action="Post" asp-controller="Post" asp-route-id=@Model.Id class="card-clickable">
-	<div class="card mb-3 bg-white">
+<div class="card mb-3 bg-white position-relative">
+	<a asp-action="Post" asp-controller="Post" asp-route-id=@Model.Id class="text-decoration-none text-black">
 		<div class="row">
 
 			<div class="col-md-4">
@@ -34,5 +34,7 @@
 
 			</div>
 		</div>
-	</div>
-</a>
+	</a>
+	<i data-id=@Model.Id class="@(Model.IsFavorite ? "fas" : "far") fa-heart fa-lg position-absolute card-clickable" style="bottom: 15px; right: 15px; color: #e70808;"></i>
+</div>
+

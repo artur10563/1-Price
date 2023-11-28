@@ -32,6 +32,7 @@
 
 	<a class="btn-underline" id="btnActive">@_localizer["Active"]</a>
 	<a class="btn-underline" id="btnDisabled">@_localizer["Disabled"]</a>
+	<a class="btn-underline" id="btnFavorite">@_localizer["Favorite"]</a>
 </div>
 
 @if (TempData["SuccessMessage"] != null)
@@ -53,4 +54,6 @@
 
 @section Scripts{
 	<script src="~/js/profilePosts.js"></script>
+	<script src="~/js/addfavorite.js"></script>
+
 }

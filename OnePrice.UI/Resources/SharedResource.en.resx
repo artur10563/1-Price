@@ -120,6 +120,9 @@
   <data name="AccessDenied" xml:space="preserve">
     <value>Access to this resource is prohibited</value>
   </data>
+  <data name="AuthorizedOnly" xml:space="preserve">
+    <value>This action is restricted to authorized users</value>
+  </data>
   <data name="ConfirmDeleteMessage" xml:space="preserve">
     <value>Are you sure you want to delete this item?
 This action cannot be undone.

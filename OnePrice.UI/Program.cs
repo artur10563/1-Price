@@ -21,9 +21,20 @@ builder.Services.AddScoped<EnsureUserExistsAttribute>();
 builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
 builder.Services.AddScoped<AvailableDataService>();
 
+builder.Services.AddCors(options =>
+{
+	options.AddDefaultPolicy(builder =>
+	{
+		builder.AllowAnyOrigin()
+			   .AllowAnyMethod()
+			   .AllowAnyHeader();
+	});
+});
+
 var app = builder.Build();
 
 //app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+app.UseCors();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

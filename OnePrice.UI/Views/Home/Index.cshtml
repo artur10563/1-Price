@@ -37,19 +37,27 @@
 		<div class="row">
 			@foreach (HomePostDTO p in Model.Posts)
 			{
-				<div class="col-md-4 mb-4">
-					<a asp-action="Post" asp-controller="Post" asp-route-id="@p.Id" class="card card-clickable">
-						<img src="@p.ImgPath" class="card-img-top img-fluid img-cover" style="height: 200px;">
+				<div class="col-md-4 mb-4 position-relative card-clickable">
+					<a asp-action="Post" asp-controller="Post" asp-route-id="@p.Id"
+					   class="card d-flex flex-column text-decoration-none text-black">
+						<img src="@p.ImgPath" class="card-img-top img-fluid img-cover"
+							 style="height: 200px;" />
 
-						<div class="card-body">
+						<div class="card-body d-flex flex-column">
 							<h4 class="card-title">@p.Title</h4>
 							<h5 class="card-text" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@p.Currency.Symbol@p.Price</h5>
-							<p class="card-text" style="height: 100px; overflow: hidden;">@p.Description</p>
+							<p class="card-text"
+							   style="height: 100px; overflow: hidden;">@p.Description</p>
 						</div>
 					</a>
+					<i data-id=@p.Id class="@(p.IsFavorite ? "fas" : "far") fa-heart fa-lg position-absolute card-clickable" style="top: 55%; right: 5%; color: #e70808;"></i>
 				</div>
 			}
 		</div>
 	</div>
 
+}
+
+@section Scripts{
+	<script src="~/js/addfavorite.js"></script>
 }

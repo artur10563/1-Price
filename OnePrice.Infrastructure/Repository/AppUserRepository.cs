@@ -22,9 +22,12 @@ namespace OnePrice.Infrastructure.Repository
 				await
 				_context.Users.Include(u => u.Posts)
 					.ThenInclude(p => p.Currency)
+				.Include(u => u.FavoritePosts)
+					.ThenInclude(fp => fp.Post)
+						.ThenInclude(p => p.Currency)
 				.FirstOrDefaultAsync(u => u.Email == email);
 		}
-		
+
 		public async Task<AppUser>? GetByEmailWithChatsAsync(string email)
 		{
 			return
@@ -32,8 +35,8 @@ namespace OnePrice.Infrastructure.Repository
 				_context.Users
 				.Include(u => u.Chats)
 					.ThenInclude(c => c.Chat)
-						.ThenInclude(c=>c.Members)
-							.ThenInclude(m=>m.User)
+						.ThenInclude(c => c.Members)
+							.ThenInclude(m => m.User)
 				.FirstOrDefaultAsync(u => u.Email == email);
 
 		}

@@ -5,7 +5,6 @@ using OnePrice.Domain.Entities;
 using OnePrice.Domain.Enums;
 using OnePrice.Infrastructure.Data;
 using OnePrice.UI.HelpersExtensions;
-using OnePrice.UI.Models.CommonIdDTOs;
 using OnePrice.UI.Models.PostDTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +12,9 @@ using X.PagedList;
 using Microsoft.AspNetCore.Authorization;
 using OnePrice.UI.Extensions;
 using OnePrice.UI.Helpers;
-using OnePrice.UI.Models.CommonDTOs;
-using Humanizer;
 using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.Extensions.Hosting;
+
 
 namespace OnePrice.UI.Controllers
 {
@@ -146,18 +145,31 @@ namespace OnePrice.UI.Controllers
 			int pageSize = 5)
 		{
 
-			var posts = _uow.Posts.GetFiltered(search, category, currency, minPrice, maxPrice, sortField, sortOrder)
-				.AsQueryable()
-				.ProjectTo<PostDisplayDTO>(_mapper.ConfigurationProvider);
-
-
 			if (page < 1) page = 1;
 			if (pageSize < 5) pageSize = 5;
 			if (pageSize > 50) pageSize = 50;
 
+
+			var posts = await _uow.Posts.GetFiltered(search, category, currency, minPrice, maxPrice, sortField, sortOrder)
+				.AsQueryable()
+				.ProjectTo<PostDisplayDTO>(_mapper.ConfigurationProvider)
+				.ToPagedListAsync(page, pageSize);
+
+			if (User.Identity.IsAuthenticated)
+			{
+				var email = User.FindFirst("email").Value;
+				var user = await _uow.Users.GetByEmailWithPostsAsync(email);
+
+				foreach (var postDto in posts)
+				{
+					postDto.IsFavorite = user.FavoritePosts.Any(fp => fp.PostId == postDto.Id && fp.UserId == user.Id);
+				}
+			}
+
+
 			var model = new SearchPostDisplayViewModel()
 			{
-				Posts = await posts.ToPagedListAsync(page, pageSize),
+				Posts = posts,
 				Filters = new()
 				{
 					AvailableCategories = _availableDataService.GetAvailableCategories().ToList(),
@@ -334,7 +346,7 @@ namespace OnePrice.UI.Controllers
 				_uow.Posts.Remove(toDelete);
 				await _uow.SaveChangesAsync();
 
-				TempData["SuccessMessage"] = _localizer["PostDeleteSuccess"].Value; 
+				TempData["SuccessMessage"] = _localizer["PostDeleteSuccess"].Value;
 			}
 			else
 			{
@@ -344,6 +356,8 @@ namespace OnePrice.UI.Controllers
 			return RedirectToAction("Index", "Profile");
 		}
 
+		[Authorize]
+		[ServiceFilter(typeof(EnsureUserExistsAttribute))]
 		[HttpGet]
 		public async Task<IActionResult> UserFilteredPosts(bool isActive)
 		{
@@ -355,8 +369,60 @@ namespace OnePrice.UI.Controllers
 				.AsQueryable()
 				.ProjectTo<PostDisplayDTO>(_mapper.ConfigurationProvider)
 				.ToList();
+
+			posts.ForEach(postDto => postDto.IsFavorite = user.FavoritePosts.Any(fp => fp.PostId == postDto.Id && fp.UserId == user.Id));
+
+
 			return PartialView("_LongPostListPartial", posts);
 		}
 
+		[Authorize]
+		[ServiceFilter(typeof(EnsureUserExistsAttribute))]
+		[HttpGet]
+		public async Task<IActionResult> GetFavorite()
+		{
+			var email = User.FindFirst("email").Value;
+			var user = await _uow.Users.GetByEmailWithPostsAsync(email);
+
+			var posts = user.FavoritePosts
+				.Select(fp => fp.Post)
+				.AsQueryable()
+				.ProjectTo<PostDisplayDTO>(_mapper.ConfigurationProvider)
+				.ToList();
+
+			posts.ForEach(post => post.IsFavorite = true);
+
+			return PartialView("_LongPostListPartial", posts);
+		}
+
+
+		[Authorize]
+		[ServiceFilter(typeof(EnsureUserExistsAttribute))]
+		[HttpPost]
+		public async Task<IActionResult> AddFavorite(int postId)
+		{
+
+			var email = User.FindFirst("email").Value;
+			var user = await _uow.Users.GetByEmailWithPostsAsync(email);
+
+			var existingFp = user.FavoritePosts.FirstOrDefault(p => p.PostId == postId);
+
+			if (existingFp != null)
+			{
+				user.FavoritePosts.Remove(existingFp);
+			}
+			else
+			{
+				user.FavoritePosts.Add(new FavoriteUserPost()
+				{
+					PostId = postId,
+					UserId = user.Id
+				});
+			}
+
+
+			await _uow.SaveChangesAsync();
+			return Ok();
+		}
 	}
 }

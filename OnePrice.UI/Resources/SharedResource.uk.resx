@@ -129,6 +129,9 @@
   <data name="All" xml:space="preserve">
     <value>Всі</value>
   </data>
+  <data name="AuthorizedOnly" xml:space="preserve">
+    <value>Ця дія доступна тільки авторизованим користувачам</value>
+  </data>
   <data name="Back" xml:space="preserve">
     <value>Назад</value>
   </data>
@@ -193,6 +196,9 @@
   </data>
   <data name="Edit post" xml:space="preserve">
     <value>Редагувати оголошення</value>
+  </data>
+  <data name="Favorite" xml:space="preserve">
+    <value>Улюблені</value>
   </data>
   <data name="Find posts by name or Id" xml:space="preserve">
     <value>Знайдіть оголошення за назвою або Id</value>

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using OnePrice.Application.Repository;
-using OnePrice.Infrastructure.Data;
 using OnePrice.UI.Models;
 using OnePrice.UI.Models.CommonDTOs;
 using OnePrice.UI.Models.Home;
@@ -40,6 +39,16 @@ namespace OnePrice.UI.Controllers
 				.ProjectTo<HomePostDTO>(_mapper.ConfigurationProvider)
 				.ToListAsync();
 
+			if (User.Identity.IsAuthenticated)
+			{
+				var email = User.FindFirst("email").Value;
+				var user = await _uow.Users.GetByEmailWithPostsAsync(email);
+
+				foreach (var postDto in posts)
+				{
+					postDto.IsFavorite = user.FavoritePosts.Any(fp => fp.PostId == postDto.Id && fp.UserId == user.Id);
+				}
+			}
 
 
 			var categories = await _uow.Categories.GetAll()
