@@ -209,13 +209,15 @@ namespace OnePrice.UI.Controllers
 			if (post == null) return NotFound();
 
 			var email = User.FindFirst("email").Value;
+			var isAdmin = User.FindFirst("role")?.Value == "admin";
 			var user = await _uow.Users.GetByEmailAsync(email);
 
-			if (post.Author.Id != user.Id)
-			{
-				TempData["ErrorMessage"] = _localizer["AccessDenied"].Value;
-				return RedirectToAction("Index", "Profile");
-			}
+			if (!isAdmin)
+				if (post.Author.Id != user.Id )
+				{
+					TempData["ErrorMessage"] = _localizer["AccessDenied"].Value;
+					return RedirectToAction("Index", "Profile");
+				}
 
 			var model = new PostEditViewModel()
 			{
@@ -339,9 +341,10 @@ namespace OnePrice.UI.Controllers
 			if (toDelete == null) return NotFound();
 
 			var email = User.FindFirst("email").Value;
+			var isAdmin = User.FindFirst("role")?.Value == "admin";
 			var user = await _uow.Users.GetByEmailAsync(email);
 
-			if (toDelete.Author.Id == user.Id)
+			if (toDelete.Author.Id == user.Id || isAdmin)
 			{
 				_uow.Posts.Remove(toDelete);
 				await _uow.SaveChangesAsync();

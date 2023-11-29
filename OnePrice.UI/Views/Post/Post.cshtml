@@ -81,7 +81,7 @@
 						<p class="text-muted p-2 m-2 mt-0 pt-0"><small>Id: @Model.Id</small></p>
 					</div>
 
-					@if (Model.Author.Email == User?.FindFirst("email")?.Value)
+					@if (Model.Author.Email == User?.FindFirst("email")?.Value || User?.FindFirst("role")?.Value == "admin")
 					{
 						<div class="col-8 text-end">
 							<a href="#" id="openModalBtn" class="text-danger p-2 m-2 mt-0 pt-0 text-decoration-none">
