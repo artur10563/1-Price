@@ -12,7 +12,7 @@
 	await Html.RenderPartialAsync("_SearchPartial", Model.Filters);
 }
 
-<div class="text-center mb-3 mt-3">
+<div class="text-center mb-4 mt-4 pt-4 pb-4">
 	<h2>@_localizer["Categories"]</h2>
 	<div class="container-category container">
 		@foreach (CommonCategoryDTO c in Model.Categories)
@@ -31,7 +31,7 @@
 {
 	<div class="text-center mb-3 mt-3">
 		<div class="text-center">
-			<h2 class="mt-5">@_localizer["You might be interested"]</h2>
+			<h2 class="mt-4 pb-3">@_localizer["You might be interested"]</h2>
 		</div>
 
 		<div class="row">
