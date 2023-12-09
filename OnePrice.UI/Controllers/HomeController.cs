@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using OnePrice.UI.Helpers;
+using OnePrice.UI.Extensions;
 
 namespace OnePrice.UI.Controllers
 {
@@ -27,6 +28,7 @@ namespace OnePrice.UI.Controllers
 			_availableDataService = availableDataService;
 		}
 
+		[ServiceFilter(typeof(EnsureUserExistsAttribute))]
 		public async Task<IActionResult> Index()
 		{
 
