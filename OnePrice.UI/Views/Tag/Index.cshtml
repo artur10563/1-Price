@@ -1,0 +1,129 @@
+﻿@using OnePrice.UI.Models.CommonIdDTOs;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@model IPagedList<CommonIdTagDTO>
+
+@{
+	ViewData["Title"] = _localizer["Tags"];
+}
+
+<h2>@_localizer["Tags"]</h2>
+
+<div class="alert alert-info alert-dismissible fade show" id="changes" hidden>
+</div>
+<div class="alert alert-danger alert-dismissible fade show" id="deleted" hidden>
+</div>
+
+<p>
+	<a class="link-primary" onclick="openCreateModal()">@_localizer["Create"]</a>
+</p>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>@_localizer["Name"]</th>
+			<th>@_localizer["Actions"]</th>
+		</tr>
+	</thead>
+	<tbody id="contents">
+		@foreach (var tag in Model)
+		{
+			<tr id="tr@(tag.Id)">
+				<td>@tag.Id</td>
+				<td id="@tag.Id">@tag.Name</td>
+				<td>
+					<button class="btn btn-primary btn-edit" onclick="openEditModal('@tag.Id', '@tag.Name')">@_localizer["Edit"]</button>
+					<a class="btn btn-danger btn-delete" data-category-id="@tag.Id">@_localizer["Delete"]</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+<div class="justify-content-center align-items-center">
+	<p>
+		@_localizer["Page {0} of {1}", Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber, Model.PageCount]
+	</p>
+
+
+	@Html.PagedListPager(
+	Model,
+
+	page => Url.Action("Index", new
+	{
+	page = page
+	}),
+	PagedListRenderOptions.Classic
+	)
+</div>
+
+
+
+<div class="modal" id="createModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">@_localizer["Create"]</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@_localizer["Close"]"></button>
+			</div>
+
+			<div class="modal-body">
+
+				<div class="form-group">
+					<label for="createName">@_localizer["Name"]:</label>
+					<input type="text" class="form-control" id="createName" name="createName">
+				</div>
+
+				<button type="button" class="btn btn-primary" onclick="submitCreate()">@_localizer["Save"]</button>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+					@_localizer["Close"]
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+@section Scripts{
+	<script>
+		function openCreateModal() {
+			$('#createModal #createName').val('');
+			$('#createModal').modal('show');
+		}
+
+		function submitCreate() {
+			var createName = $('#createName').val();
+			var newTag = { Name: createName}
+
+			$.ajax({
+				url: '@Url.Action("Add", "Tag")',
+				type: 'POST',
+				data: newTag,
+
+				success: function (data) {
+					$('#createModal').modal('hide');
+					$('#changes').html('<strong>New tags will be visible after refreshing the page.</strong>').removeAttr('hidden');
+				},
+				error: function (error) {
+					console.error('Error during create:', error);
+				}
+			});
+		}
+
+		$('#createModal').on('hidden.bs.modal', function () {
+			$('#createModal #createName').val('');
+		});
+
+
+	</script>
+
+}
