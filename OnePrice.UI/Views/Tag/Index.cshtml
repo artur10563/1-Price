@@ -32,10 +32,10 @@
 		{
 			<tr id="tr@(tag.Id)">
 				<td>@tag.Id</td>
-				<td id="@tag.Id">@tag.Name</td>
+				<td id="Name@(tag.Id)">@tag.Name</td>
 				<td>
 					<button class="btn btn-primary btn-edit" onclick="openEditModal('@tag.Id', '@tag.Name')">@_localizer["Edit"]</button>
-					<a class="btn btn-danger btn-delete" data-category-id="@tag.Id">@_localizer["Delete"]</a>
+					<a class="btn btn-danger btn-delete" data-tag-id="@tag.Id">@_localizer["Delete"]</a>
 				</td>
 			</tr>
 		}
@@ -87,43 +87,46 @@
 		</div>
 	</div>
 </div>
+<div class="modal" id="editModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">@_localizer["Edit"]</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label=@_localizer["Close"]></button>
+			</div>
+			<div class="modal-body">
 
 
+				<h5 id="editModalName"></h5>
+
+				<div class="form-group">
+					<label for="editId">ID:</label>
+					<input type="text" class="form-control" id="editId" name="editId" readonly>
+				</div>
+
+				<div class="form-group">
+					<label for="editName">@_localizer["Name"]:</label>
+					<input type="text" class="form-control" id="editName" name="editName">
+				</div>
 
 
-
+				<button type="button" class="btn btn-primary" onclick="submitEdit()">@_localizer["Save Changes"]</button>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+					@_localizer["Close"]
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+@{
+	await Html.RenderPartialAsync("_ConfirmModalPartial", "Confirm");
+}
 
 @section Scripts{
-	<script>
-		function openCreateModal() {
-			$('#createModal #createName').val('');
-			$('#createModal').modal('show');
-		}
-
-		function submitCreate() {
-			var createName = $('#createName').val();
-			var newTag = { Name: createName}
-
-			$.ajax({
-				url: '@Url.Action("Add", "Tag")',
-				type: 'POST',
-				data: newTag,
-
-				success: function (data) {
-					$('#createModal').modal('hide');
-					$('#changes').html('<strong>New tags will be visible after refreshing the page.</strong>').removeAttr('hidden');
-				},
-				error: function (error) {
-					console.error('Error during create:', error);
-				}
-			});
-		}
-
-		$('#createModal').on('hidden.bs.modal', function () {
-			$('#createModal #createName').val('');
-		});
-
-
-	</script>
-
+	<script src="~/js/modalOpen.js"></script>
+	<script src="~/js/Management/Tag/createModal.js"></script>
+	<script src="~/js/Management/Tag/editModal.js"></script>
+	<script src="~/js/Management/Tag/deleteModal.js"></script>
 }

@@ -46,7 +46,7 @@ namespace OnePrice.UI.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Add(CommonIdTagDTO newTag)
 		{
-			if(!ModelState.IsValid) return BadRequest();
+			if (!ModelState.IsValid) return BadRequest();
 
 			var tag = new Tag { Name = newTag.Name };
 			await _uow.Tags.AddAsync(tag);
@@ -54,5 +54,34 @@ namespace OnePrice.UI.Controllers
 			return Ok();
 		}
 
+		[HttpPost]
+		public async Task<IActionResult> Edit(CommonIdTagDTO edited)
+		{
+			if (!ModelState.IsValid) return BadRequest();
+
+			var toEdit = await _uow.Tags.GetByIdAsync(edited.Id);
+
+			if (toEdit == null) return BadRequest();
+
+			toEdit.Name = edited.Name;
+
+			_uow.Tags.Update(toEdit);
+			await _uow.SaveChangesAsync();
+			return Ok();
+
+		}
+
+		public async Task<IActionResult> Delete(int id)
+		{
+			if (!ModelState.IsValid) return BadRequest();
+
+			var toDelete = await _uow.Tags.GetByIdAsync(id);
+
+			if (toDelete == null) return BadRequest();
+
+			_uow.Tags.Remove(toDelete);
+			await _uow.SaveChangesAsync();
+			return Ok();
+		}
 	}
 }
