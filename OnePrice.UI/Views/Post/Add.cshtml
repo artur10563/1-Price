@@ -67,7 +67,7 @@
 				<div class="form-group">
 					<label for="categorySelect">@_localizer["Category"]</label>
 					<select class="form-control" asp-for="Post.CategoryId"
-							asp-items="new SelectList(Model.AvailableCategories, nameof(CommonIdTagDTO.Id),nameof(CommonIdCategoryDTO.Name))">
+							asp-items="new SelectList(Model.AvailableCategories, nameof(CommonIdCategoryDTO.Id),nameof(CommonIdCategoryDTO.Name))">
 					</select>
 					<span asp-validation-for="Post.CategoryId" class="text-danger"></span>
 				</div>

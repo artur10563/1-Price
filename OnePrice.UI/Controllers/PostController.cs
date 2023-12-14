@@ -356,7 +356,7 @@ namespace OnePrice.UI.Controllers
 				TempData["ErrorMessage"] = _localizer["AccessDenied"].Value;
 			}
 
-			return RedirectToAction("Index", "Profile");
+			return Ok();
 		}
 
 		[Authorize]

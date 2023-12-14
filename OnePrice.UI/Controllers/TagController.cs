@@ -10,7 +10,7 @@ using X.PagedList;
 
 namespace OnePrice.UI.Controllers
 {
-	[Authorize]
+	[Authorize(Policy = "admin")]
 	[ServiceFilter(typeof(EnsureUserExistsAttribute))]
 	public class TagController : Controller
 	{
