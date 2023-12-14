@@ -109,7 +109,6 @@
 		</div>
 	</div>
 </div>
-
 <div class="modal" id="createModal">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -145,167 +144,18 @@
 		</div>
 	</div>
 </div>
-
 @{
 	await Html.RenderPartialAsync("_ConfirmModalPartial", "Confirm");
 }
 
 
-@*TODO: Move to separate file*@
-@section scripts
+@section Scripts
 	{
-
 	<script src="~/js/imagePreview.js"></script>
-	<script>
-		function clearForm() {
-			$('#editId').val('');
-			$('#editName').val('');
-			$('#fileInput').val('');
-			$('#originalImgPath').val('');
-			$('#uploadedImage').attr('src', '');
-			$('#editModalName').text('');
-		}
-
-		function openEditModal(categoryId, categoryName, imgPath) {
-
-			$('#editModal #editId').val(categoryId);
-			$('#editModal #editName').val(categoryName);
-			$('#editModal #originalImgPath').val(imgPath);
-			$('#uploadedImage').attr('src', imgPath);
-			$('#editModalName').text(categoryName);
-			$('#editModal').modal('show');
-		}
-
-		$(document).on('click', '.btn-edit', function () {
-			openEditModal(categoryId, categoryName, imgPath);
-		});
-	</script>
-
-	<script>
-		function submitEdit() {
-			var editItemId = $('#editId').val();
-			var editName = $('#editName').val();
-			var editImgPath = $('#fileInput')[0].files[0];
-			var originalImgPath = $('#originalImgPath').val();
-
-			var formData = new FormData();
-
-			formData.append('Id', editItemId);
-			formData.append('Name', editName);
-			formData.append('ImgPath', originalImgPath);
-
-			if (editImgPath) {
-				formData.append('Img', editImgPath);
-			} else {
-				formData.append('Img', null);
-			}
-
-			$.ajax({
-				url: '@Url.Action("Edit", "Category")',
-				type: 'POST',
-				processData: false,
-				contentType: false,
-				data: formData,
-
-				success: function (data) {
-					$('#editModal').modal('hide');
-					$('#' + editItemId).html(editName);
-					clearForm();
-				},
-				error: function (error) {
-					console.error('Error during edit:', error);
-				}
-			});
-		}
-
-		$('#editModal').on('hidden.bs.modal', function () {
-			clearForm();
-		});
-	</script>
-
-
-	<script>
-		function openCreateModal() {
-			$('#createModal #createName').val('');
-			$('#createModal #uploadedImageCreate').attr('src', '');
-			$('#createModal .prompt-text').text('Click to choose an image (max 5MB)');
-			$('#createModal').modal('show');
-		}
-	</script>
-	<script>
-		function submitCreate() {
-			var createName = $('#createName').val();
-			var createImgPath = $('#fileInputCreate')[0].files[0];
-
-			var formData = new FormData();
-
-			formData.append('Name', createName);
-
-			if (createImgPath) {
-				formData.append('Img', createImgPath);
-			} else {
-				formData.append('Img', null);
-			}
-
-			$.ajax({
-				url: '@Url.Action("Add", "Category")',
-				type: 'POST',
-				processData: false,
-				contentType: false,
-				data: formData,
-
-				success: function (data) {
-					$('#createModal').modal('hide');
-					$('#changes').html('<strong>New categories will be visible after refreshing the page.</strong>').removeAttr('hidden');
-					clearForm();
-				},
-				error: function (error) {
-					console.error('Error during create:', error);
-				}
-			});
-		}
-
-		$('#createModal').on('hidden.bs.modal', function () {
-			clearForm();
-		});
-	</script>
-
 	<script src="~/js/modalOpen.js"></script>
-	<script>
-		$(document).ready(function () {
-			function openDeleteModal(categoryId, categoryName, imgPath) {
-				$("#modalPopup .modal-title").text("Confirm Delete");
-				$("#modalPopup .modal-body pre").text(categoryId + " - " + categoryName);
-
-				$("#modalPopup").modal('show');
-
-				$("#modalPopup").data("category-id", categoryId);
-			}
-			$(".btn-delete").click(function () {
-				var categoryId = $(this).data("category-id");
-
-				openDeleteModal(categoryId, '', '');
-			});
-
-			$("#continueBtn").click(function () {
-				var categoryId = $("#modalPopup").data("category-id");
-
-				$.ajax({
-					url: '@Url.Action("Delete", "Category")',
-					type: 'POST',
-					data: { id: categoryId },
-					success: function (result) {
-						$("#modalPopup").modal('hide');
-						$("#tr" + categoryId).remove();
-					},
-					error: function (error) {
-						$('#deleted').html('<strong>Category with id ' + categoryId + ' cant be deleted.</strong>').removeAttr('hidden');
-					}
-				});
-			});
-		});
-	</script>
-
+	<script src="~/js/Management/Category/editModal.js"></script>
+	<script src="~/js/Management/Category/createModal.js"></script>
+	<script src="~/js/Management/Category/deleteModal.js"></script>
 }
 
 
