@@ -50,7 +50,7 @@
 					</div>
 				</form>
 				<div>
-					<button id="showContacts" class="btn btn-secondary w-100 m-1 p-1">@_localizer["Show Contacs"]</button>
+					<button id="showContacts" data-phone="@Model.Author.PhoneNumber" class="btn btn-secondary w-100 m-1 p-1">@_localizer["Show Contacs"]</button>
 				</div>
 			</div>
 
@@ -132,56 +132,9 @@
 @section Scripts {
 
 	<script src="~/js/modalopen.js"></script>
-	<script src="~/js/modalpostdelete.js"></script>
-
-	<script>
-		$(document).ready(function () {
-			$("#submitCommentBtn").click(function () {
-				var commentText = $("#commentInput").val();
-				var commentData = {
-					PostId: @Model.Id,
-					Content: commentText
-				};
-				$.ajax({
-					url: '@Url.Action("AddComment", "Comment")',
-					type: 'POST',
-					data: commentData,
-
-					success: function (result) {
-						$("#commentsContainer").prepend(result);
-						$("#commentInput").val('');
-						$("#validationErrors").empty();
-					},
-
-					error: function (xhr) {
-						if (xhr.responseJSON && xhr.responseJSON.errors) {
-							var errorsHtml = xhr.responseJSON.errors.map(function (error) {
-								return '<p>' + error + '</p>';
-							}).join('');
-							$("#validationErrors").html(errorsHtml);
-						} else {
-							$("#validationErrors").html("Could not post a comment. Try again later.");
-						}
-					}
-
-				});
-			});
-		});
-	</script>
-
-	<script>
-		$(document).ready(function () {
-			$('#showContacts').click(function () {
-				var phoneNumber = '@Model.Author.PhoneNumber';
-
-				if (phoneNumber.length > 0) {
-					$('#showContacts').html(phoneNumber);
-				} else {
-					$('#showContacts').html('Phone number is not available');
-				}
-			});
-		});
-	</script>
+	<script src="~/js/Post/modalPostDelete.js"></script>
+	<script src="~/js/Post/showContacts.js"></script>
+	<script src="~/js/Post/addComment.js"></script>
 }
 
 
