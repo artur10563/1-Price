@@ -29,7 +29,7 @@ namespace OnePrice.Infrastructure.Data.EntityTypeConfiguration
 				.IsRequired(true);
 
 			builder.Property(x => x.FullName)
-				.HasMaxLength(10)
+				.HasMaxLength(20)
 				.IsRequired(true);
 
 			builder.Property(x => x.Code)

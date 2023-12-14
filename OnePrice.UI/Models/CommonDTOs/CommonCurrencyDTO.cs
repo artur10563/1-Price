@@ -9,8 +9,8 @@ namespace OnePrice.UI.Models.CommonDTOs
 		public string Code { get; set; }
 		
 		[Required]
-		[RegularExpression("^[a-zA-Z]+$", ErrorMessage = "Currency name must contain only letters.")]
-		[StringLength(10, MinimumLength = 3, ErrorMessage = "Currency name must be 3-10 symbols long")]
+		[RegularExpression("^[a-zA-Z ]+$", ErrorMessage = "Currency name must contain only letters.")]
+		[StringLength(20, MinimumLength = 3, ErrorMessage = "Currency name must be 3-10 symbols long")]
 		public string FullName { get; set; }
 
 		[Required]
