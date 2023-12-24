@@ -4,7 +4,7 @@ using OnePrice.Domain.Entities.ChatEntities;
 
 namespace OnePrice.Infrastructure.Data
 {
-    public class AppDbContext : DbContext //IdentityDbContext<CustomUser>
+    public class AppDbContext : DbContext
     {
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -13,6 +13,8 @@ namespace OnePrice.Infrastructure.Data
         public DbSet<AppUser> Users { get; set; }
         public DbSet<Currency> Currencies { get; set; }
         public DbSet<Chat> Chats { get; set; }
+        public DbSet<Complaint> Complaints { get; set; }
+        public DbSet<ComplaintStatus> ComplaintStatuses { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)

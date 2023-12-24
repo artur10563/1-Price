@@ -28,5 +28,6 @@ namespace OnePrice.Domain.Entities
 		public virtual ICollection<Comment> Comments { get; set; }
 		public virtual ICollection<PostTag> Tags { get; set; }
 		public virtual ICollection<FavoriteUserPost>? FavoritedBy { get; set; }
+		public virtual ICollection<Complaint>? Complaints { get; set; }
 	}
 }

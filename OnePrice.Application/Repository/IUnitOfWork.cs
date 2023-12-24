@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OnePrice.Application.Repository
+﻿namespace OnePrice.Application.Repository
 {
 	public interface IUnitOfWork : IDisposable
 	{
@@ -15,6 +9,8 @@ namespace OnePrice.Application.Repository
 		ICurrencyRepository Currencies { get; }
 		ICommentRepository Comments { get; }
 		IChatRepository Chats { get; }
+		IComplaintStatusRepository ComplaintStatuses { get; }
+		IComplaintRepository Complaints { get; }
 
 		int SaveChanges();
 		Task<int> SaveChangesAsync();

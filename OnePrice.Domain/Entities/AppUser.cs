@@ -15,6 +15,7 @@ namespace OnePrice.Domain.Entities
 		public virtual ICollection<UserChat>? Chats { get; set; }
 		public virtual ICollection<Message>? Messages { get; set; }
 		public virtual ICollection<FavoriteUserPost>? FavoritePosts { get; set; }
+		public virtual ICollection<Complaint>? Complaints { get; set; }
 	}
 }
 
