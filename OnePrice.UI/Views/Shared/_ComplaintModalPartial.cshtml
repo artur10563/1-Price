@@ -1,0 +1,39 @@
+﻿@using OnePrice.UI.Models.ComplaintDTOs;
+
+@model ComplaintAddViewModel
+
+<div class="modal fade" id="newComplaintPopup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h4 class="modal-title">@_localizer["Complain"]</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@_localizer["Close"]"></button>
+			</div>
+
+			<div class="modal-body">
+				<div class="mb-3">
+					<label class="form-label">@_localizer["Complaint type"]</label>
+					<select id="complaintTypeId" class="form-select" asp-for="Complaint.TypeId"
+							asp-items="new SelectList(Model.AvailableTypes, nameof(ComplaintTypeDTO.Id), nameof(ComplaintTypeDTO.Name))">
+					</select>
+					<span asp-validation-for="Complaint.TypeId" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label class="form-label">@_localizer["Additional Details"]</label>
+					<input id="complaintContent" asp-for="Complaint.Content" type="text" class="form-control" />
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" id="continueComplaintBtn">
+					@_localizer["Continue"]
+				</button>
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+					@_localizer["Cancel"]
+				</button>
+			</div>
+
+		</div>
+	</div>
+</div>

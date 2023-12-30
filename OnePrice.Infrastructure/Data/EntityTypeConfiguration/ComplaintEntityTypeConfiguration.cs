@@ -42,6 +42,12 @@ namespace OnePrice.Infrastructure.Data.EntityTypeConfiguration
 				.HasForeignKey(x => x.StatusId)
 				.IsRequired(false)
 				.OnDelete(DeleteBehavior.Restrict);
+
+			builder.HasOne(x => x.Type)
+				.WithMany(t => t.Complaints)
+				.HasForeignKey(x => x.TypeId)
+				.IsRequired(false)
+				.OnDelete(DeleteBehavior.Restrict);
 		}
 	}
 }

@@ -17,6 +17,7 @@ namespace OnePrice.Infrastructure.Repository
 		public IChatRepository Chats { get; private set; }
 		public IComplaintStatusRepository ComplaintStatuses { get; private set; }
 		public IComplaintRepository Complaints { get; private set; }
+		public IComplaintTypeRepository ComplaintTypes { get; private set; }
 
 		public UnitOfWork(AppDbContext context,
 			ITagRepository TagRepository,
@@ -27,7 +28,8 @@ namespace OnePrice.Infrastructure.Repository
 			ICommentRepository CommentRepository,
 			IChatRepository ChatRepository,
 			IComplaintRepository ComplaintRepository,
-			IComplaintStatusRepository ComplaintStatusRepository)
+			IComplaintStatusRepository ComplaintStatusRepository,
+			IComplaintTypeRepository ComplaintsTypesRepository)
 		{
 			_context = context;
 			Tags = TagRepository ?? throw new ArgumentNullException(nameof(TagRepository));
@@ -39,6 +41,7 @@ namespace OnePrice.Infrastructure.Repository
 			Chats = ChatRepository ?? throw new ArgumentNullException(nameof(ChatRepository));
 			ComplaintStatuses = ComplaintStatusRepository ?? throw new ArgumentNullException(nameof(ComplaintStatusRepository));
 			Complaints = ComplaintRepository ?? throw new ArgumentNullException(nameof(ComplaintRepository));
+			ComplaintTypes = ComplaintsTypesRepository ?? throw new ArgumentNullException(nameof(ComplaintsTypesRepository));
 		}
 
 		public void Dispose()

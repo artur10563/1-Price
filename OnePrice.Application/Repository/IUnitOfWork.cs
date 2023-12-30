@@ -10,6 +10,7 @@
 		ICommentRepository Comments { get; }
 		IChatRepository Chats { get; }
 		IComplaintStatusRepository ComplaintStatuses { get; }
+		IComplaintTypeRepository ComplaintTypes { get; }
 		IComplaintRepository Complaints { get; }
 
 		int SaveChanges();

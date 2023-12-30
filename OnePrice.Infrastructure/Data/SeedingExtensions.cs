@@ -57,7 +57,7 @@ namespace OnePrice.Infrastructure.Data
 							);
 						context.SaveChanges();
 					}
-					
+
 					if (context.ComplaintStatuses.Count() == 0)
 					{
 						context.ComplaintStatuses.AddRange(
@@ -68,6 +68,17 @@ namespace OnePrice.Infrastructure.Data
 						context.SaveChanges();
 					}
 
+					if (context.ComplaintTypes.Count() == 0)
+					{
+						context.ComplaintTypes.AddRange(
+							new ComplaintType() { Name = "Offensive Content" },
+							new ComplaintType() { Name = "Privacy Violation" },
+							new ComplaintType() { Name = "Unrelated Content" },
+							new ComplaintType() { Name = "Misleading information" },
+							new ComplaintType() { Name = "Other" }
+							);
+						context.SaveChanges();
+					}
 				}
 				catch (Exception ex)
 				{

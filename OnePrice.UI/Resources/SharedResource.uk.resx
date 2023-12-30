@@ -272,6 +272,9 @@
   <data name="Published" xml:space="preserve">
     <value>Опубліковано</value>
   </data>
+  <data name="Report" xml:space="preserve">
+    <value>Поскаржитися</value>
+  </data>
   <data name="Return to the main page" xml:space="preserve">
     <value>Повернутися на головну сторінку</value>
   </data>

@@ -15,5 +15,8 @@ namespace OnePrice.Domain.Entities
 
 		public int StatusId { get; set; }
 		public virtual ComplaintStatus Status { get; set; }
+
+		public int TypeId { get; set; }
+		public virtual ComplaintType Type { get; set; }
 	}
 }

@@ -29,6 +29,7 @@ namespace OnePrice.Infrastructure.Data
 			serviceCollection.AddScoped<IChatRepository, ChatRepository>();
 			serviceCollection.AddScoped<IComplaintStatusRepository, ComplaintStatusRepository>();
 			serviceCollection.AddScoped<IComplaintRepository, ComplaintRepository>();
+			serviceCollection.AddScoped<IComplaintTypeRepository, ComplaintTypeRepository>();
 		}
 	}
 }
